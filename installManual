@@ -1,0 +1,673 @@
+
+
+Instalación de ArchLinux con arranque dual,
+para Windows 11, ArchLinux y espacio reservado
+para otro SO, la raiz de Arch encriptada y
+formateado en btrfs.
+
+Para facilitar la instalación con arranque dual y hacer una instalación,
+libiana, la imagen fué grabada y customizada gracias a Rufus, de la siguiente manera:
+
+Remove requirement for 4GB+ RAM, SecureBoot and TPM 2.0
+Remove requirement for an online Microsoft account
+Disable data collection (Skip privace questions)
+Disable BitLocker automatic device encryption
+
+La primera y última opción son imprescindibles para dual boot.
+
+
+
+También no menos importante, ampliar la partición, por defecto
+de EFI de linux de 100 MiB a 250 MiB, para ello antes de instalar
+windows le haremos nosotros una partición EFI vacía, para seguidamente
+instalar windows, que siempre hay que instalarla antes que linux,
+al indicarle el tamaño de su instalación, no durará
+en utilizar entre sus particiones la EFI ya formateada.
+
+El número y tamaño de las particiones de windows variará dependiendo,
+de la variante de windows que instalemos, yo me limité ha instalar
+la home básica, solo uso windows en casos muy puntuales.
+
+Como verás no tengo ni la partición que windows reserva, normalmente
+en la versión home en la cuarta partición de unos 500 MiB para hibernación.
+En caso de tenerla se debe sesabilitar la hibernación siempre que se usa
+más de un S.O., no es raro que den conflicto y puedan dar mas de
+un quebradero de cabeza.
+
+Por ello en windows se desabilita el FastStartup, tecla Win y cmd,
+pulsar con el boton derecho del ratón y ejecutar como administrador,
+powercfg /H off
+
+Se aconseja reiniciar un par de veces para asegurarse que no quede
+resto de hibernación alguna.
+
+
+
+Arrancamos ArchLinux, es hora de ponernos con lo interesante.
+
+
+# loadkeys es
+
+si no se ve bien el texto
+# setfont sun12x22
+
+lat2-08.psfu
+lat2-16.psfu
+lat4-19.psfu
+sun12x22.psfu
+solar24x32.psfu
+
+listar tipos de fuente
+$ ls -l /usr/share/fonts
+
+
+Verificar si el PC tiene arranque EFI
+y si es así su arquitactura 32 o 64 bits
+
+cat /sys/firmware/efi/fw_platform_size
+
+
+particiones en disco 1TB
+
+/dev/nvme0n1p1 -   250 MiB EFI System                    fat32 /efi        boot,esp
+
+/dev/nvme0n1p2 -    16 MiB Basic data partition                            msftres
+
+
+/dev/nvme0n1p3 - 199.7 GiB Microsoft reserve partition   ntfs /mnt/windows msftdata
+
+
+/dev/nvme0n1p4 -     4 GiB Extended boot loader          btrfs /boot
+
+/dev/nvme0n1p5 -   400 GiB Linux root(x86-64)            btrfs /
+
+/dev/nvme0n1p6 -    40 GiB Microsoft basic data          exFAT
+
+/dev/nvme0n1p7 - 299.5 GiB Linux reserved
+
+/dev/nvme0n1p8 -    33 GiB Linux swap
+
+
+
+Primero antes de instalar windows
+
+miramos discos
+
+lsblk
+
+si no es GPT:
+sudo parted /dev/sda
+(parted) mklabel gpt
+(parted) quit
+
+cfdisk /dev/nvme0n1
+
+Nueva la primera 250 MiB como Tipo EFI System
+Write y Exit
+
+Formateamos
+mkfs.fat -F32 -n EFI System /dev/nvme0n1p1
+
+Salimos de la instalación
+reboot
+
+instalamos windows
+
+
+
+
+Continuamos con Arch
+
+# loadkeys es
+
+# setfont lat2-16
+
+
+
+para conectar wifi
+
+iwctl
+
+device list
+
+Solo si powered es Off:
+adapter Nombre_del_adaptador set-property Powered on
+
+
+buscamos redes
+station Nombre_del_adaptador scan
+
+mostramos redes
+station Nombre_del_adaptador get-networks
+
+conectamos
+station Nombre_del_adaptador connect "SSID o nombre de la red"
+
+verificamos
+station Nombre_del_adaptador show
+
+exit
+
+ping Archlinux.org
+
+
+sincronizamos relog
+timedatectl set-ntp true
+
+
+Si necesitamos una fuente mas grande
+# pacman -Sy
+# pacman -S terminus-font
+
+# setfont ter-v32n
+
+
+Si quieres usara el instalador de arch
+# archinstall
+si es asi te puedes olvidar del resto del manual
+
+
+lsblk
+
+cfdisk /dev/nvme0n1
+
+creamos el resto de particiones indicando sus tipos
+
+partición para boot este debe de excluirse de la encriptación,
+complica mucho la instalación y la recuperación del sistema.
+
+/dev/nvme0n1p4 -     4 GiB Extended boot loader          btrfs /boot
+
+
+partición para el sistema en general, a causa de los dichosos
+flatpak y otras instalaciones y cachés el tamaño que preciso
+entre home y root es demasiado variopinto, y me he acostumbrado
+a guardar todo lo que no quiero perder en otras unidades y en la red,
+esta vez he optado por unificar estas clasicas particiones
+en una sola y beneficiarme de una mayor flexibilidad.
+
+/dev/nvme0n1p5 -   400 GiB Linux root(x86-64)            btrfs /
+
+
+he asignado una pequeña partición para intercambio de datos y archivos
+entre linux y windows através de SAMBA, siempre lo hecho de menos
+
+/dev/nvme0n1p6 -    40 GiB Microsoft basic data          exFAT
+
+
+¿32 GiB para SWAP? No no me he vuelto loco a pesar de tener 32 GiB de RAM,
+la he dejado al final del disco para modificarla con facilidad,
+quiero testear y ver si puedo sacarle probecho, para tener
+una IA tipo Llama3 instalada en mi propio equipo, ya la he tenido
+y una 8b no ha ido demasiado mal :P
+
+/dev/nvme0n1p8 -    33 GiB Linux swap
+
+
+
+
+
+cargamos módulo del kernel para encriptar
+
+modprobe dm-crypt
+modprobe dm-mod
+
+
+encriptamos raiz
+
+cryptsetup luksFormat -v -s 512 -h sha512 /dev/nvme0n1p5
+
+la desencriptamos
+
+cryptsetup open /dev/nvme0n1p5 cryptroot
+
+la formateamos
+
+mkfs.btrfs -L ArchRoot /dev/mapper/cryptroot
+
+
+
+
+
+y el resto
+
+mkfs.btrfs -L ArchBoot /dev/nvme0n1p4
+
+pacman -S exfat-utils
+
+mkfs.exfat -n samba /dev/nvme0n1p6
+
+$ mkswap -L swap /dev/nvme0n1p8
+
+$ swapon /dev/nvme0n1p8
+
+
+
+
+
+montamos todas las particiones necesaria y todas aquellas
+que queremos añadir desde primera hora en el fstab directamente en /mnt
+para preinstalar el sistema
+
+mount /dev/mapper/cryptroot /mnt
+
+mkdir /mnt/boot
+mount /dev/nvme0n1p4 /mnt/boot
+
+mkdir /mnt/boot/efi
+mount /dev/nvme0n1p1 /mnt/efi
+
+mkdir /mnt/srv && mkdir /mnt/srv/samba
+mount /dev/nvme0n1p6 /mnt/srv/samba
+
+mkdir /mnt/mnt && mkdir /mnt/mnt/win11
+mount /dev/nvme0n1p2 /mnt/mnt/win11
+error: bad superblock
+
+
+
+instalamos el sistema base en /mnt
+
+pacstrap -i /mnt base base-devel linux linux-headers linux-zen linux-zen-headers linux-firmware nano git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager os-prober
+??
+intel-ucode
+
+
+
+creamos el fstab
+
+cat /mnt/etc/fstab
+genfstab -U /mnt >> /mnt/etc/fstab
+
+cat /mnt/etc/fstab
+
+
+
+
+
+Como ya hemos instalado la base del sistema
+accedemos a el
+# arch-chroot /mnt
+
+
+
+configuraciones básicas
+
+
+# ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+# date
+# hwclock --systohc
+
+
+
+Generamos configuraciones para reconocimiento local para representar texto,
+mostrar correctamente valores monetarios regionales, formatos de fecha y hora,
+idiosincrasias alfabéticas y otros estándares específicos de la región.
+Si lo hacemos asi todos los usuarios nuevos creados con useradd -m "usuario"
+se les creará automáticamente un ~/.config/locale.conf con la configuración
+que hayamos definido en el archivo siguiente, lo prefiero de esta forma
+el sistema base, el superadmin y los logs seguirán en inglés.
+
+Para el sistema:
+
+sudo nano /etc/locale.gen
+
+Descomenta
+
+en_US.UTF-8 UTF-8
+es_ES.UTF-8 UTF-8
+
+sudo locale-gen
+
+echo "LANG=en_US.UTF-8" | sudo tee /etc/locale.conf
+
+teclado en español
+
+echo "LANG=en_US.UTF-8" | sudo tee /etc/locale.conf
+
+echo "KEYMAP=es" | sudo tee /etc/vconsole.conf
+
+
+
+Para que los usuarios nuevos se configuren automáticamente en español
+
+# echo "LANG=es_ES.UTF-8" > /etc/skel/.config/locale.conf
+
+# pacman -Syu
+# pacman -S terminus-font
+
+# echo KEYMAP=es >> /etc/skel/.config/vconsole.conf
+# echo FONT=ter-v32n >> /etc/skel/.config/vconsole.conf
+# echo FONT_MAP=UTF-8 >> /etc/skel/.config/vconsole.conf
+
+# echo NombreDeEstaMaquina > /etc/hostname
+
+
+
+
+creamos y configuramos usuarios
+
+
+para ROOT
+# passwd
+
+
+Nuevo usuario Visitante
+
+# useradd -m visitante
+# passwd visitante
+# usermod -aG video,audio,storage Visitante
+
+
+Nuevo usuario con permisos SuperUser
+cambiar "usuario" por el Nick de uno
+
+# useradd -m "usuario"
+# passwd "usuario"
+# usermod -aG wheel,video,audio,storage "usuario"
+
+# nano /etc/sudoers
+
+descomenta la línea %wheel ALL=(ALL) ALL
+
+# su "usuario"
+
+comprobamos que tenemos permisos sudoers
+sudo pacman -Syu
+
+a partir de ahora trabajamos como usuario
+
+
+configuramos instaladores y añadimos los repositorios
+sudo pacman -S pacman-contrib
+
+sudo nano /etc/pacman.conf
+
+descomenta
+Color
+ParallelDownloads = 5
+
+las siguientes lineas, para poder instalar
+aplicaciones de 32bits en sistemas de 64bits,
+descomenta las dos
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+
+apuntar para una vez instalados incorporar los de españa
+nano /etx/pacman.d/mirrorlist
+
+sudo pacman -Syu
+verificamos si de como salida una lista de aplicaciones
+sudo pacman -Sl multilib
+
+instalamos paru que nos permite instalar
+paqueteria del repositorio de la comunidad
+AUR y a la vez gestiona los repositorios
+oficiales
+
+para compilar es necesario ser un usuario
+con permisos de administrador directamente
+como superadmin root no te lo permite
+
+accedemos al home
+cd ~
+git clone https://aur.Archlinux.org/paru.git
+cd paru
+makepkg -si
+
+comprobamos paru
+paru -Syu
+paru -S paru
+
+$ cd..
+$ rm -Rf paru
+
+
+
+
+pacman -S wget
+wget https://github.com/c2mismo/info/raw/refs/heads/master/informatica/DebgingArchLinuxInstall.sh
+chmod +x DebgingArchLinuxInstall.sh
+sudo ./DebgingArchLinuxInstall.sh
+
+
+
+
+configuramos mejor para nuestro sistema initramfs
+
+limpiamos este
+==> WARNING: consolefont: no font found in configuration
+definimos una fuente de consola
+echo "FONT=lat2-Terminus16" | sudo tee -a /etc/vconsole.conf
+
+Eliminar el HOOK consolefont
+
+no ejecuto el
+sudo mkinitcpio -P
+porque el siguiente paso lo ejecuta
+
+
+sudo nano /etc/mkinitcpio.conf
+
+MODULES=(i915)
+
+eliminamos los
+==> WARNING: Possibly missing firmware for module: 'module_name'
+aic94xx, ast, bfa, bnx2x, liquidio, mlxsw_spectrum, nfp, qed, qla1280, qla2xxx, wd719x, xhci_pci
+
+paru -S mkinitcpio-firmware
+
+tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar el zen el proceso habria sido mas rapido
+
+
+
+
+
+Configuramos para desencriptar el sistema de archivos raíz, ROOT (/), a traves del initramfs, en los proximos inicios
+
+como no he encontrado forma para copiar el UUID
+de la particion solucion temporal
+sudo cp /etc/fstab /etc/crypttab.initramfs
+sudo nano /etc/crypttab.initramfs
+
+le he borrado las dos primeras lineas
+vaya que el sistema lo tome como algun
+tipo de encabezado de fstab
+
+asi estaria correcto o precisa de algun tipo de encabezado
+
+cryptroot UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx none luks,discard
+
+Modifica /etc/mkinitcpio.conf
+para incluir los modules del kernel necesarios para que initramfs pueda desencriptar
+usando systemd, recuerda sd-encrypt debe estar antes que filesystems
+
+sudo nano /etc/mkinitcpio.conf
+recuerda que eliminamos el HOOK consolefont
+
+
+HOOKS=(base systemd autodetect modconf block sd-encrypt filesystems fsck)
+HOOKS=(base systemd autodetect microcode keyboard keymap modconf kms block sd-encrypt filesystems fsck)
+
+sudo mkinitcpio -P
+
+==> WARNING: Possibly missing firmware for module: 'qat_420xx'
+indica que el firmware para el módulo qat_420xx, relacionado con la tecnología Intel QuickAssist, no está presente en tu sistema.
+
+
+ya lo incluimos antes en /etc/fstab
+
+verificamos
+#nano /etc/fstab
+
+los discos estan montados
+lsblk
+
+
+
+podemos terminar de instalar el gestor de arranque multiple GRUB
+
+mkdir /efi
+mount /dev/nvme0n1p1 /efi
+
+ruta de Microsoft
+/efi/EFI/Boot
+/efi/EFI/GRUB
+/efi/EFI/Microsoft
+
+/etc/default/grub y asegúrate de que la línea GRUB_DISABLE_OS_PROBER=false
+
+
+sudo grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+
+sudo os-prober
+
+
+si od-prober no localiza el efi de windows
+edita
+/etc/grub.d/40_custom
+
+menuentry "Windows 11" {
+    insmod part_gpt
+    insmod chain
+    set root='hd0,gpt1'  # Cambia esto según la partición correcta
+    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+}
+
+PRUEBA con UUID
+
+menuentry "Windows 11" {
+    insmod part_gpt
+    insmod search_fs_uuid
+    insmod chain
+    search --fs-uuid --set=root XXXXXXXXXXXXXX
+    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+}
+
+el disco se indica como hd y empieza por 0
+la particion como gtp y empieza por 1
+
+generalmente gpt1 y probar con hd
+
+desde el grub seleccionas windows
+y pulsa e asi podras modificarlo temporalmente
+
+
+
+
+sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+
+
+con esto reiniciaria para comprobar si el sistema arranca por si mismo
+todabia sin gestor de ventanas
+
+# systemctl enable NetWorkManager
+
+$ exit
+$ umount -R /mnt
+$ reboot
+
+
+
+conectamos a internet
+
+# nmtui-connect
+o
+$ nmcli dev wifi list
+$ nmcli dev wifi connect <ssid> password <contraseña>
+$ ping -c 3 www.google.com
+
+
+
+
+
+
+
+verificando
+
+$ lspci -k
+
+# dmesg | grep usbcore
+# dmesg | grep 1915 | less
+
+
+
+verificamos que los discos se hayan montado correctamente
+
+$ lsblk
+
+$ journalctl -b | grep cryptsetup
+
+
+
+
+si todo va correcto
+
+a por el gestor de ventanas
+
+
+
+
+
+kde
+# paru -S plasma plasma5-integration kde-applications
+
+kde mínimo
+# paru -S plasma-desktop plasma5-integration plasma-meta packagekit-qt5 qterminal pcmanfm-qt
+
+themes y tal
+https://store.kde.org/p/1293160
+
+decoración de ventanas mas rapido oxigen que bleezer yoxigen viene por defecto
+
+lxqt
+
+
+
+
+$ sudo paru -S sddm
+
+plasma-workspace kwayland xorg_kwayland plasma-wayland-protocols
+
+$ systemctl enable sddm.service
+$ systemctl start sddm.service
+
+
+si todo ha ido bien estaras navegando por el gestor de escritorio
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+futuro escript de instalación e instalacion
+
+sudo pacman -Syu
+
+
+busca y elimina dependencias innecesarias, paquetes huerfanos, sus archivos de configuración
+sudo pacman -Rns $(pacman -Qtdq)
+para que solo quede de cache una sola version tanto de instalados como desinstalados
+sudo paccache -rk1
+sudo paccache -ruk1
+
+
+
+
+
+
+
+
+
+
