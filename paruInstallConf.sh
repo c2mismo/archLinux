@@ -3,7 +3,7 @@
 echo "Instalando y configurando paru..."
 
 # Instalar dependencias necesarias
-sudo pacman -S --needed base-devel git
+sudo pacman -S --needed --noconfirm base-devel git
 
 # Clonar el repositorio de paru
 git clone https://aur.archlinux.org/paru.git
