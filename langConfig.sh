@@ -14,6 +14,7 @@ locale-gen
 
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 echo "KEYMAP=es" > /etc/vconsole.conf
+echo "FONT=ter-v32n" >> /etc/vconsole.conf
 
 # Configuración para nuevos usuarios (Español)
 mkdir -p /etc/skel/.config
