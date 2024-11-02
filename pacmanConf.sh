@@ -10,9 +10,9 @@ update_option() {
     local option="$1"
     local value="$2"
     if grep -q "^#*$option" "$PACMAN_CONF"; then
-        sudo sed -i "s/^#*$option.*/$option = $value/" "$PACMAN_CONF"
+        sudo sed -i "s/^#*$option.*/$option$value/" "$PACMAN_CONF"
     else
-        echo "$option = $value" | sudo tee -a "$PACMAN_CONF" > /dev/null
+        echo "$option$value" | sudo tee -a "$PACMAN_CONF" > /dev/null
     fi
 }
 
@@ -20,10 +20,10 @@ update_option() {
 update_option "Color" ""
 
 # Configurar ParallelDownloads
-update_option "ParallelDownloads" "5"
+update_option "ParallelDownloads" " = 5"
 
 # Configurar CleanMethod
-update_option "CleanMethod" "KeepInstalled"
+update_option "CleanMethod" " = KeepInstalled"
 
 # Habilitar repositorio multilib
 if ! grep -q "^\[multilib\]" "$PACMAN_CONF"; then
@@ -73,5 +73,6 @@ echo "  - Usar 5 descargas paralelas"
 echo "  - Mantener solo paquetes instalados en la caché"
 echo "  - Guardar solo una versión antigua de cada paquete (incluyendo los desinstalados)"
 echo "  - Usar el repositorio multilib"
-
-echo "Recuerda reiniciar cualquier terminal abierta para que los cambios surtan efecto."
+echo ""
+echo "Recuerda actualizar los repositorio "pacman -Sy" y"
+echo "deberás reiniciar cualquier terminal abierta para que los cambios surtan efecto."
