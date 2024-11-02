@@ -47,11 +47,11 @@ fi
 # Verificar integridad de los paquetes
 print_section "Verificación de integridad de paquetes"
 integrity_check=$(pacman -Qk 2>&1)
-if echo "$integrity_check" | grep -q "0 altered files"; then
+if echo "$integrity_check" | grep -q "0 missing files"; then
     echo "Todos los paquetes están íntegros."
 else
     echo "Se encontraron paquetes con problemas de integridad:"
-    echo "$integrity_check" | grep -v "0 altered files"
+    echo "$integrity_check" | grep -v "0 missing files"
 fi
 
 # Verificar si hay actualizaciones pendientes
