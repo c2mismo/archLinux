@@ -1,4 +1,11 @@
 #!/bin/bash
+# Generamos configuraciones para reconocimiento local para representar texto,
+# mostrar correctamente valores monetarios regionales, formatos de fecha y hora,
+# idiosincrasias alfabéticas y otros estándares específicos de la región.
+# Si lo hacemos asi todos los usuarios nuevos creados con useradd -m "usuario"
+# se les creará automáticamente un ~/.config/locale.conf con la configuración
+# que hayamos definido en el archivo siguiente, lo prefiero de esta forma
+# el sistema base, el superadmin y los logs seguirán en inglés.
 
 # Configuración del sistema (Inglés con teclado español)
 sed -i 's/^#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
