@@ -16,25 +16,13 @@ systemctl --failed
 print_section "Errores recientes en el journal de systemd"
 journalctl -p 3 -xb --no-pager | tail -n 20
 
-# Verificar espacio en disco
-print_section "Espacio en disco"
-df -h
-
-# Verificar uso de memoria
-print_section "Uso de memoria"
-free -h
-
 # Verificar paquetes huérfanos
 print_section "Paquetes huérfanos"
 pacman -Qtd
 
-# Verificar paquetes foráneos (no en los repositorios oficiales)
-print_section "Paquetes foráneos"
-pacman -Qm
-
 # Verificar archivos pacnew y pacsave
 print_section "Archivos pacnew y pacsave"
-find /etc -name "*.pacnew" -o -name "*.pacsave"
+sudo find /etc -name "*.pacnew" -o -name "*.pacsave"
 
 # Verificar errores de pacman
 print_section "Errores recientes de pacman"
