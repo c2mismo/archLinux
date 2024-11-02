@@ -269,7 +269,7 @@ error: bad superblock
 instalamos el sistema base en /mnt
 
 pacstrap -i /mnt base base-devel linux linux-headers linux-zen linux-zen-headers linux-firmware intel-ucode nano git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager os-prober
-??
+
 
 
 
@@ -315,6 +315,11 @@ pacman -S wget
 
 
 creamos y configuramos usuarios
+
+
+
+*****************************************************************
+
 
 
 para ROOT
