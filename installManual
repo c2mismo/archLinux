@@ -268,9 +268,9 @@ error: bad superblock
 
 instalamos el sistema base en /mnt
 
-pacstrap -i /mnt base base-devel linux linux-headers linux-zen linux-zen-headers linux-firmware nano git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager os-prober
+pacstrap -i /mnt base base-devel linux linux-headers linux-zen linux-zen-headers linux-firmware intel-ucode nano git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager os-prober
 ??
-intel-ucode
+
 
 
 
@@ -307,6 +307,7 @@ pacman -S wget
 
 # chmod +x langConfig.sh
 # ./langConfig.sh
+# rm langConfig.sh
 
 
 # echo NombreDeEstaMaquina > /etc/hostname
@@ -473,17 +474,19 @@ lsblk
 
 
 
-podemos terminar de instalar el gestor de arranque multiple GRUB
 
-mkdir /efi
-mount /dev/nvme0n1p1 /efi
 
-ruta de Microsoft
-/efi/EFI/Boot
-/efi/EFI/GRUB
-/efi/EFI/Microsoft
 
-/etc/default/grub y asegúrate de que la línea GRUB_DISABLE_OS_PROBER=false
+Instalamos y preparamos sistema para el procesador i9
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
+
+# chmod +x install_i9.sh
+# ./install_i9.sh
+# rm install_i9.sh
+
+
+
 
 
 sudo grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
@@ -525,7 +528,7 @@ y pulsa e asi podras modificarlo temporalmente
 
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
-
+grep intel-ucode /boot/grub/grub.cfg
 
 con esto reiniciaria para comprobar si el sistema arranca por si mismo
 todabia sin gestor de ventanas
