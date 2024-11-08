@@ -255,14 +255,15 @@ mkdir /mnt/boot
 mount /dev/nvme0n1p4 /mnt/boot
 
 mkdir /mnt/boot/efi
-mount /dev/nvme0n1p1 /mnt/efi
+mount /dev/nvme0n1p1 /mnt/boot/efi
 
 mkdir /mnt/srv && mkdir /mnt/srv/samba
 mount /dev/nvme0n1p6 /mnt/srv/samba
 
+pacman -S ntfs-3g
+
 mkdir /mnt/mnt && mkdir /mnt/mnt/win11
-mount /dev/nvme0n1p2 /mnt/mnt/win11
-error: bad superblock
+mount /dev/nvme0n1p3 /mnt/mnt/win11
 
 
 
@@ -399,27 +400,30 @@ $ rm -Rf paru
 
 
 
-pacman -S wget
-wget https://github.com/c2mismo/info/raw/refs/heads/master/informatica/DebgingArchLinuxInstall.sh
-chmod +x DebgingArchLinuxInstall.sh
-sudo ./DebgingArchLinuxInstall.sh
+# paru -S wget
+# wget https://github.com/c2mismo/info/raw/refs/heads/master/informatica/DebgingArchLinuxInstall.sh
+# chmod +x DebgingArchLinuxInstall.sh
+# sudo ./DebgingArchLinuxInstall.sh
 
 
 
 
 configuramos mejor para nuestro sistema initramfs
 
+/*
 limpiamos este
 ==> WARNING: consolefont: no font found in configuration
 definimos una fuente de consola
-echo "FONT=lat2-Terminus16" | sudo tee -a /etc/vconsole.conf
+echo "FONT=ter-v32n" | sudo tee -a /etc/vconsole.conf
 
-Eliminar el HOOK consolefont
+Alguien decia eliminar el HOOK consolefont
+creo que es herroneo que al especificarlo en vconsole.conf
+hay que indicarlo con el HOOK consolefont
 
 no ejecuto el
 sudo mkinitcpio -P
 porque el siguiente paso lo ejecuta
-
+*/
 
 sudo nano /etc/mkinitcpio.conf
 
@@ -439,29 +443,24 @@ tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar e
 
 Configuramos para desencriptar el sistema de archivos raíz, ROOT (/), a traves del initramfs, en los proximos inicios
 
-como no he encontrado forma para copiar el UUID
-de la particion solucion temporal
-sudo cp /etc/fstab /etc/crypttab.initramfs
-sudo nano /etc/crypttab.initramfs
 
-le he borrado las dos primeras lineas
-vaya que el sistema lo tome como algun
-tipo de encabezado de fstab
+wget -P /etc https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs
+sudo cat /etc/crypttab.initramfs
 
-asi estaria correcto o precisa de algun tipo de encabezado
-
-cryptroot UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx none luks,discard
+sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab.initramfs
+sudo cat /etc/crypttab.initramfs
 
 Modifica /etc/mkinitcpio.conf
 para incluir los modules del kernel necesarios para que initramfs pueda desencriptar
 usando systemd, recuerda sd-encrypt debe estar antes que filesystems
 
 sudo nano /etc/mkinitcpio.conf
-recuerda que eliminamos el HOOK consolefont
+recuerda que añadimos el HOOK consolefont
 
 
-HOOKS=(base systemd autodetect modconf block sd-encrypt filesystems fsck)
-HOOKS=(base systemd autodetect microcode keyboard keymap modconf kms block sd-encrypt filesystems fsck)
+HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap consolefont block sd-encrypt filesystems fsck)
+Tengo apuntado este orden pero no recuerdo pq hemos usado el anterior
+HOOKS=(base systemd autodetect microcode keyboard keymap consolefont modconf kms block sd-encrypt filesystems fsck)
 
 sudo mkinitcpio -P
 
@@ -482,19 +481,9 @@ lsblk
 
 
 
-Instalamos y preparamos sistema para el procesador i9
-
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
-
-# chmod +x install_i9.sh
-# ./install_i9.sh
-# rm install_i9.sh
 
 
-
-
-
-sudo grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 
 sudo os-prober
 
@@ -510,23 +499,33 @@ menuentry "Windows 11" {
     chainloader /EFI/Microsoft/Boot/bootmgfw.efi
 }
 
-PRUEBA con UUID
-
-menuentry "Windows 11" {
-    insmod part_gpt
-    insmod search_fs_uuid
-    insmod chain
-    search --fs-uuid --set=root XXXXXXXXXXXXXX
-    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-}
-
 el disco se indica como hd y empieza por 0
 la particion como gtp y empieza por 1
 
 generalmente gpt1 y probar con hd
 
-desde el grub seleccionas windows
-y pulsa e asi podras modificarlo temporalmente
+
+
+PRUEBA con UUID
+
+sudo wget -q -O - https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/40_custom | sudo tee -a /etc/grub.d/40_custom > /dev/null
+sudo cat /etc/grub.d/40_custom
+
+sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p1)/" /etc/grub.d/40_custom
+sudo cat /etc/grub.d/40_custom
+
+menuentry "Windows 11" {
+    insmod part_gpt
+    insmod search_fs_uuid
+    insmod chain
+    search --fs-uuid --set=root XXX
+    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+}
+
+
+
+siempre al iniciar el arranque del pc desde el grub podras
+modificarlo temporalmente seleccionas windows y pulsa "e"
 
 
 
@@ -538,13 +537,16 @@ grep intel-ucode /boot/grub/grub.cfg
 con esto reiniciaria para comprobar si el sistema arranca por si mismo
 todabia sin gestor de ventanas
 
-# systemctl enable NetWorkManager
-
 $ exit
 $ umount -R /mnt
 $ reboot
 
 
+
+
+
+
+# systemctl enable NetWorkManager
 
 conectamos a internet
 
@@ -574,6 +576,19 @@ verificamos que los discos se hayan montado correctamente
 $ lsblk
 
 $ journalctl -b | grep cryptsetup
+
+
+
+
+
+Instalamos y preparamos sistema para el procesador i9
+
+$ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
+
+chmod +x install_i9.sh
+sudo ./install_i9.sh
+rm install_i9.sh
+
 
 
 
