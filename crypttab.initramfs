@@ -1,0 +1,1 @@
+cryptroot UUID=xxxxxxxx none luks,discard
