@@ -457,10 +457,10 @@ usando systemd, recuerda sd-encrypt debe estar antes que filesystems
 sudo nano /etc/mkinitcpio.conf
 recuerda que añadimos el HOOK consolefont
 
-
-HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap consolefont block sd-encrypt filesystems fsck)
+                                                                 ¿¿¿ consolefont ???
+HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt filesystems fsck)
 Tengo apuntado este orden pero no recuerdo pq hemos usado el anterior
-HOOKS=(base systemd autodetect microcode keyboard keymap consolefont modconf kms block sd-encrypt filesystems fsck)
+HOOKS=(base systemd autodetect microcode keyboard keymap sd-vconsole modconf kms block sd-encrypt filesystems fsck)
 
 sudo mkinitcpio -P
 
