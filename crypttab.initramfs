@@ -1,1 +1,1 @@
-cryptroot UUID=XXX none luks,discard
+cryptroot UUID=XXX none luks,no-log-passwords,discard,no-read-workqueue,no-write-workqueue
