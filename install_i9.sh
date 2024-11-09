@@ -1,11 +1,14 @@
 #!/bin/bash
 # Instalamos y preparamos sistema para el procesador i9
 
+pacman -Sy
+
 pacman -S mesa vulkan-intel
 
 pacman -S thermald
 
 systemctl enable thermald
+# no esta aún levantado reinicia antes
 
 pacman -S htop intel-gpu-tools
 
