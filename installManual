@@ -83,7 +83,98 @@ particiones en disco 1TB
 
 /dev/nvme0n1p6 -    40 GiB Microsoft basic data          exFAT
 
-/dev/nvme0n1p7 - 299.5 GiB Linux reserved
+/dev/nvme0n1p7 - 299.5 GiB Linux reservedIndent mode
+Indent size
+Line wrap mode
+Editing installManual file contents
+Selection deleted
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+
+
+particiones en disco 1TB
+
+/dev/nvme0n1p1 -   250 MiB EFI System                    fat32 /efi        boot,esp
+
+/dev/nvme0n1p2 -    16 MiB Basic data partition                            msftres
+
+
+/dev/nvme0n1p3 - 199.7 GiB Microsoft reserve partition   ntfs /mnt/windows msftdata
+
+
+/dev/nvme0n1p4 -     4 GiB Extended boot loader          btrfs /boot
+
+/dev/nvme0n1p5 -   400 GiB Linux root(x86-64)            btrfs /
+
+
 
 /dev/nvme0n1p8 -    33 GiB Linux swap
 
@@ -410,20 +501,19 @@ $ rm -Rf paru
 
 configuramos mejor para nuestro sistema initramfs
 
-/*
+
 limpiamos este
 ==> WARNING: consolefont: no font found in configuration
 definimos una fuente de consola
 echo "FONT=ter-v32n" | sudo tee -a /etc/vconsole.conf
 
-Alguien decia eliminar el HOOK consolefont
-creo que es herroneo que al especificarlo en vconsole.conf
+Al especificarlo en vconsole.conf
 hay que indicarlo con el HOOK consolefont
 
 no ejecuto el
 sudo mkinitcpio -P
 porque el siguiente paso lo ejecuta
-*/
+
 
 sudo nano /etc/mkinitcpio.conf
 
@@ -433,6 +523,7 @@ eliminamos los
 ==> WARNING: Possibly missing firmware for module: 'module_name'
 aic94xx, ast, bfa, bnx2x, liquidio, mlxsw_spectrum, nfp, qed, qla1280, qla2xxx, wd719x, xhci_pci
 
+paru -S ranger
 paru -S mkinitcpio-firmware
 
 tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar el zen el proceso habria sido mas rapido
@@ -444,23 +535,38 @@ tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar e
 Configuramos para desencriptar el sistema de archivos raíz, ROOT (/), a traves del initramfs, en los proximos inicios
 
 
-wget -P /etc https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs
+sudo wget -P /etc https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs
 sudo cat /etc/crypttab.initramfs
+
+comprueba primero, a veces no lo hace a la primera, sino prueba con sudo y despues sin sudo
+blkid -s UUID -o value /dev/nvme0n1p5
 
 sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab.initramfs
 sudo cat /etc/crypttab.initramfs
+
+vamos a probar usando el archivo /etc/crypttab
+
+sudo rm /etc/crypttab.initramfs
+
+sudo cat /etc/crypttab
+sudo cp /etc/crypttab /etc/copy_crypttab
+sudo wget -q -O - https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs | sudo tee -a /etc/crypttab > /dev/null
+sudo cat /etc/crypttab
+
+comprueba primero, a veces no lo hace a la primera, sino prueba con sudo y despues sin sudo
+blkid -s UUID -o value /dev/nvme0n1p5
+
+sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab
+sudo cat /etc/crypttab
 
 Modifica /etc/mkinitcpio.conf
 para incluir los modules del kernel necesarios para que initramfs pueda desencriptar
 usando systemd, recuerda sd-encrypt debe estar antes que filesystems
 
 sudo nano /etc/mkinitcpio.conf
-recuerda que añadimos el HOOK consolefont
+recuerda que añadimos el HOOK consolefont al usar systemd sería sd-vconsole
 
-                                                                 ¿¿¿ consolefont ???
 HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt filesystems fsck)
-Tengo apuntado este orden pero no recuerdo pq hemos usado el anterior
-HOOKS=(base systemd autodetect microcode keyboard keymap sd-vconsole modconf kms block sd-encrypt filesystems fsck)
 
 sudo mkinitcpio -P
 
@@ -546,7 +652,7 @@ $ reboot
 
 
 
-# systemctl enable NetWorkManager
+# systemctl enable NetworkManager
 
 conectamos a internet
 
