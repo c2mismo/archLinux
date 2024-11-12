@@ -237,12 +237,6 @@ pacman -S exfat-utils
 
 mkfs.exfat -n samba /dev/nvme0n1p6
 
-$ mkswap -L swap /dev/nvme0n1p8
-
-$ swapon /dev/nvme0n1p8
-
-$ echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
-
 
 
 
@@ -262,10 +256,12 @@ mount /dev/nvme0n1p1 /mnt/boot/efi
 mkdir /mnt/srv && mkdir /mnt/srv/samba
 mount /dev/nvme0n1p6 /mnt/srv/samba
 
-pacman -S ntfs-3g
+La de windows por evitar problemas de integridad
+no la vamos a montar para ello hemos creado la
+samba para intercambiar archivos entre los dos SOs
 
-mkdir /mnt/mnt && mkdir /mnt/mnt/win11
-mount /dev/nvme0n1p3 /mnt/mnt/win11
+
+
 
 
 
@@ -442,12 +438,49 @@ tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar e
 
 
 
+La swap vamos a encriptarla con un archivo clave que se alojará
+en la partición encriptada de / evitando tener que introducir dos claves
+al iniciar el sistema
 
-Configuramos para desencriptar el sistema de archivos raíz, ROOT (/), a traves del initramfs, en los proximos inicios
+Creamos el archivo clave random
+
+ls -l /mnt | grep root
+
+dd if=/dev/urandom of=/mnt/root/swap.key bs=32 count=1
+
+chmod 600 /mnt/root/swap.key
+
+cryptsetup luksFormat /dev/nvme0n1p8 --cipher aes-xts-plain64:sha256 --key-size 256 --key-file /mnt/root/swap.key
+
+cryptsetup open /dev/nvme0n1p8 swap_encrypted --key-file /mnt/root/swap.key
+
+mkswap -L swap /dev/mapper/swap_encrypted
+
+swapon /dev/mapper/swap_encrypted
+
+
+$ swapon /dev/nvme0n1p8
+
+configuramos para que el sistema use el espacio swap solo en caso muy necesario
+
+$ echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
+
+$ swapon --show
+
+
+
+
+Configuramos para desencriptar el sistema de archivos raíz, ROOT (/) y swap,
+a traves del initramfs, en los proximos inicios
 
 
 sudo wget -P /etc https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs
 sudo cat /etc/crypttab.initramfs
+
+sudo nano /etc/crypttab
+swap_encrypted /dev/nvme0n1p8 /root/swap.key luks
+sudo nano /etc/fstab
+/dev/mapper/swap_encrypted none swap sw 0 0
 
 comprueba primero, a veces no lo hace a la primera, sino prueba con sudo y despues sin sudo
 blkid -s UUID -o value /dev/nvme0n1p5
@@ -593,7 +626,7 @@ $ lspci -k
 # dmesg | grep usbcore
 # dmesg | grep 1915 | less
 
-
+swapon --show
 
 verificamos que los discos se hayan montado correctamente
 
