@@ -289,6 +289,17 @@ accedemos a el
 # arch-chroot /mnt
 
 
+Desabilitamos la hibernación
+
+/mnt/etc/systemd/sleep.conf.d/disable-sleep.conf
+
+[Sleep]
+AllowSuspend=no
+AllowHibernation=no
+AllowHybridSleep=no
+AllowSuspendThenHibernate=no
+
+
 
 configuraciones básicas
 
