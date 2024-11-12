@@ -6,7 +6,7 @@ para otro SO, la raiz de Arch encriptada y
 formateado en btrfs.
 
 Para facilitar la instalación con arranque dual y hacer una instalación,
-libiana, la imagen fué grabada y customizada gracias a Rufus, de la siguiente manera:
+libiana, la imagen de windows fué grabada y customizada gracias a Rufus, de la siguiente manera:
 
 Remove requirement for 4GB+ RAM, SecureBoot and TPM 2.0
 Remove requirement for an online Microsoft account
@@ -30,7 +30,7 @@ la home básica, solo uso windows en casos muy puntuales.
 
 Como verás no tengo ni la partición que windows reserva, normalmente
 en la versión home en la cuarta partición de unos 500 MiB para hibernación.
-En caso de tenerla se debe sesabilitar la hibernación siempre que se usa
+En caso de tenerla se debe desabilitar la hibernación siempre que se usa
 más de un S.O., no es raro que den conflicto y puedan dar mas de
 un quebradero de cabeza.
 
@@ -438,28 +438,34 @@ tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar e
 
 
 
-La swap vamos a encriptarla con un archivo clave que se alojará
-en la partición encriptada de / evitando tener que introducir dos claves
-al iniciar el sistema
+La swap vamos a encriptarla en cada inicio con una clave aleatoria diferente
+de forma que actuará como una ram ya que no será accesible en cada reinicio
 
-Creamos el archivo clave random
 
-ls -l /mnt | grep root
+cryptsetup luksFormat /dev/nvme0n1p8 --cipher aes-xts-plain64:sha256 --key-size 256
 
-dd if=/dev/urandom of=/mnt/root/swap.key bs=32 count=1
-
-chmod 600 /mnt/root/swap.key
-
-cryptsetup luksFormat /dev/nvme0n1p8 --cipher aes-xts-plain64:sha256 --key-size 256 --key-file /mnt/root/swap.key
-
-cryptsetup open /dev/nvme0n1p8 swap_encrypted --key-file /mnt/root/swap.key
+cryptsetup open /dev/nvme0n1p8 swap_encrypted --key-file /dev/urandom
 
 mkswap -L swap /dev/mapper/swap_encrypted
+
+
+[Unit]
+Description=Open swap_encrypted with random key and activate swap
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/cryptsetup open /dev/sdXn swap_encrypted --key-file /dev/urandom
+ExecStartPost=/sbin/swapon /dev/mapper/swap_encrypted
+
+[Install]
+WantedBy=multi-user.target
+
+
+systemctl enable swap-keygen.service
 
 swapon /dev/mapper/swap_encrypted
 
 
-$ swapon /dev/nvme0n1p8
 
 configuramos para que el sistema use el espacio swap solo en caso muy necesario
 
@@ -470,17 +476,12 @@ $ swapon --show
 
 
 
-Configuramos para desencriptar el sistema de archivos raíz, ROOT (/) y swap,
+Configuramos para desencriptar el sistema de archivos raíz, ROOT (/),
 a traves del initramfs, en los proximos inicios
 
 
 sudo wget -P /etc https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs
 sudo cat /etc/crypttab.initramfs
-
-sudo nano /etc/crypttab
-swap_encrypted /dev/nvme0n1p8 /root/swap.key luks
-sudo nano /etc/fstab
-/dev/mapper/swap_encrypted none swap sw 0 0
 
 comprueba primero, a veces no lo hace a la primera, sino prueba con sudo y despues sin sudo
 blkid -s UUID -o value /dev/nvme0n1p5
