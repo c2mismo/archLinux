@@ -241,6 +241,8 @@ $ mkswap -L swap /dev/nvme0n1p8
 
 $ swapon /dev/nvme0n1p8
 
+$ echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
+
 
 
 
