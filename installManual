@@ -453,7 +453,14 @@ blkid -s UUID -o value /dev/nvme0n1p5
 sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab.initramfs
 sudo cat /etc/crypttab.initramfs
 
-vamos a probar usando el archivo /etc/crypttab
+
+Hemos probado editar el /etc/crypttab
+una vez instalado en vez de /etc/crypttab.initramfs
+pero no ha dado buen resultado
+el problema es que la opción:
+no-log-passwords
+en /etc/crypttab.initramfs no se ejecutaba
+vamos a intentarlo en una instalación limpia
 
 sudo rm /etc/crypttab.initramfs
 
