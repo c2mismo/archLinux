@@ -1,0 +1,2 @@
+# /dev/mapper/cryptswap LABEL=cryptswap
+/dev/mapper/cryptswap none swap sw 0 0
