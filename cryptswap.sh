@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "# /dev/mapper/cryptswap LABEL=cryptswap" | tee -a /etc/fstab
 echo "/dev/mapper/cryptswap none swap sw 0 0" | tee -a /etc/fstab
 
