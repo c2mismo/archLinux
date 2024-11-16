@@ -437,9 +437,7 @@ sudo nano /etc/mkinitcpio.conf
 
 MODULES=(i915)
 
-eliminamos los
-==> WARNING: Possibly missing firmware for module: 'module_name'
-aic94xx, ast, bfa, bnx2x, liquidio, mlxsw_spectrum, nfp, qed, qla1280, qla2xxx, wd719x, xhci_pci
+
 
 paru -S ranger
 paru -S mkinitcpio-firmware
