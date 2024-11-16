@@ -450,30 +450,25 @@ tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar e
 La swap vamos a encriptarla en cada inicio con una clave aleatoria diferente
 de forma que actuará como una ram ya que no será accesible en cada reinicio
 
-
-cryptsetup luksFormat /dev/nvme0n1p8 --cipher aes-xts-plain64:sha256 --key-size 256
-
-cryptsetup open /dev/nvme0n1p8 swap_encrypted --key-file /dev/urandom
-
-mkswap -L swap /dev/mapper/swap_encrypted
-
-
-[Unit]
-Description=Open swap_encrypted with random key and activate swap
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/cryptsetup open /dev/sdXn swap_encrypted --key-file /dev/urandom
-ExecStartPost=/sbin/swapon /dev/mapper/swap_encrypted
-
-[Install]
-WantedBy=multi-user.target
+Creamos un sistema de archivos pequeño (por ejemplo, de 1 MiB) en la partición de swap y
+especificamos un offset que determina dónde comienza este sistema de archivos.
+Al establecer un offset, el sistema de archivos pequeño se coloca en la parte superior de la partición,
+dejando el resto de la partición (donde se encuentra el swap encriptado) intacto.
+Esto significa que el UUID y el LABEL de la partición de swap no se sobrescriben,
+ya que no se modifican los primeros sectores de la partición donde se almacenan estos identificadores.
 
 
-systemctl enable swap-keygen.service
+mkfs.ext4 -L cryptswap -m 0 -O ^has_journal /dev/nvme0n1p8 -s 1M
 
-swapon /dev/mapper/swap_encrypted
+-m 0: No reserva espacio para el superusuario, maximizando el espacio disponible para swap.
+-O ^has_journal: Desactiva el journaling, lo que es innecesario para una partición de swap y mejora el rendimiento.
+-s 1M limita el tamaño del sistema de archivos a 1 MiB, dejando espacio para el swap encriptado detrás de él.
 
+
+#nano /etc/fstab
+/dev/mapper/cryptswap none swap sw 0 0
+
+el archivo /etc/crypttab.initramfs lo editamos mas adelante
 
 
 configuramos para que el sistema use el espacio swap solo en caso muy necesario
