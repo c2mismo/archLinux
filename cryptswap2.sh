@@ -27,7 +27,7 @@ done
 if [ -n "$uuid" ]; then
     echo "Modificando el archivo $CRYPTTAB_FILE..."
     sed -i "s/YYY/$uuid/g" "$CRYPTTAB_FILE"
-    echo "Se ha reemplazado 'XXX' por '$uuid' en $CRYPTTAB_FILE."
+    echo "Se ha reemplazado 'YYY' por '$uuid' en $CRYPTTAB_FILE."
 else
     echo "No se pudo encontrar un UUID después de $max_attempts intentos."
 fi
