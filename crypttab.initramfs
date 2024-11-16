@@ -1,4 +1,2 @@
 # Mount root as /dev/mapper/cryptroot using LUKS, and prompt for the passphrase at boot time.
 cryptroot UUID=XXX none luks,discard,no-read-workqueue,no-write-workqueue,password-echo=no
-# Mount swap re-encrypting it with a fresh key each reboot
-cryptswap	UUID=YYY /dev/urandom	swap,cipher=aes-xts-plain64,size=256,sector-size=4096
