@@ -215,7 +215,8 @@ modprobe dm-mod
 
 encriptamos raiz
 
-cryptsetup luksFormat -v -s 512 -h sha512 /dev/nvme0n1p5
+cryptsetup luksFormat /dev/nvme0n1p5 --cipher aes-xts-plain64 --key-size 256 --hash sha512
+para una clave de 32 caracteres ASCII
 
 la desencriptamos
 
@@ -267,15 +268,15 @@ samba para intercambiar archivos entre los dos SOs
 
 instalamos el sistema base en /mnt
 
-pacstrap -i /mnt base base-devel linux linux-headers linux-zen linux-zen-headers linux-firmware intel-ucode nano git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager os-prober
+pacstrap -i /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode nano git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager wget
 
-
+mas adelante podemos instalar linux linux-headers, así tenemos dos núcleos y evitamos problemas
+pero en un principio va aligerar la instalación
 
 
 
 creamos el fstab
 
-cat /mnt/etc/fstab
 genfstab -U /mnt >> /mnt/etc/fstab
 
 cat /mnt/etc/fstab
@@ -289,16 +290,6 @@ accedemos a el
 # arch-chroot /mnt
 
 
-Desabilitamos la hibernación
-
-/mnt/etc/systemd/sleep.conf.d/disable-sleep.conf
-
-[Sleep]
-AllowSuspend=no
-AllowHibernation=no
-AllowHybridSleep=no
-AllowSuspendThenHibernate=no
-
 
 
 configuraciones básicas
@@ -311,7 +302,11 @@ configuraciones básicas
 Configueramos teclados en español, sistema en ingles y
 usuarios en español
 
-pacman -S wget
+Desabilitamos la hibernación
+
+# mkdir /etc/systemd/sleep.conf.d
+# wget -P /etc/systemd/sleep.conf.d https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.conf
+
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/langConfig.sh
 
@@ -420,62 +415,21 @@ $ rm -Rf paru
 configuramos mejor para nuestro sistema initramfs
 
 
-limpiamos este
-==> WARNING: consolefont: no font found in configuration
-definimos una fuente de consola
-echo "FONT=ter-v32n" | sudo tee -a /etc/vconsole.conf
-
-Al especificarlo en vconsole.conf
-hay que indicarlo con el HOOK consolefont
-
-no ejecuto el
-sudo mkinitcpio -P
-porque el siguiente paso lo ejecuta
-
-
-sudo nano /etc/mkinitcpio.conf
-
-MODULES=(i915)
-
-
-
-paru -S ranger
-paru -S mkinitcpio-firmware
-
-tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar el zen el proceso habria sido mas rapido
-
 
 
 
 La swap vamos a encriptarla en cada inicio con una clave aleatoria diferente
 de forma que actuará como una ram ya que no será accesible en cada reinicio
 
-Creamos un sistema de archivos pequeño (por ejemplo, de 1 MiB) en la partición de swap y
-especificamos un offset que determina dónde comienza este sistema de archivos.
-Al establecer un offset, el sistema de archivos pequeño se coloca en la parte superior de la partición,
-dejando el resto de la partición (donde se encuentra el swap encriptado) intacto.
-Esto significa que el UUID y el LABEL de la partición de swap no se sobrescriben,
-ya que no se modifican los primeros sectores de la partición donde se almacenan estos identificadores.
 
 
-mkfs.ext4 -L cryptswap -m 0 -O ^has_journal /dev/nvme0n1p8 -s 1M
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptswap.sh
 
--m 0: No reserva espacio para el superusuario, maximizando el espacio disponible para swap.
--O ^has_journal: Desactiva el journaling, lo que es innecesario para una partición de swap y mejora el rendimiento.
--s 1M limita el tamaño del sistema de archivos a 1 MiB, dejando espacio para el swap encriptado detrás de él.
-
-
-#nano /etc/fstab
-/dev/mapper/cryptswap none swap sw 0 0
-
-el archivo /etc/crypttab.initramfs lo editamos mas adelante
+# chmod +x cryptswap.sh
+# sudo ./cryptswap.sh
+# rm cryptswap.sh
 
 
-configuramos para que el sistema use el espacio swap solo en caso muy necesario
-
-$ echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
-
-$ swapon --show
 
 
 
@@ -494,13 +448,7 @@ sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab.init
 sudo cat /etc/crypttab.initramfs
 
 
-Hemos probado editar el /etc/crypttab
-una vez instalado en vez de /etc/crypttab.initramfs
-pero no ha dado buen resultado
-el problema es que la opción:
-no-log-passwords
-en /etc/crypttab.initramfs no se ejecutaba
-vamos a intentarlo en una instalación limpia
+
 
 sudo rm /etc/crypttab.initramfs
 
@@ -515,30 +463,50 @@ blkid -s UUID -o value /dev/nvme0n1p5
 sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab
 sudo cat /etc/crypttab
 
+
+
+
+
+
 Modifica /etc/mkinitcpio.conf
 para incluir los modules del kernel necesarios para que initramfs pueda desencriptar
 usando systemd, recuerda sd-encrypt debe estar antes que filesystems
 
-sudo nano /etc/mkinitcpio.conf
-recuerda que añadimos el HOOK consolefont al usar systemd sería sd-vconsole
+limpiamos este
+==> WARNING: consolefont: no font found in configuration
+definimos una fuente de consola "FONT=ter-v32n"
+cat /etc/vconsole.conf
+Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsoleo
 
-HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole block sd-encrypt filesystems fsck)
+sudo nano /etc/mkinitcpio.conf
+
+MODULES=(i915)
+
+comenta el HOOKS=(base udev....
+#    HOOKS=(base udev....
+
+descomenta
+HOOKS=(base systemd autodetect modconf kms keyboard sd-vconsole sd-encrypt block filesystems fsck)
+y añade
+HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole sd-encrypt block filesystems fsck)
 
 sudo mkinitcpio -P
 
+
+
+
+
+paru -S ranger
+paru -S mkinitcpio-firmware
+
+Tenemos que verificar si del "mkinitcpio -P" eliminamos los
+==> WARNING: Possibly missing firmware for module: 'module_name'
+aic94xx, ast, bfa, bnx2x, liquidio, mlxsw_spectrum, nfp, qed, qla1280, qla2xxx, wd719x, xhci_pci
+
+tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar el zen el proceso habria sido mas rapido
+
 ==> WARNING: Possibly missing firmware for module: 'qat_420xx'
 indica que el firmware para el módulo qat_420xx, relacionado con la tecnología Intel QuickAssist, no está presente en tu sistema.
-
-
-ya lo incluimos antes en /etc/fstab
-
-verificamos
-#nano /etc/fstab
-
-los discos estan montados
-lsblk
-
-
 
 
 
@@ -547,28 +515,7 @@ lsblk
 
 sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 
-sudo os-prober
 
-
-si od-prober no localiza el efi de windows
-edita
-/etc/grub.d/40_custom
-
-menuentry "Windows 11" {
-    insmod part_gpt
-    insmod chain
-    set root='hd0,gpt1'  # Cambia esto según la partición correcta
-    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-}
-
-el disco se indica como hd y empieza por 0
-la particion como gtp y empieza por 1
-
-generalmente gpt1 y probar con hd
-
-
-
-PRUEBA con UUID
 
 sudo wget -q -O - https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/40_custom | sudo tee -a /etc/grub.d/40_custom > /dev/null
 sudo cat /etc/grub.d/40_custom
@@ -596,7 +543,7 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 grep intel-ucode /boot/grub/grub.cfg
 
-con esto reiniciaria para comprobar si el sistema arranca por si mismo
+reiniciamos para comprobar si el sistema arranca por si mismo
 todabia sin gestor de ventanas
 
 $ exit
