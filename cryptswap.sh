@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Asegúrate de que el script se ejecute como root
+if [ "$EUID" -ne 0 ]; then
+  echo "Por favor, ejecuta este script como root."
+  exit 1
+fi
+
 # Configuramos el sistema para que haga el menor uso de swap posible
 [ ! -e /etc/sysctl.d/99-sysctl.conf ] && touch /etc/sysctl.d/99-sysctl.conf
 echo "vm.swappiness=10" | tee -a /etc/sysctl.d/99-sysctl.conf > /dev/null
