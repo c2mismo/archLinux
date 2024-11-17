@@ -1,2 +1,0 @@
-# Mount root as /dev/mapper/cryptroot using LUKS, and prompt for the passphrase at boot time.
-cryptroot UUID=XXX none luks,discard,no-read-workqueue,no-write-workqueue,password-echo=no
