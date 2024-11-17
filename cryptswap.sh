@@ -29,7 +29,7 @@ mkfs.ext4 -L $SWAP_LABEL -m 0 -O ^has_journal $SWAP_PART -s 1M
 # para que reencripte la partición a cada inicio
 [ ! -e $CRYPTTAB_FILE ] && touch $CRYPTTAB_FILE
 echo "# Mount swap re-encrypting it with a fresh key each reboot" | tee -a $CRYPTTAB_FILEE > /dev/null
-echo "$SWAP_LABEL	UUID=YYY /dev/urandom	swap,cipher=aes-xts-plain64,size=256,sector-size=4096" | tee -a $CRYPTTAB_FILE > /dev/null
+echo "$SWAP_LABEL    UUID=YYY    /dev/urandom    swap,cipher=aes-xts-plain64,size=256,sector-size=4096" | tee -a $CRYPTTAB_FILE > /dev/null
 
 
 # Contador de intentos
@@ -63,4 +63,4 @@ fi
 
 # Configuramos el fstab para que se monte correctamente
 echo "# /dev/mapper/$SWAP_LABEL LABEL=$SWAP_LABEL" | tee -a /etc/fstab > /dev/null
-echo "/dev/mapper/$SWAP_LABEL none swap sw 0 0" | tee -a /etc/fstab > /dev/null
+echo "/dev/mapper/$SWAP_LABEL    none    swap    sw    0    0" | tee -a /etc/fstab > /dev/null
