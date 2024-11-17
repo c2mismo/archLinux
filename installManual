@@ -205,13 +205,12 @@ y una 8b no ha ido demasiado mal :P
 
 
 
-
-
+-----------------
+no ejecutamos
 cargamos módulo del kernel para encriptar
-
 modprobe dm-crypt
 modprobe dm-mod
-
+------------------------
 
 encriptamos raiz
 
@@ -227,7 +226,7 @@ la formateamos
 mkfs.btrfs -L ArchRoot /dev/mapper/cryptroot
 
 
-
+preparar aqui la swap encriptar crypttab luego como root
 
 
 y el resto
@@ -246,16 +245,12 @@ montamos todas las particiones necesaria y todas aquellas
 que queremos añadir desde primera hora en el fstab directamente en /mnt
 para preinstalar el sistema
 
-mount /dev/mapper/cryptroot /mnt
+pacman -S wget
 
-mkdir /mnt/boot
-mount /dev/nvme0n1p4 /mnt/boot
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initmount.sh
 
-mkdir /mnt/boot/efi
-mount /dev/nvme0n1p1 /mnt/boot/efi
-
-mkdir /mnt/srv && mkdir /mnt/srv/samba
-mount /dev/nvme0n1p6 /mnt/srv/samba
+# chmod +x initmount.sh
+# ./initmount.sh
 
 La de windows por evitar problemas de integridad
 no la vamos a montar para ello hemos creado la
@@ -268,7 +263,10 @@ samba para intercambiar archivos entre los dos SOs
 
 instalamos el sistema base en /mnt
 
-pacstrap -i /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode nano less git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager wget
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initinstall.sh
+
+# chmod +x initinstall.sh
+# ./initinstall.sh
 
 mas adelante podemos instalar linux linux-headers, así tenemos dos núcleos y evitamos problemas
 pero en un principio va aligerar la instalación
@@ -277,10 +275,10 @@ pero en un principio va aligerar la instalación
 
 creamos el fstab
 
-genfstab -U /mnt >> /mnt/etc/fstab
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initfstab.sh
 
-cat /mnt/etc/fstab
-
+# chmod +x initfstab.sh
+# ./initfstab.sh
 
 
 
@@ -532,7 +530,9 @@ conectamos a internet
 $ ping -c 3 www.google.com
 
 
+timedatectl set-ntp true
 
+timedatectl show-timesync
 
 
 
