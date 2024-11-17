@@ -414,6 +414,7 @@ $ sudo su
 añadimos windows al grub
 
 testear
+verifica antes /etc/grub.d/40_custom
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/addwindows.sh
 
@@ -556,6 +557,8 @@ $ journalctl -b | grep cryptsetup
 
 
 Instalamos y preparamos sistema para el procesador i9
+
+verifica antes /etc/X11/xorg.conf.d/20-intel.conf
 
 $ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
 
