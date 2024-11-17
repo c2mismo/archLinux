@@ -41,3 +41,5 @@ read -p "Introduce el nombre de esta máquina: " nombre_maquina
 echo "Estableciendo el nombre de la máquina a '$nombre_maquina'..."
 echo "$nombre_maquina" > /etc/hostname
 echo "Nombre de la máquina configurado."
+
+rm createuser.sh
