@@ -1,37 +1,56 @@
 #!/bin/bash
+# Configuramos pacman para:
+# Usar salida con color"
+# Usar 5 descargas paralelas"
+# Mantener solo paquetes instalados en la caché"
+# Guardar solo una versión antigua de cada paquete (incluyendo los desinstalados)"
+# Usar el repositorio multilib"
+
+# Asegúrate de que el script se ejecute como root
+if [ "$EUID" -ne 0 ]; then
+  echo "Por favor, ejecuta este script como root."
+  exit 1
+fi
+
 
 echo "Configurando pacman..."
 
 # Ruta al archivo de configuración de pacman
 PACMAN_CONF="/etc/pacman.conf"
 
+# Configurar CleanMethod
+update_option "CleanMethod = KeepInstalled"
+
+# Configurar Color
+update_option "Color"
+
+# Configurar ParallelDownloads
+update_option "ParallelDownloads = 5"
+
+# Habilitar repositorio multilib
+update_option_silent "\[multilib\]"
+
 # Función para agregar o actualizar una opción en pacman.conf
 update_option() {
     local option="$1"
-    local value="$2"
-    if grep -q "^#*$option" "$PACMAN_CONF"; then
-        sudo sed -i "s/^#*$option.*/$option$value/" "$PACMAN_CONF"
+    if grep -q "^# $option" "$PACMAN_CONF"; then
+        echo "Encontrado #$option en $PACMAN_CONF"
+        sudo sed -i "s/^# $option/$option/" $PACMAN_CONF
+        echo "Configurado #$option en $PACMAN_CONF"
     else
-        echo "$option$value" | sudo tee -a "$PACMAN_CONF" > /dev/null
+        echo "ERROR: No se ha encontrado #$option en $PACMAN_CONF"
     fi
 }
-
-# Configurar Color
-update_option "Color" ""
-
-# Configurar ParallelDownloads
-update_option "ParallelDownloads" " = 5"
-
-# Configurar CleanMethod
-update_option "CleanMethod" " = KeepInstalled"
-
-# Habilitar repositorio multilib
-if ! grep -q "^\[multilib\]" "$PACMAN_CONF"; then
-    echo -e "\n[multilib]\nInclude = /etc/pacman.d/mirrorlist" | sudo tee -a "$PACMAN_CONF" > /dev/null
-    echo "Repositorio multilib habilitado."
-else
-    echo "El repositorio multilib ya está habilitado."
-fi
+# Función para agregar o actualizar una opción en pacman.conf con dos líneas
+update_option_silent() {
+    local option="$1"
+    if grep -q "^# $option" "$PACMAN_CONF"; then
+        sudo sed -i "s/^# $option/$option/" $PACMAN_CONF
+        update_option "Include = /etc/pacman.d/mirrorlist"
+    else
+        echo "ERROR: No se ha encontrado #$option en $PACMAN_CONF"
+    fi
+}
 
 echo "Configuración de pacman actualizada."
 
@@ -46,7 +65,9 @@ HOOK_FILE="/etc/pacman.d/hooks/clean_package_cache.hook"
 
 echo "Creando hook para paccache..."
 
-sudo tee "$HOOK_FILE" > /dev/null <<EOL
+mkdir -p /etc/pacman.d/hooks
+
+cat > "$HOOK_FILE" << EOF
 [Trigger]
 Operation = Upgrade
 Operation = Install
@@ -58,7 +79,7 @@ Target = *
 Description = Limpiando caché de pacman...
 When = PostTransaction
 Exec = /usr/bin/paccache -rk1
-EOL
+EOF
 
 echo "Hook de paccache creado."
 
@@ -76,3 +97,5 @@ echo "  - Usar el repositorio multilib"
 echo ""
 echo "Recuerda actualizar los repositorio "pacman -Sy" y"
 echo "deberás reiniciar cualquier terminal abierta para que los cambios surtan efecto."
+
+rm pacmanConf.sh
