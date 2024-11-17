@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Asegúrate de que el script se ejecute como root
+if [ "$EUID" -ne 0 ]; then
+  echo "Por favor, ejecuta este script como root."
+  exit 1
+fi
+
 # Añadimos al menu de arranque del grub windows
 
 # Partición de windows
