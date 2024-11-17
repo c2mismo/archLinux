@@ -315,7 +315,7 @@ Desabilitamos la hibernación
 # rm langConfig.sh
 
 
-# echo NombreDeEstaMaquina > /etc/hostname
+
 
 
 
@@ -350,6 +350,10 @@ cambiar "usuario" por el Nick de uno
 descomenta la línea %wheel ALL=(ALL) ALL
 
 # su "usuario"
+
+# echo NombreDeEstaMaquina > /etc/hostname
+
+
 
 comprobamos que tenemos permisos sudoers
 sudo pacman -Syu
@@ -402,6 +406,19 @@ $ cd ..
 $ rm -Rf paru
 
 
+volvemos como superadmin
+$ sudo su
+
+
+añadimos windows al grub
+
+testear
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/addwindows.sh
+
+# chmod +x addwindows.sh
+# sudo ./addwindows.sh
+# rm addwindows.sh
 
 
 
@@ -443,7 +460,7 @@ definimos una fuente de consola "FONT=ter-v32n"
 cat /etc/vconsole.conf
 Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsoleo
 
-sudo nano /etc/mkinitcpio.conf
+nano /etc/mkinitcpio.conf
 
 MODULES=(i915)
 
@@ -455,7 +472,7 @@ HOOKS=(base systemd autodetect modconf kms keyboard sd-vconsole sd-encrypt block
 y añade
 HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole sd-encrypt block filesystems fsck)
 
-sudo mkinitcpio -P
+mkinitcpio -P
 
 
 
@@ -478,33 +495,13 @@ indica que el firmware para el módulo qat_420xx, relacionado con la tecnología
 
 
 
-sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
-
-
-
-sudo wget -q -O - https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/40_custom | sudo tee -a /etc/grub.d/40_custom > /dev/null
-sudo cat /etc/grub.d/40_custom
-
-sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p1)/" /etc/grub.d/40_custom
-sudo cat /etc/grub.d/40_custom
-
-menuentry "Windows 11" {
-    insmod part_gpt
-    insmod search_fs_uuid
-    insmod chain
-    search --fs-uuid --set=root XXX
-    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-}
-
-
-
-siempre al iniciar el arranque del pc desde el grub podras
-modificarlo temporalmente seleccionas windows y pulsa "e"
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 
 
 
 
-sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+grub-mkconfig -o /boot/grub/grub.cfg
 
 grep intel-ucode /boot/grub/grub.cfg
 
