@@ -17,3 +17,4 @@ AllowHybridSleep=no
 AllowSuspendThenHibernate=no
 EOF
 
+rm disable-sleep.sh
