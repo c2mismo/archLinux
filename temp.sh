@@ -21,13 +21,14 @@ update_multilib() {
 
         # Modificar la línea de la sección [multilib]
         sed -i "${line_number}s|^#||" "$pacman_conf"  # Eliminar el # de la sección
+        echo "Descomentado $include_line en $pacman_conf"
 
         # Verificar si la línea siguiente existe y contiene el valor de $include_line
         if [ "$((line_number + 1))" -le "$(wc -l < "$pacman_conf")" ]; then
             local next_line=$(sed -n "$((line_number + 1))p" "$pacman_conf")
             if [[ "$next_line" == *"$include_line"* ]]; then
                 sed -i "$((line_number + 1))s|^#||" "$pacman_conf"  # Eliminar el # de Include
-                echo "Configurado $include_line en $pacman_conf"
+                echo "Descomentado $include_line en $pacman_conf"
             else
                 echo "ERROR: La línea siguiente a $section no contiene el valor esperado: $include_line"
             fi
