@@ -39,14 +39,16 @@ done
 # Le añadimos las lineas necesarias para que el grub
 # pueda configurar correctamente el arranque de windows
 if [ -n "$uuid" ]; then
-  echo "" | tee -a $GRUB_FILE > /dev/null
-  echo "menuentry \"Windows 11\" {" | tee -a $GRUB_FILE > /dev/null
-  echo "    insmod part_gpt" | tee -a $GRUB_FILE > /dev/null
-  echo "    insmod search_fs_uuid" | tee -a $GRUB_FILE > /dev/null
-  echo "    insmod chain" | tee -a $GRUB_FILE > /dev/null
-  echo "    search --fs-uuid --set=root $uuid" | tee -a $GRUB_FILE > /dev/null
-  echo "    chainloader /EFI/Microsoft/Boot/bootmgfw.efi" | tee -a $GRUB_FILE > /dev/null
-  echo "}" | tee -a $GRUB_FILE > /dev/null
+  cat > $GRUB_FILE << EOF
+
+  menuentry "Windows 11" {
+      insmod part_gpt
+      insmod search_fs_uuid
+      insmod chain
+      search --fs-uuid --set=root $uuid
+      chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+      }
+  EOF
 else
     echo "No se pudo encontrar un UUID después de $max_attempts intentos."
 fi
