@@ -398,30 +398,31 @@ comprobamos paru
 paru -Syu
 paru -S paru
 
-$ cd..
+$ cd ..
 $ rm -Rf paru
 
 
 
 
-# paru -S wget
-# wget https://github.com/c2mismo/info/raw/refs/heads/master/informatica/DebgingArchLinuxInstall.sh
-# chmod +x DebgingArchLinuxInstall.sh
-# sudo ./DebgingArchLinuxInstall.sh
 
 
 
+Configuramos para desencriptar el sistema de archivos raíz, ROOT (/),
+a traves del initramfs, en los proximos inicios
 
-configuramos mejor para nuestro sistema initramfs
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptroot.sh
+
+# chmod +x cryptroot.sh
+# sudo ./cryptroot.sh
+# rm cryptroot.sh
 
 
 
 
 
 La swap vamos a encriptarla en cada inicio con una clave aleatoria diferente
-de forma que actuará como una ram ya que no será accesible en cada reinicio
-
-
+de forma que actuará como una ram volatil ya que no será accesible en cada reinicio
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptswap.sh
 
@@ -433,43 +434,7 @@ de forma que actuará como una ram ya que no será accesible en cada reinicio
 
 
 
-
-Configuramos para desencriptar el sistema de archivos raíz, ROOT (/),
-a traves del initramfs, en los proximos inicios
-
-
-sudo wget -P /etc https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs
-sudo cat /etc/crypttab.initramfs
-
-comprueba primero, a veces no lo hace a la primera, sino prueba con sudo y despues sin sudo
-blkid -s UUID -o value /dev/nvme0n1p5
-
-sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab.initramfs
-sudo cat /etc/crypttab.initramfs
-
-
-
-
-sudo rm /etc/crypttab.initramfs
-
-sudo cat /etc/crypttab
-sudo cp /etc/crypttab /etc/copy_crypttab
-sudo wget -q -O - https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs | sudo tee -a /etc/crypttab > /dev/null
-sudo cat /etc/crypttab
-
-comprueba primero, a veces no lo hace a la primera, sino prueba con sudo y despues sin sudo
-blkid -s UUID -o value /dev/nvme0n1p5
-
-sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab
-sudo cat /etc/crypttab
-
-
-
-
-
-
-Modifica /etc/mkinitcpio.conf
-para incluir los modules del kernel necesarios para que initramfs pueda desencriptar
+Incluimos los modules del kernel necesarios para que initramfs pueda desencriptar
 usando systemd, recuerda sd-encrypt debe estar antes que filesystems
 
 limpiamos este
@@ -564,9 +529,7 @@ $ reboot
 conectamos a internet
 
 # nmtui-connect
-o
-$ nmcli dev wifi list
-$ nmcli dev wifi connect <ssid> password <contraseña>
+
 $ ping -c 3 www.google.com
 
 
@@ -580,7 +543,7 @@ verificando
 $ lspci -k
 
 # dmesg | grep usbcore
-# dmesg | grep 1915 | less
+# dmesg | grep i915 | less
 
 swapon --show
 
