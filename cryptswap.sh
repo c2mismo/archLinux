@@ -13,7 +13,9 @@ echo "vm.swappiness=10" | tee -a /etc/sysctl.d/99-sysctl.conf > /dev/null
 # Partición swap
 SWAP_PART="/dev/nvme0n1p8"
 # LABEL de la swap
-SWAP_LABEL="cryptswap"
+SWAP_LABEL="swap"
+# NAME desencriptada
+SWAP_CRYPT="volatileswap"
 # Ruta del archivo a modificar
 CRYPTTAB_FILE="/etc/crypttab.initramfs"
 
@@ -37,10 +39,10 @@ mkfs.ext4 -L $SWAP_LABEL -m 0 -O ^has_journal $SWAP_PART -s 1M
 echo "" | tee -a $CRYPTTAB_FILE > /dev/null
 echo "# Mount swap re-encrypting it with a fresh key each reboot" | tee -a $CRYPTTAB_FILE > /dev/null
 # especificamos un offset=2048 para que que el UUID y el LABEL de la partición de swap no se sobrescriban.
-echo "volatileswap    LABEL=$SWAP_LABEL    /dev/urandom    swap,offset=2048,cipher=aes-xts-plain64,size=256,sector-size=4096" | tee -a $CRYPTTAB_FILE > /dev/null
+echo "$SWAP_CRYPT    LABEL=$SWAP_LABEL    /dev/urandom    swap,offset=2048,cipher=aes-xts-plain64,size=256,sector-size=4096" | tee -a $CRYPTTAB_FILE > /dev/null
 
 
 
 # Configuramos el fstab para que se monte correctamente
-echo "# /dev/mapper/volatileswap LABEL=$SWAP_LABEL" | tee -a /etc/fstab > /dev/null
-echo "/dev/mapper/volatileswap    none    swap    sw    0 0" | tee -a /etc/fstab > /dev/null
+echo "# /dev/mapper/$SWAP_CRYPT LABEL=$SWAP_LABEL" | tee -a /etc/fstab > /dev/null
+echo "/dev/mapper/$SWAP_CRYPT    none    swap    sw    0 0" | tee -a /etc/fstab > /dev/null
