@@ -7,6 +7,15 @@
 # que hayamos definido en el archivo siguiente, lo prefiero de esta forma
 # el sistema base, el superadmin y los logs seguirán en inglés.
 
+# Asegúrate de que el script se ejecute como root
+if [ "$EUID" -ne 0 ]; then
+  echo "Por favor, ejecuta este script como root."
+  exit 1
+fi
+
+ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+hwclock --systohc
+
 # Configuración del sistema (Inglés con teclado español)
 sed -i 's/^#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 sed -i 's/^#es_ES.UTF-8/es_ES.UTF-8/' /etc/locale.gen
