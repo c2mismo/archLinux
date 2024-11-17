@@ -543,6 +543,12 @@ sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 grep intel-ucode /boot/grub/grub.cfg
 
+
+
+
+# systemctl enable NetworkManager
+
+
 reiniciamos para comprobar si el sistema arranca por si mismo
 todabia sin gestor de ventanas
 
@@ -554,8 +560,6 @@ $ reboot
 
 
 
-
-# systemctl enable NetworkManager
 
 conectamos a internet
 
