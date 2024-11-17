@@ -15,6 +15,10 @@ AllowSuspend=no
 AllowHibernation=no
 AllowHybridSleep=no
 AllowSuspendThenHibernate=no
-EOF && echo "Desabilitada la hibernación"
+EOF
+
+cat /etc/systemd/sleep.conf.d
+echo ""
+echo "Desabilitada la hibernación"
 
 rm disable-sleep.sh
