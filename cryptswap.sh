@@ -64,4 +64,4 @@ fi
 
 # Configuramos el fstab para que se monte correctamente
 echo "# /dev/mapper/$SWAP_LABEL LABEL=$SWAP_LABEL" | tee -a /etc/fstab > /dev/null
-echo "/dev/mapper/$SWAP_LABEL    none    swap    sw    0    0" | tee -a /etc/fstab > /dev/null
+echo "/dev/mapper/$SWAP_LABEL    none    swap    sw    0 0" | tee -a /etc/fstab > /dev/null
