@@ -297,20 +297,20 @@ configuraciones básicas
 Configueramos teclados en español, sistema en ingles y
 usuarios en español
 
-
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/langConfig.sh
 
 # chmod +x langConfig.sh
 # ./langConfig.sh
-# rm langConfig.sh
 
 
 
 
 Desabilitamos la hibernación
 
-# mkdir /etc/systemd/sleep.conf.d
-# wget -P /etc/systemd/sleep.conf.d https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.conf
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.sh
+
+# chmod +x disable-sleep.sh
+# ./disable-sleep.sh
 
 
 
@@ -322,65 +322,11 @@ creamos y configuramos usuarios
 # ./createuser.sh
 # rm createuser.sh
 
-*****************************************************************
-
-
-
-para ROOT
-# passwd
-
-
-Nuevo usuario Visitante
-
-# useradd -m visitante
-# passwd visitante
-# usermod -aG video,audio,storage Visitante
-
-
-Nuevo usuario con permisos SuperUser
-cambiar "usuario" por el Nick de uno
-
-# useradd -m "usuario"
-# passwd "usuario"
-# usermod -aG wheel,video,audio,storage "usuario"
-
-# nano /etc/sudoers
-
-descomenta la línea %wheel ALL=(ALL) ALL
-
-# su "usuario"
-
-# echo NombreDeEstaMaquina > /etc/hostname
 
 
 
 comprobamos que tenemos permisos sudoers
 sudo pacman -Syu
-
-a partir de ahora trabajamos como usuario
-
-
-configuramos instaladores y añadimos los repositorios
-sudo pacman -S pacman-contrib
-
-sudo nano /etc/pacman.conf
-
-descomenta
-Color
-ParallelDownloads = 5
-
-las siguientes lineas, para poder instalar
-aplicaciones de 32bits en sistemas de 64bits,
-descomenta las dos
-[multilib]
-Include = /etc/pacman.d/mirrorlist
-
-apuntar para una vez instalados incorporar los de españa
-nano /etx/pacman.d/mirrorlist
-
-sudo pacman -Syu
-verificamos si de como salida una lista de aplicaciones
-sudo pacman -Sl multilib
 
 instalamos paru que nos permite instalar
 paqueteria del repositorio de la comunidad
@@ -405,8 +351,36 @@ $ cd ..
 $ rm -Rf paru
 
 
+
+
+
 volvemos como superadmin
 $ sudo su
+
+configuramos pacman y añadimos los repositorios
+sudo pacman -S pacman-contrib
+
+sudo nano /etc/pacman.conf
+
+descomenta
+Color
+ParallelDownloads = 5
+
+las siguientes lineas, para poder instalar
+aplicaciones de 32bits en sistemas de 64bits,
+descomenta las dos
+[multilib]
+Include = /etc/pacman.d/mirrorlist
+
+apuntar para una vez instalados incorporar los de españa
+nano /etx/pacman.d/mirrorlist
+
+sudo pacman -Syu
+verificamos si de como salida una lista de aplicaciones
+sudo pacman -Sl multilib
+
+
+
 
 
 añadimos windows al grub
