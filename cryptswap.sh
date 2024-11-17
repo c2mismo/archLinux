@@ -28,8 +28,8 @@ mkfs.ext4 -L $SWAP_LABEL -m 0 -O ^has_journal $SWAP_PART -s 1M
 # Verificamos que existe crypttab.initramfs y si no lo creamos y le añadimos las lineas necesarias
 # para que reencripte la partición a cada inicio
 [ ! -e $CRYPTTAB_FILE ] && cp /etc/crypttab $CRYPTTAB_FILE
-echo "" | tee -a $CRYPTTAB_FILEE > /dev/null
-echo "# Mount swap re-encrypting it with a fresh key each reboot" | tee -a $CRYPTTAB_FILEE > /dev/null
+echo "" | tee -a $CRYPTTAB_FILE > /dev/null
+echo "# Mount swap re-encrypting it with a fresh key each reboot" | tee -a $CRYPTTAB_FILE > /dev/null
 # especificamos un offset=2048 para que que el UUID y el LABEL de la partición de swap no se sobrescriban.
 echo "volatileswap    LABEL=$SWAP_LABEL    /dev/urandom    swap,offset=2048,cipher=aes-xts-plain64,size=256,sector-size=4096" | tee -a $CRYPTTAB_FILE > /dev/null
 
