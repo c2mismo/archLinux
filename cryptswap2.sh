@@ -7,9 +7,10 @@ CRYPTTAB_FILE="/etc/crypttab.initramfs"
 
 # Verificamos que existe crypttab.initramfs y si no lo creamos y le añadimos las lineas necesarias
 # para que encripte la partición al cada inicio
-[ ! -e $CRYPTTAB_FILE ] && touch $CRYPTTAB_FILE
+[ ! -e $CRYPTTAB_FILE ] && cp /etc/crypttab $CRYPTTAB_FILE
+echo "" | tee -a $CRYPTTAB_FILEE > /dev/null
 echo "# Mount root as /dev/mapper/cryptroot using LUKS, and prompt for the passphrase at boot time." | tee -a $CRYPTTAB_FILEE > /dev/null
-echo "cryptroot UUID=XXX none luks,discard,no-read-workqueue,no-write-workqueue,password-echo=no" | tee -a $CRYPTTAB_FILE > /dev/null
+echo "cryptroot    UUID=XXX    none    luks,discard,no-read-workqueue,no-write-workqueue,password-echo=no" | tee -a $CRYPTTAB_FILE > /dev/null
 
 
 # Contador de intentos
