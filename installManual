@@ -268,7 +268,7 @@ samba para intercambiar archivos entre los dos SOs
 
 instalamos el sistema base en /mnt
 
-pacstrap -i /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode nano git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager wget
+pacstrap -i /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode nano less git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager wget
 
 mas adelante podemos instalar linux linux-headers, así tenemos dos núcleos y evitamos problemas
 pero en un principio va aligerar la instalación
