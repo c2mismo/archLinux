@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Asegúrate de que el script se ejecute como root
+if [ "$EUID" -ne 0 ]; then
+  echo "Por favor, ejecuta este script como root."
+  exit 1
+fi
+
 # Partición de root
 ROOT_PART="/dev/nvme0n1p5"
 
