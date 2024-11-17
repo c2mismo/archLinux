@@ -40,6 +40,6 @@ update_multilib() {
 }
 
 # Habilitar repositorio multilib
-update_multilib "#[multilib]" "#Include = /etc/pacman.d/mirrorlist"
+update_multilib "#\[multilib\]" "#Include = /etc/pacman.d/mirrorlist"
 
 rm temp.sh
