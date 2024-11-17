@@ -35,7 +35,7 @@ update_option() {
     local option="$1"
     if grep -q "^# $option" "$PACMAN_CONF"; then
         echo "Encontrado #$option en $PACMAN_CONF"
-        sudo sed -i "s/^# $option/$option/" $PACMAN_CONF
+        sed -i "s/^# $option/$option/" $PACMAN_CONF
         echo "Configurado #$option en $PACMAN_CONF"
     else
         echo "ERROR: No se ha encontrado #$option en $PACMAN_CONF"
@@ -45,7 +45,7 @@ update_option() {
 update_option_silent() {
     local option="$1"
     if grep -q "^# $option" "$PACMAN_CONF"; then
-        sudo sed -i "s/^# $option/$option/" $PACMAN_CONF
+        sed -i "s/^# $option/$option/" $PACMAN_CONF
         update_option "Include = /etc/pacman.d/mirrorlist"
     else
         echo "ERROR: No se ha encontrado #$option en $PACMAN_CONF"
@@ -57,7 +57,7 @@ echo "Configuración de pacman actualizada."
 # Instalar pacman-contrib si no está instalado
 if ! pacman -Qi pacman-contrib > /dev/null 2>&1; then
     echo "Instalando pacman-contrib..."
-    sudo pacman -S --noconfirm pacman-contrib
+    pacman -S --noconfirm pacman-contrib
 fi
 
 # Crear hook para paccache
@@ -85,8 +85,8 @@ echo "Hook de paccache creado."
 
 # Limpiar la caché actual
 echo "Limpiando la caché de pacman..."
-sudo pacman -Sc --noconfirm
-sudo paccache -rk1
+pacman -Sc --noconfirm
+paccache -rk1
 
 echo "Configuración completada. Pacman ahora está configurado para:"
 echo "  - Usar salida con color"
