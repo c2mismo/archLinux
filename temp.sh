@@ -23,7 +23,7 @@ update_option() {
     local option="$1"
     if grep -q "^# $option" "$PACMAN_CONF"; then
         echo "Encontrado #$option en $PACMAN_CONF"
-        sudo sed -i "s/^# $option/$option/" $PACMAN_CONF
+        sed -i "s/^# $option/$option/" $PACMAN_CONF
         echo "Configurado #$option en $PACMAN_CONF"
     else
         echo "ERROR: No se ha encontrado #$option en $PACMAN_CONF"
@@ -33,7 +33,7 @@ update_option() {
 update_option_silent() {
     local option="$1"
     if grep -q "^# $option" "$PACMAN_CONF"; then
-        sudo sed -i "s/^# $option/$option/" $PACMAN_CONF
+        sed -i "s/^# $option/$option/" $PACMAN_CONF
         update_option "Include = /etc/pacman.d/mirrorlist"
     else
         echo "ERROR: No se ha encontrado #$option en $PACMAN_CONF"
