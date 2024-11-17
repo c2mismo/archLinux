@@ -295,17 +295,9 @@ accedemos a el
 configuraciones básicas
 
 
-# ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
-# date
-# hwclock --systohc
 
 Configueramos teclados en español, sistema en ingles y
 usuarios en español
-
-Desabilitamos la hibernación
-
-# mkdir /etc/systemd/sleep.conf.d
-# wget -P /etc/systemd/sleep.conf.d https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.conf
 
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/langConfig.sh
@@ -317,11 +309,20 @@ Desabilitamos la hibernación
 
 
 
+Desabilitamos la hibernación
+
+# mkdir /etc/systemd/sleep.conf.d
+# wget -P /etc/systemd/sleep.conf.d https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.conf
+
 
 
 creamos y configuramos usuarios
 
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/createuser.sh
 
+# chmod +x createuser.sh
+# ./createuser.sh
+# rm createuser.sh
 
 *****************************************************************
 
