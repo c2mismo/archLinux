@@ -15,6 +15,6 @@ AllowSuspend=no
 AllowHibernation=no
 AllowHybridSleep=no
 AllowSuspendThenHibernate=no
-EOF
+EOF && echo "Desabilitada la hibernación"
 
 rm disable-sleep.sh
