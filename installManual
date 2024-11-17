@@ -205,13 +205,12 @@ y una 8b no ha ido demasiado mal :P
 
 
 
-
-
+-----------------
+no ejecutamos
 cargamos módulo del kernel para encriptar
-
 modprobe dm-crypt
 modprobe dm-mod
-
+------------------------
 
 encriptamos raiz
 
@@ -227,7 +226,7 @@ la formateamos
 mkfs.btrfs -L ArchRoot /dev/mapper/cryptroot
 
 
-
+preparar aqui la swap encriptar crypttab luego como root
 
 
 y el resto
@@ -246,16 +245,12 @@ montamos todas las particiones necesaria y todas aquellas
 que queremos añadir desde primera hora en el fstab directamente en /mnt
 para preinstalar el sistema
 
-mount /dev/mapper/cryptroot /mnt
+pacman -S wget
 
-mkdir /mnt/boot
-mount /dev/nvme0n1p4 /mnt/boot
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initmount.sh
 
-mkdir /mnt/boot/efi
-mount /dev/nvme0n1p1 /mnt/boot/efi
-
-mkdir /mnt/srv && mkdir /mnt/srv/samba
-mount /dev/nvme0n1p6 /mnt/srv/samba
+# chmod +x initmount.sh
+# ./initmount.sh
 
 La de windows por evitar problemas de integridad
 no la vamos a montar para ello hemos creado la
@@ -268,7 +263,10 @@ samba para intercambiar archivos entre los dos SOs
 
 instalamos el sistema base en /mnt
 
-pacstrap -i /mnt base base-devel linux-zen linux-zen-headers linux-firmware intel-ucode nano less git btrfs-progs exfat-utils ntfs-3g grub efibootmgr networkmanager wget
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initinstall.sh
+
+# chmod +x initinstall.sh
+# ./initinstall.sh
 
 mas adelante podemos instalar linux linux-headers, así tenemos dos núcleos y evitamos problemas
 pero en un principio va aligerar la instalación
@@ -277,10 +275,10 @@ pero en un principio va aligerar la instalación
 
 creamos el fstab
 
-genfstab -U /mnt >> /mnt/etc/fstab
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initfstab.sh
 
-cat /mnt/etc/fstab
-
+# chmod +x initfstab.sh
+# ./initfstab.sh
 
 
 
@@ -295,17 +293,9 @@ accedemos a el
 configuraciones básicas
 
 
-# ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
-# date
-# hwclock --systohc
 
 Configueramos teclados en español, sistema en ingles y
 usuarios en español
-
-Desabilitamos la hibernación
-
-# mkdir /etc/systemd/sleep.conf.d
-# wget -P /etc/systemd/sleep.conf.d https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.conf
 
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/langConfig.sh
@@ -315,13 +305,22 @@ Desabilitamos la hibernación
 # rm langConfig.sh
 
 
-# echo NombreDeEstaMaquina > /etc/hostname
+
+
+Desabilitamos la hibernación
+
+# mkdir /etc/systemd/sleep.conf.d
+# wget -P /etc/systemd/sleep.conf.d https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.conf
 
 
 
 creamos y configuramos usuarios
 
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/createuser.sh
 
+# chmod +x createuser.sh
+# ./createuser.sh
+# rm createuser.sh
 
 *****************************************************************
 
@@ -350,6 +349,10 @@ cambiar "usuario" por el Nick de uno
 descomenta la línea %wheel ALL=(ALL) ALL
 
 # su "usuario"
+
+# echo NombreDeEstaMaquina > /etc/hostname
+
+
 
 comprobamos que tenemos permisos sudoers
 sudo pacman -Syu
@@ -398,30 +401,45 @@ comprobamos paru
 paru -Syu
 paru -S paru
 
-$ cd..
+$ cd ..
 $ rm -Rf paru
 
 
+volvemos como superadmin
+$ sudo su
 
 
-# paru -S wget
-# wget https://github.com/c2mismo/info/raw/refs/heads/master/informatica/DebgingArchLinuxInstall.sh
-# chmod +x DebgingArchLinuxInstall.sh
-# sudo ./DebgingArchLinuxInstall.sh
+añadimos windows al grub
+
+testear
+verifica antes /etc/grub.d/40_custom
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/addwindows.sh
+
+# chmod +x addwindows.sh
+# sudo ./addwindows.sh
+# rm addwindows.sh
 
 
 
 
-configuramos mejor para nuestro sistema initramfs
+
+Configuramos para desencriptar el sistema de archivos raíz, ROOT (/),
+a traves del initramfs, en los proximos inicios
+
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptroot.sh
+
+# chmod +x cryptroot.sh
+# sudo ./cryptroot.sh
+# rm cryptroot.sh
 
 
 
 
 
 La swap vamos a encriptarla en cada inicio con una clave aleatoria diferente
-de forma que actuará como una ram ya que no será accesible en cada reinicio
-
-
+de forma que actuará como una ram volatil ya que no será accesible en cada reinicio
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptswap.sh
 
@@ -433,43 +451,7 @@ de forma que actuará como una ram ya que no será accesible en cada reinicio
 
 
 
-
-Configuramos para desencriptar el sistema de archivos raíz, ROOT (/),
-a traves del initramfs, en los proximos inicios
-
-
-sudo wget -P /etc https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs
-sudo cat /etc/crypttab.initramfs
-
-comprueba primero, a veces no lo hace a la primera, sino prueba con sudo y despues sin sudo
-blkid -s UUID -o value /dev/nvme0n1p5
-
-sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab.initramfs
-sudo cat /etc/crypttab.initramfs
-
-
-
-
-sudo rm /etc/crypttab.initramfs
-
-sudo cat /etc/crypttab
-sudo cp /etc/crypttab /etc/copy_crypttab
-sudo wget -q -O - https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/crypttab.initramfs | sudo tee -a /etc/crypttab > /dev/null
-sudo cat /etc/crypttab
-
-comprueba primero, a veces no lo hace a la primera, sino prueba con sudo y despues sin sudo
-blkid -s UUID -o value /dev/nvme0n1p5
-
-sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p5)/" /etc/crypttab
-sudo cat /etc/crypttab
-
-
-
-
-
-
-Modifica /etc/mkinitcpio.conf
-para incluir los modules del kernel necesarios para que initramfs pueda desencriptar
+Incluimos los modules del kernel necesarios para que initramfs pueda desencriptar
 usando systemd, recuerda sd-encrypt debe estar antes que filesystems
 
 limpiamos este
@@ -478,7 +460,7 @@ definimos una fuente de consola "FONT=ter-v32n"
 cat /etc/vconsole.conf
 Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsoleo
 
-sudo nano /etc/mkinitcpio.conf
+nano /etc/mkinitcpio.conf
 
 MODULES=(i915)
 
@@ -490,7 +472,7 @@ HOOKS=(base systemd autodetect modconf kms keyboard sd-vconsole sd-encrypt block
 y añade
 HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole sd-encrypt block filesystems fsck)
 
-sudo mkinitcpio -P
+mkinitcpio -P
 
 
 
@@ -513,33 +495,13 @@ indica que el firmware para el módulo qat_420xx, relacionado con la tecnología
 
 
 
-sudo grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
-
-
-
-sudo wget -q -O - https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/40_custom | sudo tee -a /etc/grub.d/40_custom > /dev/null
-sudo cat /etc/grub.d/40_custom
-
-sudo sed -i "s/XXX/$(blkid -s UUID -o value /dev/nvme0n1p1)/" /etc/grub.d/40_custom
-sudo cat /etc/grub.d/40_custom
-
-menuentry "Windows 11" {
-    insmod part_gpt
-    insmod search_fs_uuid
-    insmod chain
-    search --fs-uuid --set=root XXX
-    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-}
-
-
-
-siempre al iniciar el arranque del pc desde el grub podras
-modificarlo temporalmente seleccionas windows y pulsa "e"
+grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 
 
 
 
-sudo grub-mkconfig -o /boot/grub/grub.cfg
+
+grub-mkconfig -o /boot/grub/grub.cfg
 
 grep intel-ucode /boot/grub/grub.cfg
 
@@ -564,13 +526,15 @@ $ reboot
 conectamos a internet
 
 # nmtui-connect
-o
-$ nmcli dev wifi list
-$ nmcli dev wifi connect <ssid> password <contraseña>
+
 $ ping -c 3 www.google.com
 
 
+timedatectl show-timesync
+sincronizamos relog
+timedatectl set-ntp true
 
+timedatectl show-timesync
 
 
 
@@ -580,7 +544,7 @@ verificando
 $ lspci -k
 
 # dmesg | grep usbcore
-# dmesg | grep 1915 | less
+# dmesg | grep i915 | less
 
 swapon --show
 
@@ -595,6 +559,8 @@ $ journalctl -b | grep cryptsetup
 
 
 Instalamos y preparamos sistema para el procesador i9
+
+verifica antes /etc/X11/xorg.conf.d/20-intel.conf
 
 $ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
 

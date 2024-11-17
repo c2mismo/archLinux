@@ -7,9 +7,30 @@
 # que hayamos definido en el archivo siguiente, lo prefiero de esta forma
 # el sistema base, el superadmin y los logs seguirán en inglés.
 
+# Asegúrate de que el script se ejecute como root
+if [ "$EUID" -ne 0 ]; then
+  echo "Por favor, ejecuta este script como root."
+  exit 1
+fi
+
+
+ln -sf /usr/share/zoneinfo/Europe/Madrid /etc/localtime
+hwclock --systohc
+
+# Instalar terminus-font
+pacman -Syu --noconfirm
+pacman -S --noconfirm terminus-font
+
 # Configuración del sistema (Inglés con teclado español)
 sed -i 's/^#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
 sed -i 's/^#es_ES.UTF-8/es_ES.UTF-8/' /etc/locale.gen
+cat > /etc/default/locale << EOF
+# Configuración regional del sistema
+LANG="en_US.UTF-8"
+LANGUAGE="en_US:en"
+LC_ALL="en_US.UTF-8"
+EOF
+
 locale-gen
 
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
@@ -20,12 +41,6 @@ echo "FONT=ter-v32n" >> /etc/vconsole.conf
 mkdir -p /etc/skel/.config
 
 echo "LANG=es_ES.UTF-8" > /etc/skel/.config/locale.conf
-
-# Instalar terminus-font
-pacman -Syu --noconfirm
-pacman -S --noconfirm terminus-font
-
-# Configurar vconsole.conf para nuevos usuarios
 echo "KEYMAP=es" > /etc/skel/.config/vconsole.conf
 echo "FONT=ter-v32n" >> /etc/skel/.config/vconsole.conf
 echo "FONT_MAP=UTF-8" >> /etc/skel/.config/vconsole.conf
@@ -45,3 +60,5 @@ echo "[ -f ~/.config/locale.conf ] && . ~/.config/locale.conf" >> /etc/skel/.bas
 echo "[ -f ~/.config/vconsole.conf ] && . ~/.config/vconsole.conf" >> /etc/skel/.bash_profile
 
 echo "Idioma para los usuarios configurada en español completado."
+
+rm langConfig.sh

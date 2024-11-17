@@ -6,11 +6,14 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# Partición de root
-ROOT_PART="/dev/nvme0n1p5"
+# Añadimos al menu de arranque del grub windows
+
+# Partición de windows
+WIN_PART="/dev/nvme0n1p1"
 
 # Ruta del archivo a modificar
-CRYPTTAB_FILE="/etc/crypttab.initramfs"
+GRUB_FILE="/etc/grub.d/40_custom"
+
 
 # Contador de intentos
 attempts=0
@@ -19,7 +22,7 @@ uuid=""
 
 # Verificar el UUID hasta 3 veces
 while [ $attempts -lt $max_attempts ]; do
-    uuid=$(blkid -s UUID -o value $ROOT_PART)
+    uuid=$(blkid -s UUID -o value $WIN_PART)
     
     if [ -n "$uuid" ]; then
         echo "UUID encontrado: $uuid"
@@ -33,13 +36,20 @@ while [ $attempts -lt $max_attempts ]; do
 done
 
 # Si se encontró un UUID
-# Verificamos que existe crypttab.initramfs y si no lo creamos y le añadimos las lineas necesarias
-# para que encripte la partición al cada inicio
+# Le añadimos las lineas necesarias para que el grub
+# pueda configurar correctamente el arranque de windows
 if [ -n "$uuid" ]; then
-    [ ! -e $CRYPTTAB_FILE ] && cp /etc/crypttab $CRYPTTAB_FILE
-    echo "" | tee -a $CRYPTTAB_FILEE > /dev/null
-    echo "# Mount root as /dev/mapper/cryptroot using LUKS, and prompt for the passphrase at boot time." | tee -a $CRYPTTAB_FILEE > /dev/null
-    echo "cryptroot    UUID=$uuid    none    luks,discard,no-read-workqueue,no-write-workqueue,password-echo=no" | tee -a $CRYPTTAB_FILE > /dev/null
+  cat > $GRUB_FILE << EOF
+
+  menuentry "Windows 11" {
+      insmod part_gpt
+      insmod search_fs_uuid
+      insmod chain
+      search --fs-uuid --set=root $uuid
+      chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+      }
+  EOF
 else
     echo "No se pudo encontrar un UUID después de $max_attempts intentos."
 fi
+
