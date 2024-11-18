@@ -39,8 +39,8 @@ done
 # Le añadimos las lineas necesarias para que el grub
 # pueda configurar correctamente el arranque de windows
 if [ -n "$uuid" ]; then
-  cp $GRUB_FILE $GRUB_FILE.backup
-  cat >> $GRUB_FILE << EOF
+  cp "$GRUB_FILE" "$GRUB_FILE".backup
+  cat > "$HOOK_FILE" << EOF
 
   menuentry "Windows 11" {
       insmod part_gpt
@@ -54,3 +54,4 @@ else
     echo "No se pudo encontrar un UUID después de $max_attempts intentos."
 fi
 
+rm addwindows.sh
