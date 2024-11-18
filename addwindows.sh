@@ -52,7 +52,7 @@ menuentry "Windows 11" {
 }
 EOF
 
-    echo "Entrada de Windows 11 añadida a $GRUB_FILE."
+    echo "Entrada de Windows 11 añadida a $GRUB_FILE"
 else
     echo "No se pudo encontrar un UUID después de $max_attempts intentos."
 fi
