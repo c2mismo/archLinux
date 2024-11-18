@@ -18,6 +18,7 @@ SWAP_LABEL="swap"
 SWAP_CRYPT="volatileswap"
 # Ruta del archivo a modificar
 CRYPTTAB_FILE="/etc/crypttab.initramfs"
+FSTAB_FILE="/etc/fstab"
 
 # Creamos un sistema de archivos pequeño (por ejemplo, de 1 MiB) en la partición de swap y
 # especificamos un offset que determina dónde comienza este sistema de archivos.
@@ -36,13 +37,20 @@ mkfs.ext4 -L $SWAP_LABEL -m 0 -O ^has_journal $SWAP_PART -s 1M
 # Verificamos que existe crypttab.initramfs y si no lo creamos y le añadimos las lineas necesarias
 # para que reencripte la partición a cada inicio
 [ ! -e $CRYPTTAB_FILE ] && cp /etc/crypttab $CRYPTTAB_FILE
-echo "" | tee -a $CRYPTTAB_FILE > /dev/null
-echo "# Mount swap re-encrypting it with a fresh key each reboot" | tee -a $CRYPTTAB_FILE > /dev/null
-# especificamos un offset=2048 para que que el UUID y el LABEL de la partición de swap no se sobrescriban.
-echo "$SWAP_CRYPT    LABEL=$SWAP_LABEL    /dev/urandom    swap,offset=2048,cipher=aes-xts-plain64,size=256,sector-size=4096" | tee -a $CRYPTTAB_FILE > /dev/null
+cat >> "$CRYPTTAB_FILE" << EOF
+
+# Mount swap re-encrypting it with a fresh key each reboot
+# Especificamos un offset=2048 para que el UUID y el LABEL de la partición de swap no se sobrescriban.
+$SWAP_CRYPT    LABEL=$SWAP_LABEL    /dev/urandom    swap,offset=2048,cipher=aes-xts-plain64,size=256,sector-size=4096
+EOF
+
 
 
 
 # Configuramos el fstab para que se monte correctamente
-echo "# /dev/mapper/$SWAP_CRYPT LABEL=$SWAP_LABEL" | tee -a /etc/fstab > /dev/null
-echo "/dev/mapper/$SWAP_CRYPT    none    swap    sw    0 0" | tee -a /etc/fstab > /dev/null
+cat >> "$FSTAB_FILE" << EOF
+
+# /dev/mapper/$SWAP_CRYPT LABEL=$SWAP_LABEL
+/dev/mapper/$SWAP_CRYPT    none    swap    sw    0 0
+EOF
+
