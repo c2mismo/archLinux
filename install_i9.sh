@@ -21,9 +21,9 @@ systemctl enable thermald
 
 pacman -S cpupower
 
-# Configuración solo para Xorg, para Wayland se configura autoáticamente
-# Sin embargo, puedes ajustar la configuración de rendimiento y energía
-# a través de las herramientas de KDE Plasma
+# Configuración solo para Xorg, para Wayland consulta IA:
+# "¿Qué herramientas de KDE Plasma puedo usar para ajustar
+# el rendimiento y la gestión de energía en Wayland?"
 
 # Creamos una configuración incluye opciones para el método de aceleración gráfico,
 # la eliminación de desgarros en la pantalla, el uso de un búfer triple para
