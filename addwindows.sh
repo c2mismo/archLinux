@@ -9,7 +9,7 @@ fi
 # Añadimos al menu de arranque del grub windows
 
 # Partición de windows
-WIN_PART="/dev/nvme0n1p1"
+EFI_PART="/dev/nvme0n1p1"
 
 # Ruta del archivo a modificar
 GRUB_FILE="/etc/grub.d/40_custom"
@@ -22,7 +22,7 @@ uuid=""
 
 # Verificar el UUID hasta 3 veces
 while [ $attempts -lt $max_attempts ]; do
-    uuid=$(blkid -s UUID -o value $WIN_PART)
+    uuid=$(blkid -s UUID -o value $EFI_PART)
     
     if [ -n "$uuid" ]; then
         echo "UUID encontrado: $uuid"
@@ -39,7 +39,8 @@ done
 # Le añadimos las lineas necesarias para que el grub
 # pueda configurar correctamente el arranque de windows
 if [ -n "$uuid" ]; then
-  cat > $GRUB_FILE << EOF
+  cp $GRUB_FILE $GRUB_FILE.backup
+  cat >> $GRUB_FILE << EOF
 
   menuentry "Windows 11" {
       insmod part_gpt
