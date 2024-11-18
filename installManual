@@ -328,27 +328,7 @@ creamos y configuramos usuarios
 comprobamos que tenemos permisos sudoers
 sudo pacman -Syu
 
-instalamos paru que nos permite instalar
-paqueteria del repositorio de la comunidad
-AUR y a la vez gestiona los repositorios
-oficiales
 
-para compilar es necesario ser un usuario
-con permisos de administrador directamente
-como superadmin root no te lo permite
-
-accedemos al home
-cd ~
-git clone https://aur.Archlinux.org/paru.git
-cd paru
-makepkg -si
-
-comprobamos paru
-paru -Syu
-paru -S paru
-
-$ cd ..
-$ rm -Rf paru
 
 
 
@@ -357,27 +337,9 @@ $ rm -Rf paru
 volvemos como superadmin
 $ sudo su
 
-configuramos pacman y añadimos los repositorios
-sudo pacman -S pacman-contrib
 
-sudo nano /etc/pacman.conf
 
-descomenta
-Color
-ParallelDownloads = 5
 
-las siguientes lineas, para poder instalar
-aplicaciones de 32bits en sistemas de 64bits,
-descomenta las dos
-[multilib]
-Include = /etc/pacman.d/mirrorlist
-
-apuntar para una vez instalados incorporar los de españa
-nano /etx/pacman.d/mirrorlist
-
-sudo pacman -Syu
-verificamos si de como salida una lista de aplicaciones
-sudo pacman -Sl multilib
 
 
 
@@ -431,39 +393,24 @@ usando systemd, recuerda sd-encrypt debe estar antes que filesystems
 limpiamos este
 ==> WARNING: consolefont: no font found in configuration
 definimos una fuente de consola "FONT=ter-v32n"
+ya añadido con createuser.sh verificar
 cat /etc/vconsole.conf
-Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsoleo
+Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsole
 
 nano /etc/mkinitcpio.conf
 
 MODULES=(i915)
 
-comenta el HOOKS=(base udev....
-#    HOOKS=(base udev....
+comenta el:
+HOOKS=(base udev autodetect microcode
+#    HOOKS=(base udev autodetect microcode
 
 descomenta
-HOOKS=(base systemd autodetect modconf kms keyboard sd-vconsole sd-encrypt block filesystems fsck)
+#    HOOKS=(base systemd autodetect modconf kms keyboard sd-vconsole sd-encrypt block filesystems fsck)
 y añade
 HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole sd-encrypt block filesystems fsck)
 
 mkinitcpio -P
-
-
-
-
-
-paru -S ranger
-paru -S mkinitcpio-firmware
-
-Tenemos que verificar si del "mkinitcpio -P" eliminamos los
-==> WARNING: Possibly missing firmware for module: 'module_name'
-aic94xx, ast, bfa, bnx2x, liquidio, mlxsw_spectrum, nfp, qed, qla1280, qla2xxx, wd719x, xhci_pci
-
-tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar el zen el proceso habria sido mas rapido
-
-==> WARNING: Possibly missing firmware for module: 'qat_420xx'
-indica que el firmware para el módulo qat_420xx, relacionado con la tecnología Intel QuickAssist, no está presente en tu sistema.
-
 
 
 
@@ -489,6 +436,7 @@ reiniciamos para comprobar si el sistema arranca por si mismo
 todabia sin gestor de ventanas
 
 $ exit
+repetir exit hasta salir de chroot
 $ umount -R /mnt
 $ reboot
 
@@ -532,6 +480,68 @@ $ journalctl -b | grep cryptsetup
 
 
 
+configuramos pacman y añadimos los repositorios
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanConf.sh
+
+# chmod +x pacmanConf.sh
+# ./pacmanConf.sh
+# rm pacmanConf.sh
+
+apuntar para una vez instalados incorporar los de españa
+nano /etx/pacman.d/mirrorlist
+
+sudo pacman -Syu
+verificamos si de como salida una lista de aplicaciones
+sudo pacman -Sl multilib
+
+
+instalamos paru que nos permite instalar
+paqueteria del repositorio de la comunidad
+AUR y a la vez gestiona los repositorios
+oficiales
+
+para compilar es necesario ser un usuario
+con permisos de administrador directamente
+como superadmin root no te lo permite
+
+accedemos al home
+cd ~
+git clone https://aur.Archlinux.org/paru.git
+cd paru
+makepkg -si
+
+comprobamos paru
+paru -Syu
+paru -S paru
+
+$ cd ..
+$ rm -Rf paru
+
+
+
+
+
+
+
+-------------------------------------
+no ejecutado
+paru -S ranger
+paru -S mkinitcpio-firmware
+
+Tenemos que verificar si del "mkinitcpio -P" eliminamos los
+==> WARNING: Possibly missing firmware for module: 'module_name'
+aic94xx, ast, bfa, bnx2x, liquidio, mlxsw_spectrum, nfp, qed, qla1280, qla2xxx, wd719x, xhci_pci
+
+tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar el zen el proceso habria sido mas rapido
+
+==> WARNING: Possibly missing firmware for module: 'qat_420xx'
+indica que el firmware para el módulo qat_420xx, relacionado con la tecnología Intel QuickAssist, no está presente en tu sistema.
+-------------------------------------
+
+
+
+
+
 Instalamos y preparamos sistema para el procesador i9
 
 verifica antes /etc/X11/xorg.conf.d/20-intel.conf
@@ -563,7 +573,7 @@ kde mínimo
 themes y tal
 https://store.kde.org/p/1293160
 
-decoración de ventanas mas rapido oxigen que bleezer yoxigen viene por defecto
+decoración de ventanas mas rapido oxigen que bleezer y oxigen viene por defecto
 
 lxqt
 
