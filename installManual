@@ -571,19 +571,26 @@ htop fastfetch
 kde mínimo para mayor integridad y minimo un terminal y un explorador de archivos
 # paru -S plasma-desktop plasma-workspace plasma5-integration qterminal pcmanfm-qt
 
-No es necesario: Si ya has instalado packagekit-qt6, no necesitas instalar packagekit-qt5 a menos que tengas aplicaciones específicas que requieran Qt5. En general, las aplicaciones más nuevas están migrando a Qt6, por lo que es probable que no necesites packagekit-qt5 a menos que estés utilizando software más antiguo o específico que aún dependa de Qt5.
+kwayland es una biblioteca que proporciona la integración de KDE con el protocolo Wayland.
+Wayland es un protocolo moderno que reemplaza a X11 como el sistema de ventanas en Linux,
+ofreciendo una arquitectura más eficiente y segura para la gestión de gráficos y entradas.
+# paru -S kwayland plasma-wayland-protocols
+
+Si estás utilizando un entorno de escritorio basado en Xorg y deseas ejecutar aplicaciones que requieren Wayland
+# paru -S xorg_kwayland
+
+No es necesario: Si ya has instalado packagekit-qt6, no necesitas instalar packagekit-qt5
+a menos que tengas aplicaciones específicas que requieran Qt5. En general,
+las aplicaciones más nuevas están migrando a Qt6, por lo que es probable que
+no necesites packagekit-qt5 a menos que estés utilizando software más antiguo
+o específico que aún dependa de Qt5.
 # paru -S packagekit-qt5
 
-themes y tal
+
+themes y tal para kde
 https://store.kde.org/p/1293160
 
 decoración de ventanas mas rapido oxigen que bleezer y oxigen viene por defecto
-
-kwayland es una biblioteca que proporciona la integración de KDE con el protocolo Wayland. Wayland es un protocolo moderno que reemplaza a X11 como el sistema de ventanas en Linux, ofreciendo una arquitectura más eficiente y segura para la gestión de gráficos y entradas.
-kwayland plasma-wayland-protocols
-
-Si estás utilizando un entorno de escritorio basado en Xorg y deseas ejecutar aplicaciones que requieren Wayland
- xorg_kwayland
 
 
 
