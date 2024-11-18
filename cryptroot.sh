@@ -40,7 +40,7 @@ if [ -n "$uuid" ]; then
     cat >> "$CRYPTTAB_FILE" << EOF
 
 # Mount root as /dev/mapper/cryptroot using LUKS, and prompt for the passphrase at boot time.
-cryptroot    UUID=$uuid    none    luks,discard,no-read-workqueue,no-write-workqueue,password-echo=n
+cryptroot    UUID=$uuid    none    luks,discard,no-read-workqueue,no-write-workqueue,password-echo=no
 EOF
   echo "Añadido a $CRYPTTAB_FILE cryptroot"
 else
