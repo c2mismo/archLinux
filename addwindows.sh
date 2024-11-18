@@ -38,7 +38,7 @@ done
 # Le añadimos las líneas necesarias para que el grub
 # pueda configurar correctamente el arranque de Windows
 if [ -n "$uuid" ]; then
-    cp "$GRUB_FILE" "$GRUB_FILE.backup" || { echo "Error al crear la copia de seguridad de $GRUB_FILE"; exit 1; }
+    cp "$GRUB_FILE" "$GRUB_FILE.backup"
     
     # Añadir la entrada de Windows al archivo de configuración de GRUB
     cat >> "$GRUB_FILE" << EOF
