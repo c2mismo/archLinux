@@ -6,14 +6,13 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# Añadimos al menu de arranque del grub windows
+# Añadimos al menú de arranque del grub Windows
 
-# Partición de windows
+# Partición de Windows
 EFI_PART="/dev/nvme0n1p1"
 
 # Ruta del archivo a modificar
 GRUB_FILE="/etc/grub.d/40_custom"
-
 
 # Contador de intentos
 attempts=0
@@ -26,7 +25,7 @@ while [ $attempts -lt $max_attempts ]; do
     
     if [ -n "$uuid" ]; then
         echo "UUID encontrado: $uuid"
-        echo "Numero de intentos: $((attempts + 1))"  
+        echo "Número de intentos: $((attempts + 1))"
         break
     else
         echo "Intento $((attempts + 1)): No se encontró UUID. Reintentando..."
@@ -36,22 +35,24 @@ while [ $attempts -lt $max_attempts ]; do
 done
 
 # Si se encontró un UUID
-# Le añadimos las lineas necesarias para que el grub
-# pueda configurar correctamente el arranque de windows
+# Le añadimos las líneas necesarias para que el grub
+# pueda configurar correctamente el arranque de Windows
 if [ -n "$uuid" ]; then
-  cp "$GRUB_FILE" "$GRUB_FILE".backup
-  cat > "$HOOK_FILE" << EOF
+    cp "$GRUB_FILE" "$GRUB_FILE.backup" || { echo "Error al crear la copia de seguridad de $GRUB_FILE"; exit 1; }
+    
+    # Añadir la entrada de Windows al archivo de configuración de GRUB
+    cat >> "$GRUB_FILE" << EOF
 
-  menuentry "Windows 11" {
-      insmod part_gpt
-      insmod search_fs_uuid
-      insmod chain
-      search --fs-uuid --set=root $uuid
-      chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-      }
-  EOF
+menuentry "Windows 11" {
+    insmod part_gpt
+    insmod search_fs_uuid
+    insmod chain
+    search --fs-uuid --set=root $uuid
+    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+}
+EOF
+
+    echo "Entrada de Windows 11 añadida a $GRUB_FILE."
 else
     echo "No se pudo encontrar un UUID después de $max_attempts intentos."
 fi
-
-rm addwindows.sh
