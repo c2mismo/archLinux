@@ -57,7 +57,6 @@ fi
 cat >> "$FSTAB_FILE" << EOF
 # /dev/mapper/$SWAP_CRYPT LABEL=$SWAP_LABEL
 /dev/mapper/$SWAP_CRYPT    none    swap    sw    0 0
-
 EOF
 
 if grep -q "$SWAP_CRYPT" "$FSTAB_FILE"; then
