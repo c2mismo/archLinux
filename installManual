@@ -553,27 +553,39 @@ sudo ./install_i9.sh
 rm install_i9.sh
 
 
-
+serividor audio pipewire
 
 
 si todo va correcto
 
 a por el gestor de ventanas
 
+htop fastfetch
 
 
 
 
-kde
-# paru -S plasma plasma5-integration kde-applications
 
-kde mínimo
-# paru -S plasma-desktop plasma5-integration plasma-meta packagekit-qt5 qterminal pcmanfm-qt
+
+
+kde mínimo para mayor integridad y minimo un terminal y un explorador de archivos
+# paru -S plasma-desktop plasma-workspace plasma5-integration qterminal pcmanfm-qt
+
+No es necesario: Si ya has instalado packagekit-qt6, no necesitas instalar packagekit-qt5 a menos que tengas aplicaciones específicas que requieran Qt5. En general, las aplicaciones más nuevas están migrando a Qt6, por lo que es probable que no necesites packagekit-qt5 a menos que estés utilizando software más antiguo o específico que aún dependa de Qt5.
+# paru -S packagekit-qt5
 
 themes y tal
 https://store.kde.org/p/1293160
 
 decoración de ventanas mas rapido oxigen que bleezer y oxigen viene por defecto
+
+kwayland es una biblioteca que proporciona la integración de KDE con el protocolo Wayland. Wayland es un protocolo moderno que reemplaza a X11 como el sistema de ventanas en Linux, ofreciendo una arquitectura más eficiente y segura para la gestión de gráficos y entradas.
+kwayland plasma-wayland-protocols
+
+Si estás utilizando un entorno de escritorio basado en Xorg y deseas ejecutar aplicaciones que requieren Wayland
+ xorg_kwayland
+
+
 
 lxqt
 
@@ -582,18 +594,17 @@ lxqt
 
 $ sudo paru -S sddm
 
-plasma-workspace kwayland xorg_kwayland plasma-wayland-protocols
-
-$ systemctl enable sddm.service
-$ systemctl start sddm.service
+$ sudo systemctl enable sddm.service
+$ sudo reboot
 
 
 si todo ha ido bien estaras navegando por el gestor de escritorio
 
 
 
-
-
+paru -S discover packagekit-qt6 pamac-aur firefox vlc mpv spotify visual-studio-code-bin
+steam git-cola meld
+jdownloader draw.io
 
 
 
