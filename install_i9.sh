@@ -9,16 +9,21 @@ fi
 
 pacman -Sy
 
-pacman -S mesa vulkan-intel
+pacman -S intel-media-driver mesa xorg-server lib-intel-driver vulkan-intel xorg-xinit
 
+#para monitorear el rendimiento de tu GPU Intel en Wayland
+pacman -S intel-gpu-tools
+
+# Herramientas para la gráfica
 pacman -S thermald
 
 systemctl enable thermald
 
-pacman -S htop intel-gpu-tools
-
 pacman -S cpupower
 
+# Configuración solo para Xorg, para Wayland se configura autoáticamente
+# Sin embargo, puedes ajustar la configuración de rendimiento y energía
+# a través de las herramientas de KDE Plasma
 
 # Creamos una configuración incluye opciones para el método de aceleración gráfico,
 # la eliminación de desgarros en la pantalla, el uso de un búfer triple para
