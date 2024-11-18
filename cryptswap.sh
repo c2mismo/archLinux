@@ -49,8 +49,8 @@ EOF
 
 # Configuramos el fstab para que se monte correctamente
 cat >> "$FSTAB_FILE" << EOF
-
 # /dev/mapper/$SWAP_CRYPT LABEL=$SWAP_LABEL
 /dev/mapper/$SWAP_CRYPT    none    swap    sw    0 0
+
 EOF
 
