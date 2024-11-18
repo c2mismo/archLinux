@@ -42,6 +42,7 @@ if [ -n "$uuid" ]; then
 # Mount root as /dev/mapper/cryptroot using LUKS, and prompt for the passphrase at boot time.
 cryptroot    UUID=$uuid    none    luks,discard,no-read-workqueue,no-write-workqueue,password-echo=n
 EOF
+  echo "Añadido a $CRYPTTAB_FILE cryptroot"
 else
     echo "No se pudo encontrar un UUID después de $max_attempts intentos."
 fi
