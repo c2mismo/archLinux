@@ -37,9 +37,11 @@ done
 # para que encripte la partición al cada inicio
 if [ -n "$uuid" ]; then
     [ ! -e $CRYPTTAB_FILE ] && cp /etc/crypttab $CRYPTTAB_FILE
-    echo "" | tee -a $CRYPTTAB_FILEE > /dev/null
-    echo "# Mount root as /dev/mapper/cryptroot using LUKS, and prompt for the passphrase at boot time." | tee -a $CRYPTTAB_FILEE > /dev/null
-    echo "cryptroot    UUID=$uuid    none    luks,discard,no-read-workqueue,no-write-workqueue,password-echo=no" | tee -a $CRYPTTAB_FILE > /dev/null
+    cat >> "$CRYPTTAB_FILE" << EOF
+
+# Mount root as /dev/mapper/cryptroot using LUKS, and prompt for the passphrase at boot time.
+cryptroot    UUID=$uuid    none    luks,discard,no-read-workqueue,no-write-workqueue,password-echo=n
+EOF
 else
     echo "No se pudo encontrar un UUID después de $max_attempts intentos."
 fi
