@@ -1,5 +1,3 @@
-
-
 #!/bin/bash
 
 # Verificar si se está ejecutando como root
