@@ -11,6 +11,8 @@ fi
 # Ruta al archivo de configuración
 MKINITCPIO_CONF="/etc/mkinitcpio.conf"
 
+cp MKINITCPIO_CONF MKINITCPIO_CONF.backup
+
 # Modificar la línea de MODULES para porcesadores Intel
 sed -i 's/^MODULES=().*/MODULES=(i915)/' "$MKINITCPIO_CONF"
 
