@@ -9,12 +9,17 @@ sudo curl -o /etc/pacman.d/mirrorlist https://archlinux.org/mirrorlist/all/
 # Ordenar los Espejos por Velocidad: 
 # Arch Linux proporciona una herramienta llamada reflector que puede ayudarte a clasificar los espejos por velocidad.
 
+# Instalamos previamente rsync para que reflector se ejecute correctamente
+if ! pacman -Qi rsync > /dev/null 2>&1; then
+    echo "Instalando rsync..."
+    sudo pacman -Sy --noconfirm rsync
+else
+    echo "rsync: Previamente instalado."
+fi
+
 # Verificar si reflector está instalado
 if ! pacman -Qi reflector > /dev/null 2>&1; then
-    echo "Instalando reflector..."
     sudo pacman -Sy --noconfirm reflector
-else
-    echo "reflector: Previamente instalado."
 fi
 
 # Aquí, -n 6 indica que deseas mantener los 6 espejos más rápidos
