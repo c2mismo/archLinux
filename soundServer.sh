@@ -62,7 +62,15 @@ if [ ! -d "$PIPEWIRE_CONFIG_DIR" ]; then
     mkdir -p "$PIPEWIRE_CONFIG_DIR"
 fi
 
-# Copiar archivos de configuración si no existen
+# Copiar archivos de configuración de sistema si no existen
+if [ ! -f "/etc/pipewire/pipewire.conf" ]; then
+    echo "Copiando pipewire.conf a /etc/pipewire/..."
+    sudo cp /usr/share/pipewire/pipewire.conf /etc/pipewire/
+else
+    echo "pipewire.conf ya existe en /etc/pipewire/."
+fi
+
+# Copiar archivos de configuración de usuario si no existen
 if [ ! -f "$PIPEWIRE_CONFIG_DIR/pipewire.conf" ]; then
     echo "Copiando pipewire.conf a $PIPEWIRE_CONFIG_DIR..."
     cp /etc/pipewire/pipewire.conf "$PIPEWIRE_CONFIG_DIR/"
@@ -70,7 +78,15 @@ else
     echo "pipewire.conf ya existe en $PIPEWIRE_CONFIG_DIR."
 fi
 
-# Copiar el directorio media-session.d si no existe
+# Copiar el directorio media-session.d de sistema si no existe
+if [ ! -d "/etc/pipewire/media-session.d" ]; then
+    echo "Copiando media-session.d a /etc/pipewire/..."
+    sudo cp -r /usr/share/pipewire/media-session.d /etc/pipewire/
+else
+    echo "media-session.d ya existe en /etc/pipewire/."
+fi
+
+# Copiar el directorio media-session.d de usuario si no existe
 if [ ! -d "$PIPEWIRE_CONFIG_DIR/media-session.d" ]; then
     echo "Copiando media-session.d a $PIPEWIRE_CONFIG_DIR..."
     cp -r /etc/pipewire/media-session.d/ "$PIPEWIRE_CONFIG_DIR/"
