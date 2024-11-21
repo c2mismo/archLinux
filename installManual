@@ -407,15 +407,13 @@ Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsole
 
 
 
+Instalamos y configuramos grub para el arranque
 
-grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/grubInstall.sh
 
-
-
-
-
-grub-mkconfig -o /boot/grub/grub.cfg
-
+# chmod +x grubInstall.sh
+# sudo ./grubInstall.sh
+# rm grubInstall.sh
 
 
 
