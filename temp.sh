@@ -10,7 +10,7 @@ fi
 
 # Verificar si reflector está instalado
 if ! pacman -Qi reflector > /dev/null 2>&1; then
-    sudo pacman -Sy --noconfirm reflector
+    sudo pacman -S --noconfirm reflector
 fi
 
 # Hacemos una copia de seguridad
@@ -24,6 +24,8 @@ sudo curl -o /etc/pacman.d/mirrorlist https://archlinux.org/mirrorlist/all/
 
 # Aquí, -n 6 indica que deseas mantener los 6 espejos más rápidos
 sudo reflector --latest 6 --sort rate --save /etc/pacman.d/mirrorlist
+
+rm temp.sh
 
 # Sincronizar la base de datos de pacman
 sudo pacman -Syy
