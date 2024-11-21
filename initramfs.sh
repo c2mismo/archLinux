@@ -42,7 +42,7 @@ if [ $flag -eq 1 ]; then
   grep '^HOOKS=' "$MKINITCPIO_CONF"
   
   # Regenerar la imagen del initramfs
-  mkinitcpio -P
+  # mkinitcpio -P
   
   echo "La imagen del initramfs ha sido regenerada."
 fi
