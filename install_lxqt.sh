@@ -44,20 +44,20 @@ install "xorg-xwayland"
 # Instalamos el gestor de sesión SDDM para iniciar LXQt con KWin en Wayland
 install "sddm"
 
-# LXQT_CONF="/usr/share/xsessions/lxqt-wayland.desktop"
+LXQT_CONF="/usr/share/xsessions/lxqt-wayland.desktop"
 
 # Creamos un archivo de sesión para LXQt en Wayland
-#cat > "$LXQT_CONF" << EOF
-#[Desktop Entry]
-#Name=LXQt (Wayland)
-#Comment=This session starts LXQt on Wayland
-#Exec=xwayland-run-kwin --session lxqt
-#TryExec=xwayland-run-kwin
-#Type=Application
-#EOF
+sudo bash -c "cat > \"$LXQT_CONF\" << EOF
+[Desktop Entry]
+Name=LXQt (Wayland)
+Comment=This session starts LXQt on Wayland
+Exec=xwayland-run-kwin --session lxqt
+TryExec=xwayland-run-kwin
+Type=Application
+EOF"
 
 # Habilitamos el servicio SDDM
-#systemctl enable sddm.service
+sudo systemctl enable sddm.service
 
 # Mensaje de finalización
 echo "Instalación completada. Puedes iniciar sesión en LXQt (Wayland) desde el gestor de sesiones."
