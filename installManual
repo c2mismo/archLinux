@@ -449,7 +449,7 @@ conectamos a internet
 
 # nmtui-connect
 
-$ ping -c 3 www.google.com
+$ ping -c 3 archlinux.com
 
 
 timedatectl show-timesync
