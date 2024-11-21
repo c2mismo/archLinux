@@ -2,16 +2,19 @@
 # Instalamos LXQt mínimo con Wayland con Qt6 compatible con aplicaciones
 # Qt5 y X11 usando kwin_wayland compatible con KDE
 
-# Asegúrate de que el script se ejecute como root
-if [ "$EUID" -ne 0 ]; then
-  echo "Por favor, ejecuta este script como root."
-  exit 1
-fi
-
 # Verifica si paru está instalado
 if ! command -v paru &> /dev/null; then
   echo "El paquete 'paru' no está instalado. Por favor, instálalo antes de ejecutar este script."
   exit 1
+fi
+
+# Verificar si no se está ejecutando como root
+if [ "$EUID" -eq 0 ]; then
+    echo "Por favor, ejecuta este script como un usuario normal, no como root."
+    read -p "Introduce el nombre de usuario: " usuario
+    echo "Cambiando a usuario '$usuario'..."
+    exec sudo -u "$usuario" "$0" "$@"  # Reinicia el script como el usuario especificado
+    exit 1
 fi
 
 # Actualiza la base de datos de paquetes
