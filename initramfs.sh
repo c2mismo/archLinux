@@ -7,9 +7,9 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Ruta al archivo de configuración
-MKINITCPIO_CONF="/etc/mkinitcpio.conf.backup"
+MKINITCPIO_CONF="/etc/mkinitcpio.conf"
 VCONSOLE_CONF="/etc/vconsole.conf"
-BACKUP_CONF="/etc/mkinitcpio.conf.backup.backup"
+BACKUP_CONF="/etc/mkinitcpio.conf.backup"
 
 # Añadimos módulo i915 para Intel
 MODULES_ORI="MODULES=()"
@@ -69,7 +69,7 @@ if [ $flag -eq 1 ]; then
   # Verificar si la línea de HOOKS ha devuelto una salida
   if grep -q '^HOOKS=' "$MKINITCPIO_CONF"; then
     # Regenerar la imagen del initramfs
-    # mkinitcpio -P
+    mkinitcpio -P
     echo "La imagen del initramfs ha sido regenerada."
   else
     echo "Error: No se encontró la línea de HOOKS en $MKINITCPIO_CONF. No se puede regenerar la imagen del initramfs."
