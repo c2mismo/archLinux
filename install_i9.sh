@@ -62,9 +62,6 @@ EndSection
 EOF
 }
 
-# Verificar si el directorio existe, si no, crearlo
-[ ! -d "$CONFIG_DIR" ] && mkdir -p "$CONFIG_DIR"
-
 # Verificar si el archivo de configuración existe
 if [ -f "$CONFIG_FILE" ]; then
     echo "El archivo $CONFIG_FILE ya existe."
