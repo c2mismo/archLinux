@@ -549,8 +549,8 @@ sudo ./install_i9.sh
 
 
 ***********
-Instaamos el servidor de audio pipewire
-$ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
+Instalamos el servidor de audio pipewire
+wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
 
 chmod +x soundServer.sh
 sudo ./soundServer.sh
@@ -588,9 +588,18 @@ decoración de ventanas mas rapido oxigen que bleezer y oxigen viene por defecto
 
 
 
+
+
+Instalamos el servidor de audio pipewire
+$ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/installLxqt.sh
+
+chmod +x installLxqt.sh
+sudo ./installLxqt.sh
+
+
 lxqt
-
-
+ packagekit-qt6
+paru -S qterminal pcmanfm-qt discover pamac-aur firefox vlc mpv
 
 
 $ sudo paru -S sddm
@@ -611,7 +620,7 @@ si todo va correcto
 a por el gestor de ventanas
 
 htop glances fastfetch
-paru -S discover packagekit-qt6 pamac-aur firefox vlc mpv spotify visual-studio-code-bin
+paru -S spotify visual-studio-code-bin
 steam git-cola meld
 jdownloader draw.io
 
