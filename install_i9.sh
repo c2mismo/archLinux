@@ -13,7 +13,7 @@ pacman -Sy
 install() {
     local option="$1"
     if ! pacman -Qi $option > /dev/null 2>&1; then
-    sudo pacman -S --noconfirm option
+    sudo pacman -S --noconfirm $option
   fi
 }
 
