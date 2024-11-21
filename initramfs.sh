@@ -25,7 +25,7 @@ if [ -f "$VCONSOLE_CONF" ]; then
   if grep -q '^FONT=' "$VCONSOLE_CONF"; then
     # Modificar la línea de HOOKS si FONT= está presente
     sed -i 's/^HOOKS=(base udev autodetect microcode modconf kms keyboard keymap consolefont block filesystems fsck)/#    HOOKS=(base udev autodetect microcode modconf kms keyboard keymap consolefont block filesystems fsck)/' "$MKINITCPIO_CONF"
-    sed -i 's/^#    HOOKS=(base systemd autodetect modconf kms keyboard sd-vconsole sd-encrypt block filesystems fsck)/HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole sd-encrypt block filesystems fsck)/' "$MKINITCPIO_CONF"
+    sed -i 's/^#    HOOKS=(base systemd autodetect modconf kms keyboard keymap block filesystems fsck)/HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole sd-encrypt block filesystems fsck)/' "$MKINITCPIO_CONF"
     echo "La línea de HOOKS ha sido modificada en $MKINITCPIO_CONF."
     flag=1
   else
