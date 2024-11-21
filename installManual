@@ -474,11 +474,9 @@ configuramos pacman y añadimos los repositorios
 
 # chmod +x pacmanConf.sh
 # ./pacmanConf.sh
-# rm pacmanConf.sh
 
 # chmod +x pacmanRepo.sh
 # ./pacmanRepo.sh
-# rm pacmanRepo.sh
 
 sudo pacman -Syu
 verificamos si de como salida una lista de aplicaciones
@@ -545,27 +543,18 @@ $ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/insta
 
 chmod +x install_i9.sh
 sudo ./install_i9.sh
-rm install_i9.sh
 
 
 
 
 
 ***********
-serividor audio pipewire
+Instaamos el servidor de audio pipewire
+$ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
 
+chmod +x soundServer.sh
+sudo ./soundServer.sh
 
-
-
-
-zsh
-
-
-si todo va correcto
-
-a por el gestor de ventanas
-
-htop glances fastfetch
 
 
 
@@ -614,6 +603,14 @@ si todo ha ido bien estaras navegando por el gestor de escritorio
 
 
 
+zsh
+
+
+si todo va correcto
+
+a por el gestor de ventanas
+
+htop glances fastfetch
 paru -S discover packagekit-qt6 pamac-aur firefox vlc mpv spotify visual-studio-code-bin
 steam git-cola meld
 jdownloader draw.io
