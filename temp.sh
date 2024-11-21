@@ -2,10 +2,7 @@
 
 # Instalamos previamente rsync para que reflector se ejecute correctamente
 if ! pacman -Qi rsync > /dev/null 2>&1; then
-    echo "Instalando rsync..."
     sudo pacman -Sy --noconfirm rsync
-else
-    echo "rsync: Previamente instalado."
 fi
 
 # Verificar si reflector está instalado
