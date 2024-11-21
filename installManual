@@ -388,7 +388,8 @@ de forma que actuará como una ram volatil ya que no será accesible en cada rei
 
 
 Incluimos los modules del kernel necesarios para que initramfs pueda desencriptar
-usando systemd, recuerda sd-encrypt debe estar antes que filesystems
+usando systemd, recuerda sd-encrypt debe estar antes que filesystems y
+añadimos el modulo para Intel y sd-vconsole
 
 limpiamos este
 ==> WARNING: consolefont: no font found in configuration
@@ -397,20 +398,11 @@ ya añadido con createuser.sh verificar
 cat /etc/vconsole.conf
 Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsole
 
-nano /etc/mkinitcpio.conf
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initramsf.sh
 
-MODULES=(i915)
-
-comenta el:
-HOOKS=(base udev autodetect microcode
-#    HOOKS=(base udev autodetect microcode
-
-descomenta
-#    HOOKS=(base systemd autodetect modconf kms keyboard sd-vconsole sd-encrypt block filesystems fsck)
-y añade
-HOOKS=(base systemd autodetect microcode modconf kms keyboard keymap sd-vconsole sd-encrypt block filesystems fsck)
-
-mkinitcpio -P
+# chmod +x initramsf.sh
+# sudo ./initramsf.sh
+# rm initramsf.sh
 
 
 
@@ -424,7 +416,6 @@ grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
-grep intel-ucode /boot/grub/grub.cfg
 
 
 
