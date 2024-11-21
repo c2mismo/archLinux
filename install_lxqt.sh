@@ -47,7 +47,8 @@ install "sddm"
 LXQT_CONF="/usr/share/xsessions/lxqt-wayland.desktop"
 
 # Creamos un archivo de sesión para LXQt en Wayland
-sudo bash -c "cat > \"$LXQT_CONF\" << EOF
+if [ ! -f "$LXQT_CONF" ]; then
+    sudo bash -c "cat > \"$LXQT_CONF\" << EOF
 [Desktop Entry]
 Name=LXQt (Wayland)
 Comment=This session starts LXQt on Wayland
@@ -55,11 +56,22 @@ Exec=xwayland-run-kwin --session lxqt
 TryExec=xwayland-run-kwin
 Type=Application
 EOF"
+else
+    echo "El archivo de sesión $LXQT_CONF no ha sido creado:"
+    echo "El archivo de sesión ya existe."
+fi
 
-# Habilitamos el servicio SDDM
-sudo systemctl enable sddm.service
+
+# Verificar si SDDM está habilitado antes de habilitar el servicio
+if systemctl is-enabled sddm.service &> /dev/null; then
+    echo "El servicio SDDM ya está habilitado."
+else
+    sudo systemctl enable sddm.service
+    echo "SDDM ha sido habilitado para iniciar en el arranque."
+fi
+
 
 # Mensaje de finalización
 echo "Instalación completada. Puedes iniciar sesión en LXQt (Wayland) desde el gestor de sesiones."
 
-rm install_lxqt.sh
+sudo rm -f install_lxqt.sh
