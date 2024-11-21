@@ -97,9 +97,11 @@ fi
 echo "Para que surja efecto se debe de reiniciar con el usuario para el que haya sido configurado"
 
 # Listar las salidas de audio
+# pw-cli info all | grep "sink"
 # pw-cli info all | grep -B 36 -A 2 "sink"
 
 # Listar las entradas de audio
+# pw-cli info all | grep "source"
 # pw-cli info all | grep -B 36 -A 2 "source"
 
 
