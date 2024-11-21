@@ -9,17 +9,35 @@ fi
 
 pacman -Sy
 
-pacman -S intel-media-driver mesa xorg-server lib-intel-driver vulkan-intel xorg-xinit
+# Instalación de drivers y herramientas para Intel
+install() {
+    local option="$1"
+    if ! pacman -Qi $option > /dev/null 2>&1; then
+    sudo pacman -S --noconfirm option
+  fi
+}
+
+install "intel-media-driver"
+
+install "mesa"
+
+install "xorg-server"
+
+install "lib-intel-drive"
+
+install "vulkan-intel"
+
+install "xorg-xinit"
 
 #para monitorear el rendimiento de tu GPU Intel en Wayland
-pacman -S intel-gpu-tools
+install "intel-gpu-tools"
 
 # Herramientas para la gráfica
-pacman -S thermald
+install "thermald"
 
 systemctl enable thermald
 
-pacman -S cpupower
+install "cpupower"
 
 # Configuración solo para Xorg, para Wayland consulta IA:
 # "¿Qué herramientas de KDE Plasma puedo usar para ajustar
