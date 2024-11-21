@@ -82,8 +82,7 @@ if systemctl --user is-active --quiet pipewire.service; then
 else
     echo "pipewire.service no está activo. Procediendo a habilitar e iniciar..."
     systemctl --user enable pipewire.service
-    systemctl --user start pipewire.service
-    echo "pipewire.service ha sido habilitado e iniciado."
+    echo "pipewire.service ha sido habilitado."
 fi
 
 # Verificar y habilitar pipewire-pulse.service
@@ -92,13 +91,16 @@ if systemctl --user is-active --quiet pipewire-pulse.service; then
 else
     echo "pipewire-pulse.service no está activo. Procediendo a habilitar e iniciar..."
     systemctl --user enable pipewire-pulse.service
-    systemctl --user start pipewire-pulse.service
-    echo "pipewire-pulse.service ha sido habilitado e iniciado."
+    echo "pipewire-pulse.service ha sido habilitado."
 fi
 
+echo "Para que surja efecto se debe de reiniciar con el usuario para el que haya sido configurado"
 
-# Listar los sinks de PulseAudio
-pactl list sinks
+# Listar las salidas de audio
+# pw-cli info all | grep -B 36 -A 2 "sink"
+
+# Listar las entradas de audio
+# pw-cli info all | grep -B 36 -A 2 "source"
 
 
-rm soundServer.sh
+rm -f soundServer.sh
