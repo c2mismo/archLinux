@@ -75,3 +75,5 @@ if [ $flag -eq 1 ]; then
     echo "Error: No se encontró la línea de HOOKS en $MKINITCPIO_CONF. No se puede regenerar la imagen del initramfs."
   fi
 fi
+
+rm initramfs.sh
