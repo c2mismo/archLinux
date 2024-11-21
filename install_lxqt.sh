@@ -8,14 +8,20 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
+# Verifica si paru está instalado
+if ! command -v paru &> /dev/null; then
+  echo "El paquete 'paru' no está instalado. Por favor, instálalo antes de ejecutar este script."
+  exit 1
+fi
+
 # Actualiza la base de datos de paquetes
-pacman -Sy
+paru -Sy
 
 # Función para instalar paquetes
 install() {
     local option="$1"
-    if ! pacman -Qi "$option" > /dev/null 2>&1; then
-        pacman -S --noconfirm "$option"
+    if ! paru -Qi "$option" > /dev/null 2>&1; then
+        paru -S --noconfirm "$option"
     fi
 }
 
@@ -26,7 +32,7 @@ install "qt5-base"
 install "qt5-wayland"
 
 # Instala kwin_wayland, que es el compositor de KDE para Wayland
-install "kwin-wayland"
+install "xwayland-run-kwin"
 
 # Para ejecutar aplicaciones que requieren X11
 install "xorg-server"
@@ -42,8 +48,8 @@ install "sddm"
 #[Desktop Entry]
 #Name=LXQt (Wayland)
 #Comment=This session starts LXQt on Wayland
-#Exec=kwin_wayland --session lxqt
-#TryExec=kwin_wayland
+#Exec=xwayland-run-kwin --session lxqt
+#TryExec=xwayland-run-kwin
 #Type=Application
 #EOF
 
@@ -53,4 +59,4 @@ install "sddm"
 # Mensaje de finalización
 echo "Instalación completada. Puedes iniciar sesión en LXQt (Wayland) desde el gestor de sesiones."
 
-rm installLxqt.sh
+rm install_lxqt.sh
