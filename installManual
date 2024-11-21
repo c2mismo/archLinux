@@ -476,12 +476,18 @@ configuramos pacman y añadimos los repositorios
 # ./pacmanConf.sh
 # rm pacmanConf.sh
 
-apuntar para una vez instalados incorporar los de españa
-nano /etx/pacman.d/mirrorlist
+# chmod +x pacmanRepo.sh
+# ./pacmanRepo.sh
+# rm pacmanRepo.sh
 
 sudo pacman -Syu
 verificamos si de como salida una lista de aplicaciones
 sudo pacman -Sl multilib
+
+
+
+
+
 
 
 instalamos paru que nos permite instalar
