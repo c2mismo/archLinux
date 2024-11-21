@@ -353,7 +353,7 @@ verifica antes /etc/grub.d/40_custom
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/addwindows.sh
 
 # chmod +x addwindows.sh
-# sudo ./addwindows.sh
+# ./addwindows.sh
 # rm addwindows.sh
 
 
@@ -367,7 +367,7 @@ a traves del initramfs, en los proximos inicios
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptroot.sh
 
 # chmod +x cryptroot.sh
-# sudo ./cryptroot.sh
+# ./cryptroot.sh
 # rm cryptroot.sh
 
 
@@ -380,13 +380,13 @@ de forma que actuará como una ram volatil ya que no será accesible en cada rei
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptswap.sh
 
 # chmod +x cryptswap.sh
-# sudo ./cryptswap.sh
+# ./cryptswap.sh
 # rm cryptswap.sh
 
 
 
 
-
+VERIFICA
 Incluimos los modules del kernel necesarios para que initramfs pueda desencriptar
 usando systemd, recuerda sd-encrypt debe estar antes que filesystems y
 añadimos el modulo para Intel y sd-vconsole
@@ -401,7 +401,7 @@ Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsole
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initramsf.sh
 
 # chmod +x initramsf.sh
-# sudo ./initramsf.sh
+# ./initramsf.sh
 # rm initramsf.sh
 
 
@@ -412,7 +412,7 @@ Instalamos y configuramos grub para el arranque
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/grubInstall.sh
 
 # chmod +x grubInstall.sh
-# sudo ./grubInstall.sh
+# ./grubInstall.sh
 # rm grubInstall.sh
 
 
