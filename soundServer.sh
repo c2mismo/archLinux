@@ -1,9 +1,14 @@
 #!/bin/bash
 # Instalamos y preparamos el sistema para el servidor de sonido
+# por seguridad será activado y configurado por usuario
+# cada usuario nuevo de ser configurado
 
 # Verificar si no se está ejecutando como root
 if [ "$EUID" -eq 0 ]; then
     echo "Por favor, ejecuta este script como un usuario normal, no como root."
+    read -p "Introduce el nombre de usuario: " usuario
+    echo "Cambiando a usuario '$usuario'..."
+    exec sudo -u "$usuario" "$0" "$@"  # Reinicia el script como el usuario especificado
     exit 1
 fi
 
