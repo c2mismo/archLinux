@@ -33,25 +33,6 @@ install "pipewire-pulse"  # Permite que las aplicaciones que utilizan PulseAudio
 install "pipewire-jack"   # Permite que las aplicaciones que utilizan JACK funcionen con PipeWire.
 install "pavucontrol"     # Interfaz gráfica para controlar el servidor de sonido.
 
-# Verificar y habilitar pipewire.service
-if systemctl --user is-active --quiet pipewire.service; then
-    echo "pipewire.service ya está activo."
-else
-    echo "pipewire.service no está activo. Procediendo a habilitar e iniciar..."
-    systemctl --user enable pipewire.service
-    systemctl --user start pipewire.service
-    echo "pipewire.service ha sido habilitado e iniciado."
-fi
-
-# Verificar y habilitar pipewire-pulse.service
-if systemctl --user is-active --quiet pipewire-pulse.service; then
-    echo "pipewire-pulse.service ya está activo."
-else
-    echo "pipewire-pulse.service no está activo. Procediendo a habilitar e iniciar..."
-    systemctl --user enable pipewire-pulse.service
-    systemctl --user start pipewire-pulse.service
-    echo "pipewire-pulse.service ha sido habilitado e iniciado."
-fi
 
 # Ruta de la carpeta de configuración de PipeWire
 PIPEWIRE_CONFIG_DIR="$HOME/.config/pipewire"
@@ -94,5 +75,30 @@ else
     echo "media-session.d ya existe en $PIPEWIRE_CONFIG_DIR."
 fi
 
+
+# Verificar y habilitar pipewire.service
+if systemctl --user is-active --quiet pipewire.service; then
+    echo "pipewire.service ya está activo."
+else
+    echo "pipewire.service no está activo. Procediendo a habilitar e iniciar..."
+    systemctl --user enable pipewire.service
+    systemctl --user start pipewire.service
+    echo "pipewire.service ha sido habilitado e iniciado."
+fi
+
+# Verificar y habilitar pipewire-pulse.service
+if systemctl --user is-active --quiet pipewire-pulse.service; then
+    echo "pipewire-pulse.service ya está activo."
+else
+    echo "pipewire-pulse.service no está activo. Procediendo a habilitar e iniciar..."
+    systemctl --user enable pipewire-pulse.service
+    systemctl --user start pipewire-pulse.service
+    echo "pipewire-pulse.service ha sido habilitado e iniciado."
+fi
+
+
 # Listar los sinks de PulseAudio
 pactl list sinks
+
+
+rm soundServer.sh
