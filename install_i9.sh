@@ -80,5 +80,6 @@ else
     echo "El archivo de configuración ha sido creado."
 fi
 
-
 echo "Configuracion para i9 terminada."
+
+rm install_i9.sh
