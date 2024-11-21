@@ -7,9 +7,9 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 # Ruta al archivo de configuración
-MKINITCPIO_CONF="/etc/mkinitcpio.conf"
+MKINITCPIO_CONF="/etc/mkinitcpio.conf.backup"
 VCONSOLE_CONF="/etc/vconsole.conf"
-BACKUP_CONF="/etc/mkinitcpio.conf.backup"
+BACKUP_CONF="/etc/mkinitcpio.conf.backup.backup"
 
 # Hacer una copia de seguridad del archivo de configuración
 cp "$MKINITCPIO_CONF" "$BACKUP_CONF"
