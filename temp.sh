@@ -2,13 +2,13 @@
 
 # 1. Guardar el directorio actual
 directorio_actual=$(pwd)
+echo "Inicio en directorio: $directorio_temporal"
 
 # Verificar si el script se está ejecutando como root
 if [ "$EUID" -eq 0 ]; then
     echo "Por favor, ejecuta este script como un usuario normal, no como root."
     read -p "Introduce el nombre de usuario: " usuario
     echo "Cambiando a usuario '$usuario'..."
-
     # 2. Cambiar al directorio home del usuario especificado
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
@@ -28,12 +28,12 @@ fi
 # 4. Aquí va el resto del script que se ejecutará como el usuario normal
 echo "Ejecutando el resto del script como el usuario normal..."
 directorio_temporal=$(pwd)
-echo "En directorio " && echo $directorio_temporal
+echo "En directorio: $directorio_temporal"
 
 # (Aquí puedes agregar el código que deseas ejecutar como el usuario especificado)
 
 # 5. Devolver al directorio en el que nos encontrábamos antes de iniciar el script
-cd "$directorio_actual" || exit 1  # Regresar al directorio original
 echo "Regresando al directorio original: $directorio_actual"
+cd "$directorio_actual" || exit 1  # Regresar al directorio original
 
 
