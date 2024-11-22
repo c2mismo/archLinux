@@ -20,7 +20,7 @@ sudo curl -o /etc/pacman.d/mirrorlist https://archlinux.org/mirrorlist/all/
 # Arch Linux proporciona una herramienta llamada reflector que puede ayudarte a clasificar los espejos por velocidad.
 
 # Aquí, -n 6 indica que deseas mantener los 6 espejos más rápidos
-sudo reflector --latest 6 --sort rate --save /etc/pacman.d/mirrorlist
+sudo reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist
 
 # Sincronizar la base de datos de pacman
 sudo pacman -Syy
