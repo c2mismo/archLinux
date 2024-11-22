@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# 1. Guardar el directorio actual
-directorio_actual=$(pwd)
-echo "Inicio en directorio: $directorio_temporal"
+# Instalando y configurando PARU
 
 # Verificar si el script se está ejecutando como root
 if [ "$EUID" -eq 0 ]; then
@@ -18,22 +16,11 @@ if [ "$EUID" -eq 0 ]; then
         exit 1
     fi
 
-    # 3. Reinicia el script como el usuario especificado
-    echo "vamos a reiniciar"
     exec sudo -u "$usuario" "$0" "$@"
-    # exec sudo -u "$usuario" "${BASH_SOURCE[0]}" "$@"
     exit 1
 fi
 
-# 4. Aquí va el resto del script que se ejecutará como el usuario normal
-echo "Ejecutando el resto del script como el usuario normal..."
-directorio_temporal=$(pwd)
-echo "En directorio: $directorio_temporal"
-
-# (Aquí puedes agregar el código que deseas ejecutar como el usuario especificado)
-
-# 5. Devolver al directorio en el que nos encontrábamos antes de iniciar el script
-echo "Ejecutado el script como el usuario normal..."
 
 
-rm "$0"
+
+sudo rm -f "$0"
