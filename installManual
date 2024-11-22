@@ -318,7 +318,6 @@ creará un usuario con el nombre que indiquemos con privilegios superuser
 
 # chmod +x createuser.sh
 # ./createuser.sh
-# rm createuser.sh
 
 
 
@@ -375,8 +374,7 @@ de forma que actuará como una ram volatil ya que no será accesible en cada rei
 
 VERIFICA
 Incluimos los modules del kernel necesarios para que initramfs pueda desencriptar
-usando systemd, recuerda sd-encrypt debe estar antes que filesystems y
-añadimos el modulo para Intel y sd-vconsole
+usando systemd y sd-vconsole y añadimos el modulo para Intel
 
 limpiamos este
 ==> WARNING: consolefont: no font found in configuration
@@ -389,7 +387,6 @@ Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsole
 
 # chmod +x initramsf.sh
 # ./initramsf.sh
-# rm initramsf.sh
 
 
 
@@ -400,7 +397,6 @@ Instalamos y configuramos grub para el arranque
 
 # chmod +x grubInstall.sh
 # ./grubInstall.sh
-# rm grubInstall.sh
 
 
 
