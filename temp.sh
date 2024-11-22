@@ -44,16 +44,6 @@ if ! pacman -Qi paru > /dev/null 2>&1 && [ $error -eq 0 ]; then
     fi
 fi
 
-
-# Verificar si el directorio de configuración de paru existe
-if [ ! -d ~/.config/paru ]; then
-    # Crear el directorio de configuración de paru si no existe
-    mkdir -p ~/.config/paru
-    echo "Directorio de configuración de paru creado."
-else
-    echo "El directorio de configuración de paru ya existe."
-fi
-
 CONFIG_FILE="$HOME/.config/paru/paru.conf"
 
 keyword="ranger"
@@ -81,8 +71,15 @@ EOF
 # Verificar si no ha habido ningún error y
 # si el archivo de configuración no existe o no contiene la palabra clave
 if [ $error -eq 0 ]; then
+    # Verificar si el directorio de configuración de paru existe
+    if [ ! -d $HOME/.config/paru ]; then
+        # Crear el directorio de configuración de paru si no existe
+        mkdir -p $HOME/.config/paru
+        echo "Directorio de configuración de paru creado."
+    else
+        echo "El directorio de configuración de paru ya existe."
+    fi
     if [ -f \"$CONFIG_FILE\" ]; then
-        echo "Error debe de ser 0. Error = $error"
         echo "El archivo $CONFIG_FILE ya existe."
     
         # Verificar si el archivo contiene la palabra "keyword"
@@ -90,6 +87,8 @@ if [ $error -eq 0 ]; then
             echo "El archivo no contiene la palabra '$keyword'. Se sobrescribirá el archivo."
             crear_configuracion
             echo "El archivo de configuración ha sido sobrescrito."
+            echo "Configuración completada. Paru está listo para usar."
+            echo "Recuerda ejecutar 'paru -Syu' para actualizar tu sistema y los paquetes AUR."
         else
             echo "El archivo ya contiene la palabra '$keyword'. No se realizarán cambios."
         fi
@@ -97,12 +96,11 @@ if [ $error -eq 0 ]; then
         echo "El archivo $CONFIG_FILE no existe. Se creará el archivo."
         crear_configuracion
         echo "El archivo de configuración ha sido creado."
+        echo "Configuración completada. Paru está listo para usar."
+        echo "Recuerda ejecutar 'paru -Syu' para actualizar tu sistema y los paquetes AUR."
     fi
 else
     echo "ERROR: El archivo de configuración no se ha creado: La compilación no se ha realizado con éxito"
 fi
-
-echo "Configuración completada. Paru está listo para usar."
-echo "Recuerda ejecutar 'paru -Syu' para actualizar tu sistema y los paquetes AUR."
 
 sudo rm -f "$0"
