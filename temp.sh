@@ -33,7 +33,7 @@ echo "En directorio: $directorio_temporal"
 # (Aquí puedes agregar el código que deseas ejecutar como el usuario especificado)
 
 # 5. Devolver al directorio en el que nos encontrábamos antes de iniciar el script
-echo "Regresando al directorio original: $directorio_actual"
-cd "$directorio_actual" || exit 1  # Regresar al directorio original
+echo "Ejecutado el script como el usuario normal..."
 
 
+rm "$0"
