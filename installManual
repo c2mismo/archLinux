@@ -155,11 +155,12 @@ sincronizamos relog
 timedatectl set-ntp true
 
 
-Si necesitamos una fuente mas grande
+Si necesitamos una fuente mas grande "no es necesario"
 # pacman -Sy
 # pacman -S terminus-font
 
 # setfont ter-v32n
+
 
 
 Si quieres usara el instalador de arch
@@ -234,11 +235,12 @@ mkfs.exfat -n samba /dev/nvme0n1p6
 
 
 
+pacman -S wget
+
+
 montamos todas las particiones necesaria y todas aquellas
 que queremos añadir desde primera hora en el fstab directamente en /mnt
 para preinstalar el sistema
-
-pacman -S wget
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initmount.sh
 
@@ -298,7 +300,7 @@ usuarios en español
 
 
 
-Desabilitamos la hibernación
+Desabilitamos la hibernación necesario si queremos tener instalados mas de un SOs
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.sh
 
@@ -308,6 +310,9 @@ Desabilitamos la hibernación
 
 
 creamos y configuramos usuarios
+le otorgamos el passwd al root
+creará un usuario sin privilegios "visitante"
+creará un usuario con el nombre que indiquemos con privilegios superuser
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/createuser.sh
 
@@ -326,7 +331,7 @@ exit
 
 cd nombreUsuario
 sudo pacman -Sy
-este si es superadmin nos debe de permitir
+este si es superadmin nos lo debe de permitir
 
 exit
 
