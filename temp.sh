@@ -41,5 +41,14 @@ if ! pacman -Qi paru > /dev/null 2>&1 && [ $error -eq 0 ]; then
   echo "Paru ha sido instalado."
 fi
 
+# Verificar si el directorio de configuración de paru existe
+if [ ! -d ~/.config/paru ]; then
+    # Crear el directorio de configuración de paru si no existe
+    mkdir -p ~/.config/paru
+    echo "Directorio de configuración de paru creado."
+else
+    echo "El directorio de configuración de paru ya existe."
+fi
+
 
 sudo rm -f "$0"
