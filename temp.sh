@@ -50,5 +50,50 @@ else
     echo "El directorio de configuración de paru ya existe."
 fi
 
+CONFIG_FILE="~/.config/paru/paru.conf"
+
+keyword="ranger"
+
+# Función para crear el archivo de configuración
+crear_configuracion() {
+    cat > "$CONFIG_FILE" << EOF
+[options]
+BottomUp
+SudoLoop
+CleanAfter
+UpgradeMenu
+NewsOnUpgrade
+RemoveMake
+BatchInstall
+UseAsk
+CombinedUpgrade
+#SkipReview
+
+[bin]
+FileManager = ranger
+EOF
+}
+
+# Verificar si no ha habido ningún error y
+# si el archivo de configuración no existe o no contiene la palabra clave
+if [ -f "$CONFIG_FILE" ] && [ $error -eq 0 ]; then
+    echo "El archivo $CONFIG_FILE ya existe."
+
+    # Verificar si el archivo contiene la palabra "keyword"
+    if ! grep -q "$keyword" "$CONFIG_FILE"; then
+        echo "El archivo no contiene la palabra '$keyword'. Se sobrescribirá el archivo."
+        crear_configuracion
+        echo "El archivo de configuración ha sido sobrescrito."
+    else
+        echo "El archivo ya contiene la palabra '$keyword'. No se realizarán cambios."
+    fi
+else
+    echo "El archivo $CONFIG_FILE no existe. Se creará el archivo."
+    crear_configuracion
+    echo "El archivo de configuración ha sido creado."
+fi
+
+echo "Configuración completada. Paru está listo para usar."
+echo "Recuerda ejecutar 'paru -Syu' para actualizar tu sistema y los paquetes AUR."
 
 sudo rm -f "$0"
