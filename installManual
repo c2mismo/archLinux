@@ -474,13 +474,10 @@ indica que el firmware para el módulo qat_420xx, relacionado con la tecnología
 
 
 Instalamos y preparamos sistema para el procesador i9
-
-verifica antes /etc/X11/xorg.conf.d/20-intel.conf
-
 $ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
 
 chmod +x install_i9.sh
-sudo ./install_i9.sh
+./install_i9.sh
 
 
 
@@ -493,7 +490,6 @@ sudo ./install_i9.sh
 
 configuramos pacman y añadimos los repositorios
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanConf.sh
-
 # chmod +x pacmanConf.sh
 # ./pacmanConf.sh
 
@@ -515,6 +511,10 @@ oficiales
 para compilar es necesario ser un usuario
 con permisos de administrador directamente
 como superadmin root no te lo permite
+
+# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanRepo.sh
+# chmod +x /usr/local/bin/pacmanRepo.sh
+# /usr/local/bin/pacmanRepo.sh
 
 accedemos al home
 cd ~
