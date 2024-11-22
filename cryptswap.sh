@@ -65,3 +65,4 @@ else
 echo "ERROR: Al añadirlo al "$FSTAB_FILE" para montar la swap volatil."
 fi
 
+rm cryptswap.sh
