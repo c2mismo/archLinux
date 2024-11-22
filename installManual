@@ -512,10 +512,15 @@ para compilar es necesario ser un usuario
 con permisos de administrador directamente
 como superadmin root no te lo permite
 
-# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanRepo.sh
-# chmod +x /usr/local/bin/pacmanRepo.sh
-# /usr/local/bin/pacmanRepo.sh
+# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/paruInstallConf.sh
+# chmod +x /usr/local/bin/paruInstallConf.sh
+# /usr/local/bin/paruInstallConf.sh
 
+
+mejor instalar paru desde repos
+pacman -S paru
+
+sino hay que instalar rust y compilar es muy pesado
 
 
 
