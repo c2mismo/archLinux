@@ -517,18 +517,21 @@ como superadmin root no te lo permite
 # /usr/local/bin/paruInstallConf.sh
 
 
+VERIFICAR
 mejor instalar paru desde repos
-pacman -S paru
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/paruInstall.sh
+# chmod +x paruInstall.sh
+# ./paruInstall.sh
 
 sino hay que instalar rust y compilar es muy pesado
 
 
 
+VERIFICAR
 Instalamos el servidor de audio pipewire
-wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/soundServer.sh
-
-chmod +x soundServer.sh
-sudo ./soundServer.sh
+# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/soundServer.sh
+# chmod +x /usr/local/bin/soundServer.sh
+# /usr/local/bin/soundServer.sh
 
 
 
