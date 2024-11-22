@@ -10,22 +10,35 @@ fi
 echo "Cambiando la contraseña de root..."
 passwd
 
-# Crear nuevo usuario "visitante"
-echo "Creando el nuevo usuario 'visitante'..."
-useradd -m visitante
-echo "Estableciendo la contraseña para 'visitante'..."
-passwd visitante
-usermod -aG video,audio,storage visitante
-echo "Usuario 'visitante' creado y configurado."
+# Crear nuevo usuario "visitante" sin permisos de superuser
+# Verificar si el usuario "visitante" ya existe
+if id "visitante" &>/dev/null; then
+  echo "El usuario 'visitante' ya existe. No se creará de nuevo."
+else
+  # Crear nuevo usuario "visitante"
+  echo "Creando el nuevo usuario 'visitante'..."
+  useradd -m visitante
+  echo "Estableciendo la contraseña para 'visitante'..."
+  passwd visitante
+  usermod -aG video,audio,storage visitante
+  echo "Usuario 'visitante' creado y configurado."
+fi
 
 # Crear nuevo usuario con permisos de superusuario
 read -p "Introduce el nombre del nuevo usuario con permisos de superusuario: " usuario
-echo "Creando el nuevo usuario '$usuario'..."
-useradd -m "$usuario"
-echo "Estableciendo la contraseña para '$usuario'..."
-passwd "$usuario"
-usermod -aG wheel,video,audio,storage "$usuario"
-echo "Usuario '$usuario' creado y configurado con permisos de superusuario."
+
+# Verificar si se ha introducido un nombre de usuario
+if [ -z "$usuario" ]; then
+  echo "No se crea usuario: No se ha introducido nombre de usuario."
+else
+  echo "Creando el nuevo usuario '$usuario'..."
+  useradd -m "$usuario"
+  echo "Estableciendo la contraseña para '$usuario'..."
+  passwd "$usuario"
+  usermod -aG wheel,video,audio,storage "$usuario"
+  echo "Usuario '$usuario' creado y configurado con permisos de superusuario."
+fi
+
 
 # Modificar el archivo sudoers
 # Comprobar si la línea está comentada
@@ -46,9 +59,15 @@ else
 fi
 
 # Cambiar el nombre de la máquina
+
 read -p "Introduce el nombre de esta máquina: " nombre_maquina
-echo "Estableciendo el nombre de la máquina a '$nombre_maquina'..."
-echo "$nombre_maquina" > /etc/hostname
-echo "Nombre de la máquina configurado."
+if [ -z "nombre_maquina" ]; then
+  echo "No se modifica el nombre de la máquina: No se ha introducido nombre nuevo de máquina."
+else
+  echo "Estableciendo el nombre de la máquina a '$nombre_maquina'..."
+  echo "$nombre_maquina" > /etc/hostname
+  echo "Nombre de la máquina configurado."
+fi
+
 
 rm createuser.sh
