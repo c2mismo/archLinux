@@ -63,6 +63,7 @@ fi
 # Confirmar que se han realizado los cambios
 if [ $flag -eq 1 ]; then
   echo "Modificaciones realizadas en $MKINITCPIO_CONF:"
+  # Mostramos las lineas modificadas
   grep '^MODULES=' "$MKINITCPIO_CONF"
   grep '^HOOKS=' "$MKINITCPIO_CONF"
   
