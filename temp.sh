@@ -12,17 +12,16 @@ if [ "$EUID" -eq 0 ]; then
     # 2. Cambiar al directorio home del usuario especificado
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
-        echo "es directorio"
         cd "$home_dir" || exit 1  # Cambia al directorio home del usuario
-        echo "cambio a directorio"
     else
         echo "Error: El directorio home para el usuario '$usuario' no existe."
         exit 1
     fi
 
     # 3. Reinicia el script como el usuario especificado
-    echo "exec sudo"
+    echo "vamos a reiniciar"
     exec sudo -u "$usuario" "$0" "$@"
+    echo "reiniciando"
     exit 1
 fi
 
