@@ -205,13 +205,6 @@ y una 8b no ha ido demasiado mal :P
 
 
 
------------------
-no ejecutamos
-cargamos módulo del kernel para encriptar
-modprobe dm-crypt
-modprobe dm-mod
-------------------------
-
 encriptamos raiz
 
 cryptsetup luksFormat /dev/nvme0n1p5 --cipher aes-xts-plain64 --key-size 256 --hash sha512
@@ -325,36 +318,27 @@ creamos y configuramos usuarios
 
 
 
-comprobamos que tenemos permisos sudoers
-sudo pacman -Syu
+cd visitante
+sudo pacman -Sy
+tiene que dar error este usuario no es superadmin
 
+exit
 
+cd nombreUsuario
+sudo pacman -Sy
+este si es superadmin nos debe de permitir
 
-
-
-
-
-volvemos como superadmin
-$ sudo su
-
-
-
-
-
+exit
 
 
 
 
 añadimos windows al grub
 
-testear
-verifica antes /etc/grub.d/40_custom
-
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/addwindows.sh
 
 # chmod +x addwindows.sh
 # ./addwindows.sh
-# rm addwindows.sh
 
 
 
@@ -368,7 +352,6 @@ a traves del initramfs, en los proximos inicios
 
 # chmod +x cryptroot.sh
 # ./cryptroot.sh
-# rm cryptroot.sh
 
 
 
@@ -381,7 +364,6 @@ de forma que actuará como una ram volatil ya que no será accesible en cada rei
 
 # chmod +x cryptswap.sh
 # ./cryptswap.sh
-# rm cryptswap.sh
 
 
 
