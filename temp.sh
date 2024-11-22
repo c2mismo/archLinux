@@ -10,11 +10,11 @@ if [ "$EUID" -eq 0 ]; then
     echo "Cambiando a usuario '$usuario'..."
 
     # 2. Cambiar al directorio home del usuario especificado
-    echo "getent"
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
-    echo "getent OK"
     if [ -d "$home_dir" ]; then
+        echo "es directorio"
         cd "$home_dir" || exit 1  # Cambia al directorio home del usuario
+        echo "cambio a directorio"
     else
         echo "Error: El directorio home para el usuario '$usuario' no existe."
         exit 1
@@ -28,7 +28,8 @@ fi
 
 # 4. Aquí va el resto del script que se ejecutará como el usuario normal
 echo "Ejecutando el resto del script como el usuario normal..."
-echo "En directorio $(pwd)"
+directorio_temporal=$(pwd)
+echo "En directorio " && echo $directorio_temporal
 
 # (Aquí puedes agregar el código que deseas ejecutar como el usuario especificado)
 
@@ -37,4 +38,3 @@ cd "$directorio_actual" || exit 1  # Regresar al directorio original
 echo "Regresando al directorio original: $directorio_actual"
 
 
-rm temp.sh
