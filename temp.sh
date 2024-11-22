@@ -20,7 +20,8 @@ if [ "$EUID" -eq 0 ]; then
 
     # 3. Reinicia el script como el usuario especificado
     echo "vamos a reiniciar"
-    exec sudo -u "$usuario" "${BASH_SOURCE[0]}" "$@"
+    exec sudo -u "$usuario" "$0" "$@"
+    # exec sudo -u "$usuario" "${BASH_SOURCE[0]}" "$@"
     exit 1
 fi
 
