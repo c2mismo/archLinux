@@ -25,6 +25,7 @@ fi
 
 # 4. Aquí va el resto del script que se ejecutará como el usuario normal
 echo "Ejecutando el resto del script como el usuario normal..."
+echo "En directorio $(pwd)"
 
 # (Aquí puedes agregar el código que deseas ejecutar como el usuario especificado)
 
