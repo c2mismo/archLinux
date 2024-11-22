@@ -31,13 +31,15 @@ sudo pacman -S --needed --noconfirm base-devel git ranger && \
 # Verificar si paru no está instalado y si no hubo errores
 if ! pacman -Qi paru > /dev/null 2>&1 && [ $error -eq 0 ]; then
     echo "Instalando paru..."
+    # Clonar el repositorio de paru
+    git clone https://aur.archlinux.org/paru.git || { error=1; echo "Error al clonar el repositorio de paru."; }
     # Accedemos al directorio
-    cd paru || { error=1; echo "Error al acceder al directorio de paru. Error = $error"; }
+    cd paru || { error=1; echo "Error al acceder al directorio de paru."; }
     # Compilar e instalar paru
-    makepkg -si --noconfirm || { error=1; echo "Error al compilar paru. Error = $error"; }
+    makepkg -si --noconfirm || { error=1; echo "Error al compilar paru."; }
     # Volver al directorio anterior y limpiar
-    cd .. || { error=1; echo "Error al volver al directorio anterior. Error = $error"; }
-    rm -rf paru || { error=1; echo "Error al limpiar el repositorio de paru. Error = $error"; }
+    cd .. || { error=1; echo "Error al volver al directorio anterior."; }
+    rm -rf paru || { error=1; echo "Error al limpiar el repositorio de paru."; }
 
     if [ $error -eq 0 ]; then
         echo "Paru ha sido instalado."
