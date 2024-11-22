@@ -424,7 +424,6 @@ conectamos a internet
 $ ping -c 3 archlinux.com
 
 
-timedatectl show-timesync
 sincronizamos relog
 timedatectl set-ntp true
 
@@ -448,50 +447,6 @@ $ lsblk
 
 $ journalctl -b | grep cryptsetup
 
-
-
-
-
-configuramos pacman y añadimos los repositorios
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanConf.sh
-
-# chmod +x pacmanConf.sh
-# ./pacmanConf.sh
-
-# chmod +x pacmanRepo.sh
-# ./pacmanRepo.sh
-
-sudo pacman -Syu
-verificamos si de como salida una lista de aplicaciones
-sudo pacman -Sl multilib
-
-
-
-
-
-
-
-instalamos paru que nos permite instalar
-paqueteria del repositorio de la comunidad
-AUR y a la vez gestiona los repositorios
-oficiales
-
-para compilar es necesario ser un usuario
-con permisos de administrador directamente
-como superadmin root no te lo permite
-
-accedemos al home
-cd ~
-git clone https://aur.Archlinux.org/paru.git
-cd paru
-makepkg -si
-
-comprobamos paru
-paru -Syu
-paru -S paru
-
-$ cd ..
-$ rm -Rf paru
 
 
 
@@ -532,6 +487,47 @@ sudo ./install_i9.sh
 
 
 ***********
+
+
+
+
+configuramos pacman y añadimos los repositorios
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanConf.sh
+
+# chmod +x pacmanConf.sh
+# ./pacmanConf.sh
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanRepo.sh
+# chmod +x pacmanRepo.sh
+# ./pacmanRepo.sh
+
+
+
+
+
+
+
+instalamos paru que nos permite instalar
+paqueteria del repositorio de la comunidad
+AUR y a la vez gestiona los repositorios
+oficiales
+
+para compilar es necesario ser un usuario
+con permisos de administrador directamente
+como superadmin root no te lo permite
+
+accedemos al home
+cd ~
+git clone https://aur.Archlinux.org/paru.git
+cd paru
+makepkg -si
+
+comprobamos paru
+paru -Syu
+paru -S paru
+
+$ cd ..
+$ rm -Rf paru
 Instalamos el servidor de audio pipewire
 wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
 
