@@ -69,7 +69,7 @@ Section "Device"
     # La memoria de video se toma de la RAM del sistema
     # usar con precaución hacer pruebas con juegos e IAs.
     # Option      "VideoRam"     "4194304"  # Para 4 GB en KB
-    Option      "VideoRam"     "8388608"  # Para 8 GB en KB
+    # Option      "VideoRam"     "8388608"  # Para 8 GB en KB
     # Option      "VideoRam"     "16777216"  # Para 16 GB en KB
     # Option      "VideoRam"     "31457280"  # Para 30 GB en KB
     # Option      "VideoRam"     "16777216"  # Para 16 GB en KB
