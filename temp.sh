@@ -29,17 +29,22 @@ sudo pacman -S --needed --noconfirm base-devel git ranger && \
 { echo "Instaladas las dependencias necesarias para instalar paru"; error=0; } || \
 { echo "Error al instalar las dependencias."; error=1; }
 
+# Verificar si paru no está instalado y si no hubo errores
 if ! pacman -Qi paru > /dev/null 2>&1 && [ $error -eq 0 ]; then
-  echo "Instalando paru..."
-  # Accedemos al directorio
-  cd paru || { echo "Error al volver al directorio anterioru."; error=1; } && \
-  # Compilar e instalar paru
-  makepkg -si --noconfirm || { echo "Error al compilar paru."; error=1; } && \
-  # Volver al directorio anterior y limpiar
-  cd ..
-  rm -rf paru || { echo "Error al limpiar el repositorio de paru."; error=1; } && \
-  echo "Paru ha sido instalado."
+    echo "Instalando paru..."
+    # Accedemos al directorio
+    cd paru || { echo "Error al acceder al directorio de paru."; error=1; }
+    # Compilar e instalar paru
+    makepkg -si --noconfirm || { echo "Error al compilar paru."; error=1; }
+    # Volver al directorio anterior y limpiar
+    cd .. || { echo "Error al volver al directorio anterior."; error=1; }
+    rm -rf paru || { echo "Error al limpiar el repositorio de paru."; error=1; }
+
+    if [ $error -eq 0 ]; then
+        echo "Paru ha sido instalado."
+    fi
 fi
+
 
 # Verificar si el directorio de configuración de paru existe
 if [ ! -d ~/.config/paru ]; then
@@ -50,7 +55,7 @@ else
     echo "El directorio de configuración de paru ya existe."
 fi
 
-CONFIG_FILE="~/.config/paru/paru.conf"
+CONFIG_FILE="$HOME/.config/paru/paru.conf"
 
 keyword="ranger"
 
