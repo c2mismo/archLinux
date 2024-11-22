@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Instalando y configurando PARU
+echo "Instalando y configurando paru..."
 
 # Verificar si el script se está ejecutando como root
 if [ "$EUID" -eq 0 ]; then
@@ -21,6 +21,25 @@ if [ "$EUID" -eq 0 ]; then
 fi
 
 
+verificamos si se produce un error:
+error=0
+
+# Instalar dependencias necesarias
+sudo pacman -S --needed --noconfirm base-devel git ranger && \
+{ echo "Instaladas las dependencias necesarias para instalar paru"; error=0; } || \
+{ echo "Error al instalar las dependencias."; error=1; }
+
+if ! pacman -Qi paru > /dev/null 2>&1 && [ $error -eq 0 ]; then
+  echo "Instalando paru..."
+  # Accedemos al directorio
+  cd paru || { echo "Error al volver al directorio anterioru."; error=1; } && \
+  # Compilar e instalar paru
+  makepkg -si --noconfirm || { echo "Error al compilar paru."; error=1; } && \
+  # Volver al directorio anterior y limpiar
+  cd ..
+  rm -rf paru || { echo "Error al limpiar el repositorio de paru."; error=1; } && \
+  echo "Paru ha sido instalado."
+fi
 
 
 sudo rm -f "$0"
