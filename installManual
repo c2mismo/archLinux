@@ -516,20 +516,11 @@ como superadmin root no te lo permite
 # chmod +x /usr/local/bin/pacmanRepo.sh
 # /usr/local/bin/pacmanRepo.sh
 
-accedemos al home
-cd ~
-git clone https://aur.Archlinux.org/paru.git
-cd paru
-makepkg -si
 
-comprobamos paru
-paru -Syu
-paru -S paru
 
-$ cd ..
-$ rm -Rf paru
+
 Instalamos el servidor de audio pipewire
-wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
+wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/soundServer.sh
 
 chmod +x soundServer.sh
 sudo ./soundServer.sh
