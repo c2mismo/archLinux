@@ -32,12 +32,12 @@ sudo pacman -S --needed --noconfirm base-devel git ranger && \
 if ! pacman -Qi paru > /dev/null 2>&1 && [ $error -eq 0 ]; then
     echo "Instalando paru..."
     # Accedemos al directorio
-    cd paru || { error=1; echo "Error al acceder al directorio de paru. Error = &error"; }
+    cd paru || { error=1; echo "Error al acceder al directorio de paru. Error = $error"; }
     # Compilar e instalar paru
-    makepkg -si --noconfirm || { error=1; echo "Error al compilar paru. Error = &error"; }
+    makepkg -si --noconfirm || { error=1; echo "Error al compilar paru. Error = $error"; }
     # Volver al directorio anterior y limpiar
-    cd .. || { error=1; echo "Error al volver al directorio anterior. Error = &error"; }
-    rm -rf paru || { error=1; echo "Error al limpiar el repositorio de paru. Error = &error"; }
+    cd .. || { error=1; echo "Error al volver al directorio anterior. Error = $error"; }
+    rm -rf paru || { error=1; echo "Error al limpiar el repositorio de paru. Error = $error"; }
 
     if [ $error -eq 0 ]; then
         echo "Paru ha sido instalado."
