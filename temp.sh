@@ -80,22 +80,26 @@ EOF
 
 # Verificar si no ha habido ningún error y
 # si el archivo de configuración no existe o no contiene la palabra clave
-if [ -f \"$CONFIG_FILE\" ] && [ $error -eq 0 ]; then
-    echo "Error debe de ser 0. Error = $error"
-    echo "El archivo $CONFIG_FILE ya existe."
-
-    # Verificar si el archivo contiene la palabra "keyword"
-    if ! grep -q "$keyword" "$CONFIG_FILE"; then
-        echo "El archivo no contiene la palabra '$keyword'. Se sobrescribirá el archivo."
-        crear_configuracion
-        echo "El archivo de configuración ha sido sobrescrito."
+if [ $error -eq 0 ]; then
+    if [ -f \"$CONFIG_FILE\" ]; then
+        echo "Error debe de ser 0. Error = $error"
+        echo "El archivo $CONFIG_FILE ya existe."
+    
+        # Verificar si el archivo contiene la palabra "keyword"
+        if ! grep -q "$keyword" "$CONFIG_FILE"; then
+            echo "El archivo no contiene la palabra '$keyword'. Se sobrescribirá el archivo."
+            crear_configuracion
+            echo "El archivo de configuración ha sido sobrescrito."
+        else
+            echo "El archivo ya contiene la palabra '$keyword'. No se realizarán cambios."
+        fi
     else
-        echo "El archivo ya contiene la palabra '$keyword'. No se realizarán cambios."
+        echo "El archivo $CONFIG_FILE no existe. Se creará el archivo."
+        crear_configuracion
+        echo "El archivo de configuración ha sido creado."
     fi
 else
-    echo "El archivo $CONFIG_FILE no existe. Se creará el archivo."
-    crear_configuracion
-    echo "El archivo de configuración ha sido creado."
+    echo "ERROR: El archivo de configuración no se ha creado: La compilación no se ha realizado con éxito"
 fi
 
 echo "Configuración completada. Paru está listo para usar."
