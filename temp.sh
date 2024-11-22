@@ -10,7 +10,9 @@ if [ "$EUID" -eq 0 ]; then
     echo "Cambiando a usuario '$usuario'..."
 
     # 2. Cambiar al directorio home del usuario especificado
+    echo "getent"
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
+    echo "getent OK"
     if [ -d "$home_dir" ]; then
         cd "$home_dir" || exit 1  # Cambia al directorio home del usuario
     else
@@ -19,6 +21,7 @@ if [ "$EUID" -eq 0 ]; then
     fi
 
     # 3. Reinicia el script como el usuario especificado
+    echo "exec sudo"
     exec sudo -u "$usuario" "$0" "$@"
     exit 1
 fi
