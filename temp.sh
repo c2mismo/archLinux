@@ -80,7 +80,7 @@ EOF
 
 # Verificar si no ha habido ningún error y
 # si el archivo de configuración no existe o no contiene la palabra clave
-if [ -f "$CONFIG_FILE" ] && [ $error -eq 0 ]; then
+if [ -f \"$CONFIG_FILE\" ] && [ $error -eq 0 ]; then
     echo "El archivo $CONFIG_FILE ya existe."
 
     # Verificar si el archivo contiene la palabra "keyword"
