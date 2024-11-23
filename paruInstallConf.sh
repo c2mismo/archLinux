@@ -17,19 +17,19 @@ echo "Instaladas las dependencias necesarias para instalar paru" || \
 if [ -z "$usuario" ]; then
     read -p "Para configurar paru introduce nombre de usuario: " usuario
     echo "Cambiando a usuario '$usuario'..."
-    # 2. Cambiar al directorio home del usuario especificado
+    
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
-        cd "$home_dir" || \
-        { flag_error=1; error="El directorio home para el usuario '$usuario' no es accesible."; }
+        cd "$home_dir" # Cambiar al directorio home del usuario especificado
+        exec sudo -u "$usuario" "$0" "$@" || \ # Ejecutar el script como el usuario especificado
+        { flag_error=1; error="No es posible eecutar el script como el usuario $usuario."; }
     else
         { flag_error=1; error="El directorio home para el usuario '$usuario' no existe."; }
         usuario=""
+        exit 1
     fi
-    # Ejecutar el script como el usuario especificado
-    exec sudo -u "$usuario" "$0" "$@"
-    exit 1
 fi
+
 echo "Configurando paru como: $usuario en $home_dir"
 
 # Verificar si paru no está instalado y si no hubo errores
