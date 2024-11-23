@@ -1,21 +1,34 @@
 #!/bin/bash
-# Instalamos y preparamos sistema para el procesador i9
+# Instalamos y configuramos paru
+# un ayudante de AUR (Arch User Repository) para Arch Linux y sus derivados.
 
-# Asegúrate de que el script se ejecute como root
-if [ "$EUID" -ne 0 ]; then
-  echo "Por favor, ejecuta este script como root."
-  exit 1
-fi
-
-echo "Instalando y configurando paru..."
+echo "Instalando paru..."
 
 # verificamos si se produce un error:
-error=0
+flag_error=0
 
 # Instalar dependencias necesarias
-sudo pacman -S --needed --noconfirm base-devel git ranger && \
-{ echo "paru y sus dependencias han sido instaladas"; error=0; } || \
-{ echo "Error al instalar paru y sus dependencias."; error=1; }
+pacman -S --needed --noconfirm base-devel git ranger paru && \
+{ echo "paru: Instalado y sus dependencias necesarias."; flag_error=0; } || \
+{ echo "Error al instalar paru y sus dependencias."; flag_error=1; }
+
+
+read -p "Para configurar paru introduce nombre de usuario: " usuario
+echo "Cambiando a usuario '$usuario'..."
+# 2. Cambiar al directorio home del usuario especificado
+home_dir=$(getent passwd "$usuario" | cut -d: -f6)
+if [ -d "$home_dir" ]; then
+    cd "$home_dir" || exit 1  # Cambia al directorio home del usuario
+else
+    echo "Error: El directorio home para el usuario '$usuario' no existe."
+    exit 1
+fi
+
+exec sudo -u "$usuario" "$0" "$@"
+exit 1
+
+
+echo "Configurando paru..."
 
 CONFIG_FILE="$HOME/.config/paru/paru.conf"
 
@@ -43,7 +56,7 @@ EOF
 
 # Verificar si no ha habido ningún error y
 # si el archivo de configuración no existe o no contiene la palabra clave
-if [ $error -eq 0 ]; then
+if [ $flag_error -eq 0 ]; then
     # Verificar si el directorio de configuración de paru existe
     if [ ! -d $HOME/.config/paru ]; then
         # Crear el directorio de configuración de paru si no existe
@@ -60,20 +73,22 @@ if [ $error -eq 0 ]; then
             echo "El archivo no contiene la palabra '$keyword'. Se sobrescribirá el archivo."
             crear_configuracion
             echo "El archivo de configuración ha sido sobrescrito."
-            echo "Configuración completada. Paru está listo para usar."
-            echo "Recuerda ejecutar 'paru -Syu' para actualizar tu sistema y los paquetes AUR."
+            echo "Configuración completada. Paru está listo para actualizar."
         else
-            echo "El archivo ya contiene la palabra '$keyword'. No se realizarán cambios."
+            echo "WARNING: El archivo ya contiene la palabra '$keyword'. El archivo de configuración no ha sido modificado."
         fi
     else
         echo "El archivo $CONFIG_FILE no existe. Se creará el archivo."
         crear_configuracion
         echo "El archivo de configuración ha sido creado."
-        echo "Configuración completada. Paru está listo para usar."
-        echo "Recuerda ejecutar 'paru -Syu' para actualizar tu sistema y los paquetes AUR."
+        echo "Configuración completada. Paru está listo para actualizar."
     fi
 else
     echo "ERROR: El archivo de configuración no se ha creado: La instalación no se ha realizado con éxito"
 fi
+
+paru -Syy && \
+echo "Repositorios oficiales y AUR actualizados con paru." || \
+echo "ERROR: Repositorios oficiales y AUR no actualizados con paru."
 
 sudo rm -f "$0"
