@@ -7,6 +7,7 @@ flag_error=0
 # Mensaje del error:
 error=""
 
+checked_user="/temp/checked_user.tmp"
 
 # Instalar dependencias necesarias
 echo "Instalando dependencias de paru"
@@ -23,9 +24,9 @@ if [ ! -f "$checked_user" ]; then
     echo "el directorio existe"
         cd "$home_dir" # Cambiar al directorio home del usuario especificado
         echo "dentro del dir del user"
-        touch "/home/$usuario/checked_user.tmp" # Ejecutar el script como el usuario especificado
+        touch "$checked_user" # Ejecutar el script como el usuario especificado
         exec sudo -u "$usuario" "$0" "$@" || \
-        { echo "No es posible eecutar el script como el usuario $usuario."; exit 1; }
+        { echo "No es posible eecutar el script como el usuario $usuario."; sudo rm -f "$checked_user"; exit 1; }
     else
         echo "El directorio home para el usuario '$usuario' no existe."
         usuario=""
@@ -115,10 +116,11 @@ if [ $flag_error -eq 0 ]; then
     { flag_error=1; error="Repositorios oficiales y AUR no actualizados con paru."; }
 fi
 
+sudo rm -f "$checked_user"
+
 if [ "$flag_error" -ne 0 ]; then
     echo "ERROR: $error."
     exit $flag_error
 else
-    sudo rm -f "$HOME/checked_user.tmp"
     sudo rm -f "$0"
 fi
