@@ -19,10 +19,10 @@ sudo pacman -S --needed --noconfirm base-devel git ranger && \
 echo "Instaladas las dependencias necesarias para instalar paru" || \
 { flag_error=1; error="Error al instalar las dependencias."; }
 
+# Reiniciando script como usuario
 if [ ! -f "$checked_user" ]; then
     read -p "Para configurar paru introduce nombre de usuario: " usuario
-    echo "Cambiando a usuario '$usuario'..."
-    
+    echo "Cambiando a usuario '$usuario'..." 
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
     echo "el directorio existe"
@@ -116,6 +116,7 @@ if [ $flag_error -eq 0 ]; then
     { flag_error=1; error="Repositorios oficiales y AUR no actualizados con paru."; }
 fi
 
+# Limpiar los archivos temporales
 sudo rm -f "$checked_user"
 sudo rm -f "$0"
 
