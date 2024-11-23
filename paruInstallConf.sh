@@ -118,10 +118,9 @@ if [ $flag_error -eq 0 ]; then
 fi
 
 sudo rm -f "$checked_user"
+sudo rm -f "$0"
 
 if [ "$flag_error" -ne 0 ]; then
     echo "ERROR: $error."
-    exit $flag_error
-else
-    sudo rm -f "$0"
+    exit $flag_error 
 fi
