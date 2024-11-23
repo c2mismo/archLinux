@@ -10,6 +10,9 @@ error=""
 # y lo mantenemos accesible en el reinicio del script
 checked_user="/tmp/checked_user.tmp"
 
+# Actualizar la base de datos de paquetes
+sudo pacman -Sy
+
 # Instalar dependencias necesarias
 echo "Instalando dependencias de paru"
 sudo pacman -S --needed --noconfirm base-devel git ranger && \
