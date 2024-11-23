@@ -22,9 +22,9 @@ if [ -z "$usuario" ]; then
     if [ -d "$home_dir" ]; then
         cd "$home_dir" # Cambiar al directorio home del usuario especificado
         exec sudo -u "$usuario" "$0" "$@" || \ # Ejecutar el script como el usuario especificado
-        { flag_error=1; error="No es posible eecutar el script como el usuario $usuario."; }
+        { echo "No es posible eecutar el script como el usuario $usuario."; exit 1; }
     else
-        { flag_error=1; error="El directorio home para el usuario '$usuario' no existe."; }
+        echo "El directorio home para el usuario '$usuario' no existe."
         usuario=""
         exit 1
     fi
