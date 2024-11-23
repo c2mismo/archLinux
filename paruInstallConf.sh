@@ -10,7 +10,7 @@ error=""
 # Instalar dependencias necesarias
 echo "Instalando dependencias de paru"
 sudo pacman -S --needed --noconfirm base-devel git ranger && \
-{ flag_error=0; error="Instaladas las dependencias necesarias para instalar paru"; } || \
+echo "Instaladas las dependencias necesarias para instalar paru" || \
 { flag_error=1; error="Error al instalar las dependencias."; }
 
 read -p "Para configurar paru introduce nombre de usuario: " usuario
