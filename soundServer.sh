@@ -36,9 +36,7 @@ if [ ! -f "$checked_user" ]; then
     echo "Cambiando a usuario '$usuario'..." 
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
-        echo "el directorio existe"
         cd "$home_dir" # Cambiar al directorio home del usuario especificado
-        echo "dentro del dir del user"
         touch "$checked_user" # Ejecutar el script como el usuario especificado
         exec sudo -u "$usuario" "$0" "$@" || \
         { echo "No es posible ejecutar el script como el usuario $usuario."; sudo rm -f "$checked_user"; exit 1; }
@@ -97,7 +95,7 @@ fi
 if systemctl --user is-active --quiet pipewire.service > /dev/null 2>&1; then
     echo "pipewire.service ya está activo."
 else
-    echo "pipewire.service no está activo. Procediendo a habilitar e iniciar..."
+    echo -e "pipewire.service no está activo.\nProcediendo a habilitar e iniciar..."
     systemctl --user enable pipewire.service > /dev/null 2>&1
     echo "pipewire.service ha sido habilitado."
 fi
@@ -106,7 +104,7 @@ fi
 if systemctl --user is-active --quiet pipewire-pulse.service > /dev/null 2>&1; then
     echo "pipewire-pulse.service ya está activo."
 else
-    echo "pipewire-pulse.service no está activo. Procediendo a habilitar e iniciar..."
+    echo "pipewire-pulse.service no está activo.\nProcediendo a habilitar e iniciar..."
     systemctl --user enable pipewire-pulse.service > /dev/null 2>&1
     echo "pipewire-pulse.service ha sido habilitado."
 fi
