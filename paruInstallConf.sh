@@ -7,25 +7,28 @@ flag_error=0
 # Mensaje del error:
 error=""
 
+
 # Instalar dependencias necesarias
 echo "Instalando dependencias de paru"
 sudo pacman -S --needed --noconfirm base-devel git ranger && \
 echo "Instaladas las dependencias necesarias para instalar paru" || \
 { flag_error=1; error="Error al instalar las dependencias."; }
 
-read -p "Para configurar paru introduce nombre de usuario: " usuario
-echo "Cambiando a usuario '$usuario'..."
-# 2. Cambiar al directorio home del usuario especificado
-home_dir=$(getent passwd "$usuario" | cut -d: -f6)
-if [ -d "$home_dir" ]; then
-    cd "$home_dir" || exit 1  # Cambia al directorio home del usuario
-else
-    { flag_error=1; error="El directorio home para el usuario '$usuario' no existe."; }
+if [ -z "$usuario" ]; then
+    read -p "Para configurar paru introduce nombre de usuario: " usuario
+    echo "Cambiando a usuario '$usuario'..."
+    # 2. Cambiar al directorio home del usuario especificado
+    home_dir=$(getent passwd "$usuario" | cut -d: -f6)
+    if [ -d "$home_dir" ]; then
+        cd "$home_dir" || exit 1  # Cambia al directorio home del usuario
+    else
+        { flag_error=1; error="El directorio home para el usuario '$usuario' no existe."; }
+        usuario=""
+    fi
+    # Ejecutar el script como el usuario especificado
+    exec sudo -u "$usuario" "$0" "$@"
+    exit 1
 fi
-# Ejecutar el script como el usuario especificado
-exec sudo -u "$usuario" "$0" "$@"
-exit 1
-
 echo "Configurando paru como: $usuario en $home_dir"
 
 # Verificar si paru no está instalado y si no hubo errores
