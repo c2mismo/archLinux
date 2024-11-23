@@ -32,7 +32,7 @@ install "pavucontrol"     # Interfaz gráfica para controlar el servidor de soni
 
 # Reiniciando script como usuario
 if [ ! -f "$checked_user" ]; then
-    read -p "Para configurar paru introduce nombre de usuario: " usuario
+    read -p "Para configurar pipewire introduce nombre de usuario: " usuario
     echo "Cambiando a usuario '$usuario'..." 
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
