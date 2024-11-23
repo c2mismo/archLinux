@@ -8,13 +8,25 @@ if ! command -v paru &> /dev/null; then
   exit 1
 fi
 
-# Verificar si no se está ejecutando como root
-if [ "$EUID" -eq 0 ]; then
-    echo "Por favor, ejecuta este script como un usuario normal, no como root."
-    read -p "Introduce el nombre de usuario: " usuario
-    echo "Cambiando a usuario '$usuario'..."
-    exec sudo -u "$usuario" "$0" "$@"  # Reinicia el script como el usuario especificado
-    exit 1
+# Verificamos si se a introducido un nombre de usuario correcto
+# y lo mantenemos accesible en el reinicio del script
+checked_user="/tmp/checked_user.tmp"
+
+# Reiniciando script como usuario
+if [ ! -f "$checked_user" ]; then
+    read -p "Para configurar pipewire introduce nombre de usuario: " usuario
+    echo "Cambiando a usuario '$usuario'..." 
+    home_dir=$(getent passwd "$usuario" | cut -d: -f6)
+    if [ -d "$home_dir" ]; then
+        cd "$home_dir" # Cambiar al directorio home del usuario especificado
+        touch "$checked_user" # Ejecutar el script como el usuario especificado
+        exec sudo -u "$usuario" "$0" "$@" || \
+        { echo "No es posible ejecutar el script como el usuario $usuario."; sudo rm -f "$checked_user"; exit 1; }
+    else
+        echo "El directorio home para el usuario '$usuario' no existe."
+        usuario=""
+        exit 1
+    fi
 fi
 
 # Actualiza la base de datos de paquetes
@@ -33,9 +45,10 @@ install "lxqt"
 install "qt6"
 install "qt5-base"
 install "qt5-wayland"
+install "qt5-declarative"
 
 # Instala kwin_wayland, que es el compositor de KDE para Wayland
-install "xwayland-run-kwin"
+# install "xwayland-run-kwin"
 
 # Para ejecutar aplicaciones que requieren X11
 install "xorg-server"
@@ -43,6 +56,27 @@ install "xorg-xwayland"
 
 # Instalamos el gestor de sesión SDDM para iniciar LXQt con KWin en Wayland
 install "sddm"
+install "sddm-archlinux-theme-git"
+
+SDDM_CONF="/etc/sddm.conf"
+
+if [ ! -f "$SDDM_CONF" ]; then
+    sudo bash -c "cat > \"$SDDM_CONF\" << EOF
+[Desktop Entry]
+[Autologin]
+# User=c2mismo
+# Session=lxqt-wayland.desktop
+
+[General]
+NumLock=on
+
+[Theme]
+Current=archlinux
+EOF"
+else
+    echo "El archivo de sesión $SDDM_CONF no ha sido creado:"
+    echo "El archivo de sesión ya existe."
+fi
 
 LXQT_CONF="/usr/share/xsessions/lxqt-wayland.desktop"
 
@@ -52,8 +86,8 @@ if [ ! -f "$LXQT_CONF" ]; then
 [Desktop Entry]
 Name=LXQt (Wayland)
 Comment=This session starts LXQt on Wayland
-Exec=xwayland-run-kwin --session lxqt
-TryExec=xwayland-run-kwin
+Exec=startlxqtwayland
+TryExec=startlxqtwayland
 Type=Application
 EOF"
 else
@@ -74,4 +108,6 @@ fi
 # Mensaje de finalización
 echo "Instalación completada. Puedes iniciar sesión en LXQt (Wayland) desde el gestor de sesiones."
 
-sudo rm -f install_lxqt.sh
+# Limpiar los archivos temporales
+sudo rm -f "$checked_user"
+sudo rm -f "$0"
