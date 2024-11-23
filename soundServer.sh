@@ -36,7 +36,7 @@ if [ ! -f "$checked_user" ]; then
     echo "Cambiando a usuario '$usuario'..." 
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
-    echo "el directorio existe"
+        echo "el directorio existe"
         cd "$home_dir" # Cambiar al directorio home del usuario especificado
         echo "dentro del dir del user"
         touch "$checked_user" # Ejecutar el script como el usuario especificado
@@ -81,7 +81,7 @@ if [ ! -d "/etc/pipewire/media-session.d" ]; then
     echo "Copiando media-session.d a /etc/pipewire/..."
     sudo cp -r /usr/share/pipewire/media-session.d /etc/pipewire/
 else
-    echo "media-session.d ya existe en /etc/pipewire/."
+    echo "media-session.d ya existe en /etc/pipewire."
 fi
 
 # Copiar el directorio media-session.d de usuario si no existe
@@ -94,24 +94,24 @@ fi
 
 
 # Verificar y habilitar pipewire.service
-if systemctl --user is-active --quiet pipewire.service; then
+if systemctl --user is-active --quiet pipewire.service > /dev/null 2>&1; then
     echo "pipewire.service ya está activo."
 else
     echo "pipewire.service no está activo. Procediendo a habilitar e iniciar..."
-    systemctl --user enable pipewire.service
+    systemctl --user enable pipewire.service > /dev/null 2>&1
     echo "pipewire.service ha sido habilitado."
 fi
 
 # Verificar y habilitar pipewire-pulse.service
-if systemctl --user is-active --quiet pipewire-pulse.service; then
+if systemctl --user is-active --quiet pipewire-pulse.service > /dev/null 2>&1; then
     echo "pipewire-pulse.service ya está activo."
 else
     echo "pipewire-pulse.service no está activo. Procediendo a habilitar e iniciar..."
-    systemctl --user enable pipewire-pulse.service
+    systemctl --user enable pipewire-pulse.service > /dev/null 2>&1
     echo "pipewire-pulse.service ha sido habilitado."
 fi
 
-echo "Para que surja efecto se debe de reiniciar con el usuario para el que haya sido configurado"
+echo "Para que surja efecto se debe de reiniciar con el usuario para el que haya sido configurado".
 
 # Listar las salidas de audio
 # pw-cli info all | grep "sink"
@@ -121,6 +121,6 @@ echo "Para que surja efecto se debe de reiniciar con el usuario para el que haya
 # pw-cli info all | grep "source"
 # pw-cli info all | grep -B 36 -A 2 "source"
 
-
+# Limpiar los archivos temporales
 sudo rm -f "$checked_user"
 sudo rm -f "$0"
