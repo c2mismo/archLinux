@@ -508,22 +508,10 @@ paqueteria del repositorio de la comunidad
 AUR y a la vez gestiona los repositorios
 oficiales
 
-para compilar es necesario ser un usuario
-con permisos de administrador directamente
-como superadmin root no te lo permite
-
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/paruInstallConf.sh
 # chmod +x /usr/local/bin/paruInstallConf.sh
 # /usr/local/bin/paruInstallConf.sh
 
-
-VERIFICAR
-mejor instalar paru desde repos
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/paruInstall.sh
-# chmod +x paruInstall.sh
-# ./paruInstall.sh
-
-sino hay que instalar rust y compilar es muy pesado
 
 
 
