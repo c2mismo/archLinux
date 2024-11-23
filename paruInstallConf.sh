@@ -6,8 +6,9 @@
 flag_error=0
 # Mensaje del error:
 error=""
-
-checked_user="/temp/checked_user.tmp"
+# Verificamos si se a introducido un nombre de usuario correcto
+# y lo mantenemos accesible en el reinicio del script
+checked_user="/tmp/checked_user.tmp"
 
 # Instalar dependencias necesarias
 echo "Instalando dependencias de paru"
@@ -47,7 +48,7 @@ if ! pacman -Qi paru > /dev/null 2>&1 && [ $flag_error -eq 0 ]; then
     makepkg -si --noconfirm || { flag_error=1; error="Error al compilar paru."; }
     # Volver al directorio anterior y limpiar
     cd .. || { flag_error=1; error="Error al volver al directorio anterior."; }
-    rmsudo rm -f "$0" -rf paru || { flag_error=1; error="Error al limpiar el repositorio de paru."; }
+    rm -rf "$home_dir/paru" || { flag_error=1; error="Error al limpiar el repositorio de paru."; }
 
     if [ $flag_error -eq 0 ]; then
         echo "Paru ha sido instalado correctamente."
