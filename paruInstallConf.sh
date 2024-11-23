@@ -110,7 +110,7 @@ fi
 
 if [ $flag_error -eq 0 ]; then
     paru -Syy && \
-    echo -e "Repositorios oficiales y AUR actualizados con paru." || \
+    echo "Repositorios oficiales y AUR actualizados con paru." || \
     { flag_error=1; error="Repositorios oficiales y AUR no actualizados con paru."; }
 fi
 
