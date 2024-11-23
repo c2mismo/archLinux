@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# ELIMINAR
+
+
 # Instalamos y configuramos paru
 # un ayudante de AUR (Arch User Repository) para Arch Linux y sus derivados.
 
