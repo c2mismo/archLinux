@@ -20,7 +20,8 @@ if [ -z "$usuario" ]; then
     # 2. Cambiar al directorio home del usuario especificado
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
-        cd "$home_dir" || exit 1  # Cambia al directorio home del usuario
+        cd "$home_dir" || \
+        { flag_error=1; error="El directorio home para el usuario '$usuario' no es accesible."; }
     else
         { flag_error=1; error="El directorio home para el usuario '$usuario' no existe."; }
         usuario=""
