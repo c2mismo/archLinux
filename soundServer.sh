@@ -3,14 +3,9 @@
 # por seguridad será activado y configurado por usuario
 # cada usuario nuevo de ser configurado
 
-# Verificar si no se está ejecutando como root
-if [ "$EUID" -eq 0 ]; then
-    echo "Por favor, ejecuta este script como un usuario normal, no como root."
-    read -p "Introduce el nombre de usuario: " usuario
-    echo "Cambiando a usuario '$usuario'..."
-    exec sudo -u "$usuario" "$0" "$@"  # Reinicia el script como el usuario especificado
-    exit 1
-fi
+# Verificamos si se a introducido un nombre de usuario correcto
+# y lo mantenemos accesible en el reinicio del script
+checked_user="/tmp/checked_user.tmp"
 
 # Actualizar la base de datos de paquetes
 sudo pacman -Sy
@@ -32,6 +27,28 @@ install "pipewire-alsa"   # Proporciona compatibilidad con ALSA.
 install "pipewire-pulse"  # Permite que las aplicaciones que utilizan PulseAudio funcionen con PipeWire.
 install "pipewire-jack"   # Permite que las aplicaciones que utilizan JACK funcionen con PipeWire.
 install "pavucontrol"     # Interfaz gráfica para controlar el servidor de sonido.
+
+
+
+# Reiniciando script como usuario
+if [ ! -f "$checked_user" ]; then
+    read -p "Para configurar paru introduce nombre de usuario: " usuario
+    echo "Cambiando a usuario '$usuario'..." 
+    home_dir=$(getent passwd "$usuario" | cut -d: -f6)
+    if [ -d "$home_dir" ]; then
+    echo "el directorio existe"
+        cd "$home_dir" # Cambiar al directorio home del usuario especificado
+        echo "dentro del dir del user"
+        touch "$checked_user" # Ejecutar el script como el usuario especificado
+        exec sudo -u "$usuario" "$0" "$@" || \
+        { echo "No es posible ejecutar el script como el usuario $usuario."; sudo rm -f "$checked_user"; exit 1; }
+    else
+        echo "El directorio home para el usuario '$usuario' no existe."
+        usuario=""
+        exit 1
+    fi
+fi
+
 
 
 # Ruta de la carpeta de configuración de PipeWire
@@ -105,4 +122,5 @@ echo "Para que surja efecto se debe de reiniciar con el usuario para el que haya
 # pw-cli info all | grep -B 36 -A 2 "source"
 
 
-rm -f soundServer.sh
+sudo rm -f "$checked_user"
+sudo rm -f "$0"
