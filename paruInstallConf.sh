@@ -23,8 +23,8 @@ if [ ! -f "$checked_user" ]; then
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
         cd "$home_dir" # Cambiar al directorio home del usuario especificado
-        exec sudo -u "$usuario" "$0" "$@" &&\
-        touch "$checked_user" || \ # Ejecutar el script como el usuario especificado
+        touch "$checked_user" # Ejecutar el script como el usuario especificado
+        exec sudo -u "$usuario" "$0" "$@" || \
         { echo "No es posible eecutar el script como el usuario $usuario."; exit 1; }
     else
         echo "El directorio home para el usuario '$usuario' no existe."
