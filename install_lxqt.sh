@@ -62,7 +62,6 @@ SDDM_CONF="/etc/sddm.conf"
 
 if [ ! -f "$SDDM_CONF" ]; then
     sudo bash -c "cat > \"$SDDM_CONF\" << EOF
-[Desktop Entry]
 [Autologin]
 # User=c2mismo
 # Session=lxqt-wayland.desktop
