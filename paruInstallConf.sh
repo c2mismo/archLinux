@@ -27,15 +27,13 @@ if [ ! -f "$checked_user" ]; then
         echo "dentro del dir del user"
         touch "$checked_user" # Ejecutar el script como el usuario especificado
         exec sudo -u "$usuario" "$0" "$@" || \
-        { echo "No es posible eecutar el script como el usuario $usuario."; sudo rm -f "$checked_user"; exit 1; }
+        { echo "No es posible ejecutar el script como el usuario $usuario."; sudo rm -f "$checked_user"; exit 1; }
     else
         echo "El directorio home para el usuario '$usuario' no existe."
         usuario=""
         exit 1
     fi
 fi
-
-echo "Configurando paru como: $usuario en $home_dir"
 
 # Verificar si paru no está instalado y si no hubo errores
 if ! pacman -Qi paru > /dev/null 2>&1 && [ $flag_error -eq 0 ]; then
@@ -92,8 +90,6 @@ if [ $flag_error -eq 0 ]; then
     fi
     
     if [ -f "$CONFIG_FILE" ]; then
-        echo "El archivo $CONFIG_FILE existe."
-    
         # Verificar si el archivo contiene la palabra "keyword"
         if ! grep -q "$keyword" "$CONFIG_FILE"; then
             echo "El archivo no contiene la palabra '$keyword'. Sobrescribiendo archivo."
