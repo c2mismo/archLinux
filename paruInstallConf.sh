@@ -6,8 +6,6 @@
 flag_error=0
 # Mensaje del error:
 error=""
-# Verificamos que hemos reiniciado script con un usuario correcto
-checked_user="$HOME/checked_user.tmp"
 
 
 # Instalar dependencias necesarias
@@ -22,8 +20,10 @@ if [ ! -f "$checked_user" ]; then
     
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
+    echo "el directorio existe"
         cd "$home_dir" # Cambiar al directorio home del usuario especificado
-        touch "$checked_user" # Ejecutar el script como el usuario especificado
+        echo "dentro del dir del user"
+        touch "/home/$usuario/checked_user.tmp" # Ejecutar el script como el usuario especificado
         exec sudo -u "$usuario" "$0" "$@" || \
         { echo "No es posible eecutar el script como el usuario $usuario."; exit 1; }
     else
@@ -119,6 +119,6 @@ if [ "$flag_error" -ne 0 ]; then
     echo "ERROR: $error."
     exit $flag_error
 else
-    sudo rm -f "$checked_user"
+    sudo rm -f "$HOME/checked_user.tmp"
     sudo rm -f "$0"
 fi
