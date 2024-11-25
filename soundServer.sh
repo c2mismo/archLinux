@@ -26,7 +26,8 @@ install "pipewire"        # El servidor de sonido y video.
 install "pipewire-alsa"   # Proporciona compatibilidad con ALSA.
 install "pipewire-pulse"  # Permite que las aplicaciones que utilizan PulseAudio funcionen con PipeWire.
 install "pipewire-jack"   # Permite que las aplicaciones que utilizan JACK funcionen con PipeWire.
-install "pavucontrol"     # Interfaz gráfica para controlar el servidor de sonido.
+install "helvum"     # Interfaz gráfica para controlar el servidor de sonido para pipewire.
+install "qpwgraph"     # Interfaz gráfica más completa para controlar el servidor de sonido.
 
 
 
