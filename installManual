@@ -401,8 +401,6 @@ Instalamos y configuramos grub para el arranque
 
 
 
-# systemctl enable NetworkManager
-
 
 reiniciamos para comprobar si el sistema arranca por si mismo
 todabia sin gestor de ventanas
@@ -518,10 +516,88 @@ oficiales
 
 
 VERIFICAR
-Instalamos el servidor de audio pipewire
+Instalamos el servidor de AUDIO pipewire
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/soundServer.sh
 # chmod +x /usr/local/bin/soundServer.sh
 # /usr/local/bin/soundServer.sh
+
+
+
+Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la eficiencia
+
+
+sudo pacman -S iwd
+sudo systemctl enable iwd
+
+
+install "NetworkManager"
+
+nano /etc/NetworkManager/NetworkManager.conf
+[device]
+wifi.backend=iwd
+
+
+# Verificar si NetworkManager está habilitado antes de habilitar el servicio
+if systemctl is-enabled NetworkManager &> /dev/null; then
+    echo "El servicio NetworkManager ya está habilitado."
+else
+    sudo systemctl enable NetworkManager
+    echo "NetworkManager ha sido habilitado para iniciar en el arranque."
+fi
+
+
+permite cambiar incluso el modo de la targeta de red
+wireless_tools
+
+configuraciones mas completas y compatibiladad con targetas antiguas
+para usar con NetworkManager configurar como backend prefiero iwd.
+wpa_supplicant
+
+
+
+
+
+
+$ sudo paru -S sddm
+
+$ sudo systemctl enable sddm.service
+$ sudo reboot
+
+
+si todo ha ido bien estaras navegando por el gestor de escritorio
+
+
+# Instalamos el gestor de sesión SDDM para iniciar LXQt con KWin en Wayland
+install "sddm"
+install "sddm-archlinux-theme-git"
+
+SDDM_CONF="/etc/sddm.conf"
+
+if [ ! -f "$SDDM_CONF" ]; then
+    sudo bash -c "cat > \"$SDDM_CONF\" << EOF
+[Autologin]
+# User=c2mismo
+# Session=lxqt-wayland.desktop
+
+[General]
+NumLock=on
+
+[Theme]
+Current=archlinux
+EOF"
+else
+    echo "El archivo de sesión $SDDM_CONF no ha sido creado:"
+    echo "El archivo de sesión ya existe."
+fi
+
+
+# Verificar si SDDM está habilitado antes de habilitar el servicio
+if systemctl is-enabled sddm.service &> /dev/null; then
+    echo "El servicio SDDM ya está habilitado."
+else
+    sudo systemctl enable sddm.service
+    echo "SDDM ha sido habilitado para iniciar en el arranque."
+fi
 
 
 
@@ -531,7 +607,9 @@ Instalamos el servidor de audio pipewire
 
 
 kde mínimo para mayor integridad y minimo un terminal y un explorador de archivos
-# paru -S plasma-desktop plasma-workspace plasma5-integration qterminal pcmanfm-qt
+# paru -S plasma-desktop plasma-workspace kwayland egl-wayland plasma-wayland-protocols plasma-nm plasma5-integration
+
+Administrador de red para KDE plasma-nm
 
 kwayland es una biblioteca que proporciona la integración de KDE con el protocolo Wayland.
 Wayland es un protocolo moderno que reemplaza a X11 como el sistema de ventanas en Linux,
@@ -567,16 +645,56 @@ sudo ./installLxqt.sh
 
 lxqt
  packagekit-qt6
-paru -S qterminal pcmanfm-qt discover pamac-aur firefox vlc mpv
 
 
-$ sudo paru -S sddm
-
-$ sudo systemctl enable sddm.service
-$ sudo reboot
 
 
-si todo ha ido bien estaras navegando por el gestor de escritorio
+
+
+
+
+
+
+
+
+Aplicaciones
+
+# Actualiza la base de datos de paquetes
+paru -Sy
+
+# Función para instalar paquetes
+install() {
+    local option="$1"
+    if ! paru -Qi "$option" > /dev/null 2>&1; then
+        paru -S --noconfirm "$option"
+    fi
+}
+
+
+Smartmontools es un conjunto de herramientas que permite monitorear y gestionar
+el estado de los discos duros y unidades de estado sólido (SSD) utilizando
+la tecnología S.M.A.R.T. (Self-Monitoring, Analysis, and Reporting Technology)
+smartmontools
+usos
+sudo smartctl -a /dev/sda
+sudo smartctl -t short /dev/sda
+sudo smartctl -t long /dev/sda
+sudo systemctl enable smartd
+sudo systemctl start smartd
+
+paru -S firefox vlc mpv
+gestores de paquetes AUR
+pamac-qt octopi discover (esta última permita Flatpak y Snap)
+# htop btop
+# install "lxterminal" qterminal pcmanfm-qt
+
+Si buscas editores de texto optimizados para Qt con integración de GIT:
+Kate es una excelente opcion, tiene soporte para Git a través de plugins
+QOwnNotes es ideal si necesitas un editor de notas con características adicionales, mientras que
+Qt Creator es perfecto si trabajas en proyectos de desarrollo (IDE) en Qt.
+Interfaz gráfica para realizar operaciones de Git (commit, push, pull, branch, etc.).
+
+
 
 
 
@@ -585,7 +703,7 @@ zsh
 
 si todo va correcto
 
-a por el gestor de ventanas
+
 
 htop glances fastfetch
 paru -S spotify visual-studio-code-bin
