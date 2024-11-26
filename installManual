@@ -526,11 +526,11 @@ Instalamos el servidor de AUDIO pipewire
 Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la eficiencia
 
 
-sudo pacman -S iwd
-sudo systemctl enable iwd
+pacman -S iwd
+systemctl enable iwd
 
 
-install "NetworkManager"
+install "networkmanager"
 
 nano /etc/NetworkManager/NetworkManager.conf
 [device]
@@ -549,9 +549,9 @@ fi
 permite cambiar incluso el modo de la targeta de red
 wireless_tools
 
-configuraciones mas completas y compatibiladad con targetas antiguas
+wpa_supplicant configuraciones mas completas y compatibiladad con targetas antiguas
 para usar con NetworkManager configurar como backend prefiero iwd.
-wpa_supplicant
+
 
 
 
@@ -564,13 +564,19 @@ $ sudo systemctl enable sddm.service
 $ sudo reboot
 
 
-si todo ha ido bien estaras navegando por el gestor de escritorio
+
 
 
 # Instalamos el gestor de sesión SDDM para iniciar LXQt con KWin en Wayland
 install "sddm"
+
+como usuario:
 install "sddm-archlinux-theme-git"
 
+
+
+omito esto
+--------------------------------
 SDDM_CONF="/etc/sddm.conf"
 
 if [ ! -f "$SDDM_CONF" ]; then
@@ -589,7 +595,7 @@ else
     echo "El archivo de sesión $SDDM_CONF no ha sido creado:"
     echo "El archivo de sesión ya existe."
 fi
-
+--------------------------------------------
 
 # Verificar si SDDM está habilitado antes de habilitar el servicio
 if systemctl is-enabled sddm.service &> /dev/null; then
@@ -607,9 +613,12 @@ fi
 
 
 kde mínimo para mayor integridad y minimo un terminal y un explorador de archivos
-# paru -S plasma-desktop plasma-workspace kwayland egl-wayland plasma-wayland-protocols plasma-nm plasma5-integration
+# paru -S plasma-desktop plasma-workspace kwayland egl-wayland plasma-wayland-protocols plasma-nm bluez bluez-utils bluedevil
+
+no instalado plasma5-integration
 
 Administrador de red para KDE plasma-nm
+kpipewire
 
 kwayland es una biblioteca que proporciona la integración de KDE con el protocolo Wayland.
 Wayland es un protocolo moderno que reemplaza a X11 como el sistema de ventanas en Linux,
@@ -630,13 +639,20 @@ o específico que aún dependa de Qt5.
 themes y tal para kde
 https://store.kde.org/p/1293160
 
-decoración de ventanas mas rapido oxigen que bleezer y oxigen viene por defecto
+decoración de ventanas mas rapido oxigen que bleezer
+
+1. Ubicación de los Archivos de Configuración
+
+Los archivos de configuración de KDE Plasma se encuentran principalmente en el directorio de configuración del usuario, que suele ser ~/.config/. Algunos de los archivos y directorios más relevantes son:
+
+    ~/.config/plasma-org.kde.plasma.desktop-appletsrc: Este archivo contiene la configuración de los paneles y los widgets en el escritorio.
+    ~/.config/kdeglobals: Aquí se almacenan configuraciones globales para el entorno de KDE, como temas, colores y fuentes.
+    ~/.config/kwinrc: Este archivo contiene configuraciones específicas para el gestor de ventanas KWin, que es responsable de la gestión de ventanas en KDE Plasma.
+    ~/.config/kscreenlockerrc: Configuraciones relacionadas con el protector de pantalla y la pantalla de bloqueo.
 
 
 
-
-
-Instalamos el servidor de audio pipewire
+Instalamos el entorno de escritorio
 $ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/installLxqt.sh
 
 chmod +x installLxqt.sh
@@ -687,6 +703,30 @@ gestores de paquetes AUR
 pamac-qt octopi discover (esta última permita Flatpak y Snap)
 # htop btop
 # install "lxterminal" qterminal pcmanfm-qt
+
+terminal
+paru -S contour
+~/.config/contour/contour.toml
+
+# Configuración global
+[global]
+shell = "/bin/bash"  # Cambia esto a tu shell preferido
+initial_working_directory = "$HOME"  # Directorio inicial
+
+# Configuración de perfiles
+[[profiles]]
+name = "Default"
+color_scheme = "Solarized Dark"  # Cambia el esquema de color
+font = "Fira Code"  # Cambia la fuente Monospace
+font_size = 12.0  # Tamaño de la fuente 18.0
+
+# Configuración de teclas
+[key_bindings]
+# Ejemplo de un atajo de teclado
+ctrl+shift+t = "new_tab"  # Abre una nueva pestaña
+
+
+
 
 Si buscas editores de texto optimizados para Qt con integración de GIT:
 Kate es una excelente opcion, tiene soporte para Git a través de plugins
