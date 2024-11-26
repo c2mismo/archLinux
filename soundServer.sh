@@ -26,10 +26,12 @@ install "pipewire"        # El servidor de sonido y video.
 install "pipewire-alsa"   # Proporciona compatibilidad con ALSA.
 install "pipewire-pulse"  # Permite que las aplicaciones que utilizan PulseAudio funcionen con PipeWire.
 install "pipewire-jack"   # Permite que las aplicaciones que utilizan JACK funcionen con PipeWire.
-install "helvum"     # Interfaz gráfica para controlar el servidor de sonido para pipewire.
-install "qpwgraph"     # Interfaz gráfica más completa para controlar el servidor de sonido.
+install "pavucontrol-qt"  # Control de volumen
+install "easyeffects"     # Herramienta avanzada para manipulación de audio que incluye un ecualizador, limitador, compresor y más.
+install "qpwgraph"        # Interfaz gráfica más completa para controlar el servidor de sonido.
 
-
+# pagina para configurar easyeffects y normalizar audio
+# https://www.thushanfernando.com/notes/popos-pipewire-loudness/
 
 # Reiniciando script como usuario
 if [ ! -f "$checked_user" ]; then
