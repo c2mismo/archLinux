@@ -682,7 +682,7 @@ sudo smartctl -t long /dev/sda
 sudo systemctl enable smartd
 sudo systemctl start smartd
 
-paru -S firefox vlc mpv
+paru -S firefox vlc mpv archlinux-wallpaper
 gestores de paquetes AUR
 pamac-qt octopi discover (esta última permita Flatpak y Snap)
 # htop btop
