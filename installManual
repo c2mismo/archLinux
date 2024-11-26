@@ -477,7 +477,11 @@ $ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/insta
 chmod +x install_i9.sh
 ./install_i9.sh
 
-Probar mas adelante descomentar las lineas que hacen referencia a "VideoRam"
+
+Instalando los servicios de bluetooth
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/btInstall.sh
+# chmod +x btInstall.sh
+# ./btInstall.sh
 
 
 
@@ -496,7 +500,6 @@ configuramos pacman y añadimos los repositorios
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanRepo.sh
 # chmod +x pacmanRepo.sh
 # ./pacmanRepo.sh
-
 
 
 
@@ -613,15 +616,10 @@ fi
 
 
 kde mínimo para mayor integridad y minimo un terminal y un explorador de archivos
-# paru -S plasma-desktop plasma-workspace kwayland egl-wayland plasma-wayland-protocols plasma-nm bluez bluez-utils bluedevil
+# paru -S plasma-desktop plasma-workspace kwayland egl-wayland plasma-wayland-protocols plasma-nm
 
-sudo systemctl enable bluetooth.service
-sudo systemctl start bluetooth.service
 
-bluetoothctl
-journalctl -xe | grep bluetooth
 
-Bluetooth con dos sistemas operativos diferentes
 
 
 
@@ -757,7 +755,7 @@ font_size = 12.0  # Tamaño de la fuente 18.0
 # Alacritty Configuration File
 
 mkdir -p ~/.config/alacritty
-cp /usr/share/doc/alacritty/alacritty.yml ~/.config/alacritty/
+nano ~/.config/alacritty/alacritty.yml
 
 window:
   opacity: 0.9
