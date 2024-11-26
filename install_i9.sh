@@ -32,14 +32,21 @@ install "vulkan-intel"
 #para monitorear el rendimiento de tu GPU Intel en Wayland
 install "intel-gpu-tools"
 
+install "cpupower"
+
 # Herramientas para la gráfica
 install "thermald"
 
-systemctl enable thermald
+# Verificar y habilitar thermald.service
+if systemctl --user is-active --quiet thermald.service > /dev/null 2>&1; then
+    echo "thermald.service ya está activo."
+else
+    echo "thermald.service no está activo.\nProcediendo a habilitar e iniciar..."
+    systemctl --user enable thermald.service > /dev/null 2>&1
+    echo "thermald.service ha sido habilitado."
+fi
 
-install "cpupower"
-
-# Configuración solo para Xorg, para Wayland consulta IA:
+# Configuración solo para Xorg, para Wayland no realizar:
 # "¿Qué herramientas de KDE Plasma puedo usar para ajustar
 # el rendimiento y la gestión de energía en Wayland?"
 
@@ -100,4 +107,5 @@ install "cpupower"
 
 echo "Configuracion para i9 terminada."
 
-rm install_i9.sh
+# Limpiar los archivos temporales
+sudo rm -f "$0"
