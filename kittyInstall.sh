@@ -56,56 +56,88 @@ fi
 KITTY_CONFIG="$HOME/.config/kitty/kitty.conf"
 
 cat > "$KITTY_CONFIG" << EOF
+# Configuración personalizada.
+# Warning: No incluir comentarios el la misma línea de la configuración, da error.
+
 # Incluye el archivo colors.conf en kitty.conf y configura las fuentes:
+include solarized_dark.conf
+# Establece la familia de fuentes
+font_family monospace
+# Selección automática de fuente en negrita
+bold_font auto
+# Selección automática de fuente en cursiva
+italic_font auto
+# Selección automática de fuente en negrita cursiv
+bold_italic_font autoa
+# Tamaño de la fuente
+font_size 14.0
+# Espaciado entre letras
+font_spacing 0.5
+# Espaciado entre líneas
+line_height 1.2
+# Suavizado de texto
+antialiasing true
+# Número de líneas en el historial
+scrollback_lines 2000
 
-include colors.conf  # Incluye los colores del archivo colors.conf
-font_family monospace  # Establece la familia de fuentes
-bold_font auto  # Selección automática de fuente en negrita
-italic_font auto  # Selección automática de fuente en cursiva
-bold_italic_font auto  # Selección automática de fuente en negrita cursiva
-font_size 14.0  # Tamaño de la fuente
-font_spacing 0.5  # Espaciado entre letras
-line_height 1.2  # Espaciado entre líneas
-antialiasing true  # Suavizado de texto
+# Tipo de shell por defecto bash, zsh, etc
+# shell zsh
 
-scrollback_lines 50  # Número de líneas en el historial
-
-# shell zsh  # Tipo de shell por defecto bash, zsh, etc
-
-# Configuración para ocultar el cursor tras un tiempo de inactividad:
-
-mouse_hide_wait 3.0  # Oculta el cursor tras 3 segundos de inactividad:
+# Configuración para ocultar el cursor tras segundos de inactividad:
+mouse_hide_wait 3.0
 
 # Configuración para la detección automática de URLs:
 
-detect_urls yes  # Habilita la detección automática de URLs
-url_color #0087bd  # Color de las URLs
-url_style double  # Estilo de subrayado de las URLs
-open_url_with default  # Navegador predeterminado para abrir URLs
-url_prefixes ftp ssh http https git irc sftp  # Prefijos de URLs a detectar
-show_hyperlink_targets yes  # Muestra los objetivos de los hipervínculos
+# Habilita la detección automática de URLs
+detect_urls yes
+# Color de las URLs
+url_color #0087bd
+# Estilo de subrayado de las URLs
+url_style double
+# Navegador predeterminado para abrir URLs
+open_url_with default
+# Prefijos de URLs a detectar
+url_prefixes ftp ssh http https git irc sftp
+# Muestra los objetivos de los hipervínculos
+show_hyperlink_targets yes
 
 # Configura el manejo de ventanas similar a Tmux:
 
-draw_minimal_borders yes  # Bordes mínimos
-placement_strategy center  # Estrategia de colocación de ventanas
-active_border_color #808000  # Color del borde de la ventana activa
-inactive_text_alpha 0.5  # Transparencia del texto en ventanas inactivas
+# Bordes mínimos
+draw_minimal_borders yes
+# Estrategia de colocación de ventanas
+placement_strategy center
+# Color del borde de la ventana activa
+active_border_color #808000
+# Transparencia del texto en ventanas inactivas
+inactive_text_alpha 0.5
 
 # Configuración avanzada de pestañas similar a tmux:
 
-tab_bar_edge bottom  # Pestañas en la parte inferior
-tab_bar_margin_with 0.1  # Margen entre pestañas
-tab_bar_style powerline  # Estilo de las pestañas
-tab_bar_min_tabs 1  # Mínimo de pestañas
-inactive_tab_background #e06c75  # Fondo de pestañas inactivas
-inactive_tab_foreground #000000  # Color de texto de pestañas inactivas
-active_tab_background #98c379  # Fondo de pestañas activas
-bell_border_color #ff5a00  # Color de borde de notificación
-tab_separator " |"  # Separador entre pestañas
-tab_activity_symbol none  # Sin símbolo de actividad
-tab_bar_margin_color #FFFF00  # Color del margen de la barra de pestañas
-background_blur 0.6  # Desenfoque del fondo
+# Pestañas en la parte inferior
+tab_bar_edge bottom
+# Margen entre pestañas
+tab_bar_margin_with 0.1
+# Estilo de las pestañas
+tab_bar_style powerline
+# Mínimo de pestañas
+tab_bar_min_tabs 1
+# Fondo de pestañas inactivas
+inactive_tab_background #e06c75
+# Color de texto de pestañas inactivas
+inactive_tab_foreground #000000
+# Fondo de pestañas activas
+active_tab_background #98c379
+# Color de borde de notificación
+bell_border_color #ff5a00
+# Separador entre pestañas
+tab_separator " |"
+# Sin símbolo de actividad
+tab_activity_symbol none
+# Color del margen de la barra de pestañas
+tab_bar_margin_color #FFFF00
+# Desenfoque del fondo me da error y consume recursos GPU
+# background_blur 0.6
 
 # Aceleeracion GPU
 
@@ -129,30 +161,33 @@ map ctrl+shift+right resize_window narrower 5
 EOF
 
 # Crear el archivo de configuracion do los colores de kitty
-KITTY_COLORS="$HOME/.config/kitty/colors.conf"
+KITTY_COLORS="$HOME/.config/kitty/solarized_dark.conf"
 
 cat > "$KITTY_COLORS" << EOF
-background #1d1f21
-foreground #c4c8c5
-cursor #c4c8c5
-selection_background #363a41
-color0 #000000
-color8 #000000
-color1 #cc6666
-color9 #cc6666
-color2 #b5bd68
-color10 #b5bd68
-color3 #f0c574
-color11 #f0c574
-color4 #80a1bd
-color12 #80a1bd
-color5 #b294ba
-color13 #b294ba
-color6 #8abdb6
-color14 #8abdb6
-color7 #fffefe
-color15 #fffefe
-selection_foreground #1d1f2
+# Solarized Dark Color Scheme for Kitty
+
+background #002b36
+foreground #839496
+cursor #93a1a1
+selection_background #073642
+selection_foreground #93a1a1
+
+color0  #073642
+color1  #dc322f
+color2  #859900
+color3  #b58900
+color4  #268bd2
+color5  #d33682
+color6  #2aa198
+color7  #eee8d5
+color8  #657b83
+color9  #cb4b16
+color10 #586e75
+color11 #657b83
+color12 #839496
+color13 #6c71c4
+color14 #93a1a1
+color15 #fdf6e3
 EOF
 
 echo "Kitty instalado y configurado."
