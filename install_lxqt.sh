@@ -42,13 +42,21 @@ install() {
 
 # Instala el entorno de escritorio LXQt y las bibliotecas necesarias para Qt6 y Qt5.
 install "lxqt"
+kwin
+~/.xinitrc
+exec kwin_wayland
 # install "qt6"
 # install "qt5-base"
 # install "qt5-wayland"
 # install "qt5-declarative"
 
-# Instala kwin_wayland, que es el compositor de KDE para Wayland
+libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons
+
+# Instala kwin_wayland, que es el compositor de KDE para Wayland ya no necesario
 # install "xwayland-run-kwin"
+
+# si falla el arranque de wayland intentar instalar
+# lxqt-wayland-session
 
 # Para ejecutar aplicaciones que requieren X11
 # install "xorg-server"
