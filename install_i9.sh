@@ -21,13 +21,13 @@ install "intel-media-driver"
 
 install "mesa"
 
-install "xorg-server"
-
 install "lib-intel-drive"
 
 install "vulkan-intel"
 
-install "xorg-xinit"
+# install "xorg-server"
+
+# install "xorg-xinit"
 
 #para monitorear el rendimiento de tu GPU Intel en Wayland
 install "intel-gpu-tools"
@@ -48,22 +48,22 @@ install "cpupower"
 # mejorar la fluidez, y la asignación de memoria de video.
 
 # Ruta del archivo de configuración
-CONFIG_FILE="/etc/X11/xorg.conf.d/20-intel.conf"
-CONFIG_DIR="/etc/X11/xorg.conf.d"
+#CONFIG_FILE="/etc/X11/xorg.conf.d/20-intel.conf"
+#CONFIG_DIR="/etc/X11/xorg.conf.d"
 
 # Función para crear el archivo de configuración
-crear_configuracion() {
-    cat > "$CONFIG_FILE" << EOF
-Section "Device"
-    Identifier  "Intel Graphics"
-    Driver      "intel"
+#crear_configuracion() {
+#    cat > "$CONFIG_FILE" << EOF
+#Section "Device"
+#    Identifier  "Intel Graphics"
+#    Driver      "intel"
     
     # Método de aceleración gráfico
-    Option      "AccelMethod"  "sna"  # SNA es el método de aceleración recomendado para gráficos Intel
+#    Option      "AccelMethod"  "sna"  # SNA es el método de aceleración recomendado para gráficos Intel
 
     # Opciones para mejorar la experiencia visual
-    Option      "TearFree"     "true"  # Elimina el desgarro de la pantalla
-    Option      "TripleBuffer"  "true"  # Mejora la fluidez en la reproducción de video y juegos
+#    Option      "TearFree"     "true"  # Elimina el desgarro de la pantalla
+#    Option      "TripleBuffer"  "true"  # Mejora la fluidez en la reproducción de video y juegos
 
     # Asignación de memoria de video
     # La memoria de video se toma de la RAM del sistema
@@ -75,28 +75,28 @@ Section "Device"
     # Option      "VideoRam"     "16777216"  # Para 16 GB en KB
 
     # Configuración de pantalla completa
-    Option      "FullScreen"   "true"  # Habilita el modo de pantalla completa para aplicaciones
-EndSection
-EOF
-}
+#    Option      "FullScreen"   "true"  # Habilita el modo de pantalla completa para aplicaciones
+#EndSection
+#EOF
+#}
 
 # Verificar si el archivo de configuración existe
-if [ -f "$CONFIG_FILE" ]; then
-    echo "El archivo $CONFIG_FILE ya existe."
+#if [ -f "$CONFIG_FILE" ]; then
+#    echo "El archivo $CONFIG_FILE ya existe."
 
     # Verificar si el archivo contiene la palabra "intel"
-    if ! grep -q "intel" "$CONFIG_FILE"; then
-        echo "El archivo no contiene la palabra 'intel'. Se sobrescribirá el archivo."
-        crear_configuracion
-        echo "El archivo de configuración ha sido sobrescrito."
-    else
-        echo "El archivo ya contiene la palabra 'intel'. No se realizarán cambios."
-    fi
-else
-    echo "El archivo $CONFIG_FILE no existe. Se creará el archivo."
-    crear_configuracion
-    echo "El archivo de configuración ha sido creado."
-fi
+#    if ! grep -q "intel" "$CONFIG_FILE"; then
+#        echo "El archivo no contiene la palabra 'intel'. Se sobrescribirá el archivo."
+#        crear_configuracion
+#        echo "El archivo de configuración ha sido sobrescrito."
+#    else
+#        echo "El archivo ya contiene la palabra 'intel'. No se realizarán cambios."
+#    fi
+#else
+#    echo "El archivo $CONFIG_FILE no existe. Se creará el archivo."
+#    crear_configuracion
+#    echo "El archivo de configuración ha sido creado."
+#fi
 
 echo "Configuracion para i9 terminada."
 
