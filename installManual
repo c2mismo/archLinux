@@ -518,7 +518,7 @@ oficiales
 
 
 
-VERIFICAR
+VERIFICAR las configuraciones de usuario
 Instalamos el servidor de AUDIO pipewire
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/soundServer.sh
 # chmod +x /usr/local/bin/soundServer.sh
@@ -725,6 +725,16 @@ install() {
         paru -S --noconfirm "$option"
     fi
 }
+
+instalamos kitty
+
+# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/kittyInstall.sh
+# chmod +x /usr/local/bin/kittyInstall.sh
+# /usr/local/bin/kittyInstall.sh
+
+
+
+
 
 
 Smartmontools es un conjunto de herramientas que permite monitorear y gestionar
