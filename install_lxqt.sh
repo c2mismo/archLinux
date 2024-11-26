@@ -14,7 +14,7 @@ checked_user="/tmp/checked_user.tmp"
 
 # Reiniciando script como usuario
 if [ ! -f "$checked_user" ]; then
-    read -p "Para configurar pipewire introduce nombre de usuario: " usuario
+    read -p "Para configurar lxqt introduce nombre de usuario: " usuario
     echo "Cambiando a usuario '$usuario'..." 
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
@@ -42,34 +42,34 @@ install() {
 
 # Instala el entorno de escritorio LXQt y las bibliotecas necesarias para Qt6 y Qt5.
 install "lxqt"
-install "qt6"
-install "qt5-base"
-install "qt5-wayland"
-install "qt5-declarative"
+# install "qt6"
+# install "qt5-base"
+# install "qt5-wayland"
+# install "qt5-declarative"
 
 # Instala kwin_wayland, que es el compositor de KDE para Wayland
 # install "xwayland-run-kwin"
 
 # Para ejecutar aplicaciones que requieren X11
-install "xorg-server"
-install "xorg-xwayland"
+# install "xorg-server"
+# install "xorg-xwayland"
 
-LXQT_CONF="/usr/share/xsessions/lxqt-wayland.desktop"
+# LXQT_CONF="/usr/share/xsessions/lxqt-wayland.desktop"
 
 # Creamos un archivo de sesión para LXQt en Wayland
-if [ ! -f "$LXQT_CONF" ]; then
-    sudo bash -c "cat > \"$LXQT_CONF\" << EOF
-[Desktop Entry]
-Name=LXQt (Wayland)
-Comment=This session starts LXQt on Wayland
-Exec=startlxqtwayland
-TryExec=startlxqtwayland
-Type=Application
-EOF"
-else
-    echo "El archivo de sesión $LXQT_CONF no ha sido creado:"
-    echo "El archivo de sesión ya existe."
-fi
+# if [ ! -f "$LXQT_CONF" ]; then
+#    sudo bash -c "cat > \"$LXQT_CONF\" << EOF
+# [Desktop Entry]
+# Name=LXQt (Wayland)
+# Comment=This session starts LXQt on Wayland
+# Exec=startlxqtwayland
+# TryExec=startlxqtwayland
+# Type=Application
+# EOF"
+# else
+#    echo "El archivo de sesión $LXQT_CONF no ha sido creado:"
+#    echo "El archivo de sesión ya existe."
+# fi
 
 
 # Mensaje de finalización
