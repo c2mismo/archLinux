@@ -754,7 +754,7 @@ pamac-qt octopi discover (esta última permita Flatpak y Snap)
 # htop btop
 # install "lxterminal" qterminal pcmanfm-qt
 
-terminal
+terminal prefiero kitty
 paru -S alacritty
 
 color_scheme = "Solarized Dark"  # Cambia el esquema de color
