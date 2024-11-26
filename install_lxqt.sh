@@ -54,29 +54,6 @@ install "qt5-declarative"
 install "xorg-server"
 install "xorg-xwayland"
 
-# Instalamos el gestor de sesión SDDM para iniciar LXQt con KWin en Wayland
-install "sddm"
-install "sddm-archlinux-theme-git"
-
-SDDM_CONF="/etc/sddm.conf"
-
-if [ ! -f "$SDDM_CONF" ]; then
-    sudo bash -c "cat > \"$SDDM_CONF\" << EOF
-[Autologin]
-# User=c2mismo
-# Session=lxqt-wayland.desktop
-
-[General]
-NumLock=on
-
-[Theme]
-Current=archlinux
-EOF"
-else
-    echo "El archivo de sesión $SDDM_CONF no ha sido creado:"
-    echo "El archivo de sesión ya existe."
-fi
-
 LXQT_CONF="/usr/share/xsessions/lxqt-wayland.desktop"
 
 # Creamos un archivo de sesión para LXQt en Wayland
@@ -92,15 +69,6 @@ EOF"
 else
     echo "El archivo de sesión $LXQT_CONF no ha sido creado:"
     echo "El archivo de sesión ya existe."
-fi
-
-
-# Verificar si SDDM está habilitado antes de habilitar el servicio
-if systemctl is-enabled sddm.service &> /dev/null; then
-    echo "El servicio SDDM ya está habilitado."
-else
-    sudo systemctl enable sddm.service
-    echo "SDDM ha sido habilitado para iniciar en el arranque."
 fi
 
 
