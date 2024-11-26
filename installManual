@@ -615,6 +615,48 @@ fi
 kde mínimo para mayor integridad y minimo un terminal y un explorador de archivos
 # paru -S plasma-desktop plasma-workspace kwayland egl-wayland plasma-wayland-protocols plasma-nm bluez bluez-utils bluedevil
 
+sudo systemctl enable bluetooth.service
+sudo systemctl start bluetooth.service
+
+bluetoothctl
+journalctl -xe | grep bluetooth
+
+
+nos aseguramos que el sistema no haga hibernación
+
+deshabilitar la hibernacion:
+cp /etc/systemd/logind.conf /etc/systemd/logind.conf.backup
+sudo nano /etc/systemd/logind.conf
+
+#HandlePowerKey=ignore
+por
+HandlePowerKey=ignore
+
+#HandlePowerKeyLongPress=poweroff
+por
+HandlePowerKeyLongPress=poweroff
+
+#HandleHibernateKey=hibernate
+por
+HandleHibernateKey=ignore
+
+#HandleHibernateKeyLongPress=ignore
+por
+HandleHibernateKeyLongPress=ignore
+
+#HandleSuspendKeyLongPress=hibernate
+por
+HandleSuspendKeyLongPress=ignore
+
+#HibernateKeyIgnoreInhibited=no
+por
+HibernateKeyIgnoreInhibited=no
+
+sudo systemctl restart systemd-logind
+
+
+
+
 no instalado plasma5-integration
 
 Administrador de red para KDE plasma-nm
