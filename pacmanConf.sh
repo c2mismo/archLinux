@@ -84,12 +84,20 @@ if ! pacman -Qi pacman-contrib > /dev/null 2>&1; then
     echo "pacman-contrib: Previamente instalando..."
 fi
 
+
+# Crear carpeta hook para paccache
+HOOK_DIR="/etc/pacman.d/hooks"
+
+# Verificar si la carpeta de configuración existe
+if [ ! -d "$HOOK_DIR" ]; then
+    echo "La carpeta $HOOK_DIR no existe. Creando la carpeta..."
+    mkdir -p "$HOOK_DIR"
+fi
+
 # Crear hook para paccache
 HOOK_FILE="/etc/pacman.d/hooks/clean_package_cache.hook"
 
 echo "Creando hook para paccache..."
-
-mkdir -p /etc/pacman.d/hooks
 
 cat > "$HOOK_FILE" << EOF
 [Trigger]
