@@ -41,16 +41,22 @@ install() {
 }
 
 # Instala el entorno de escritorio LXQt y las bibliotecas necesarias para Qt6 y Qt5.
+# Ya viene por defecto con el servidor gráfico Wayland
+# Pero hay que instalarleun compositor de ventanas preferiblemente kwin
 install "lxqt"
-kwin
+install "kwin"
+# Opciones al instalar
+# 1) qt6-multimedia-ffmpeg
+# 2) pipewire-jack
 ~/.xinitrc
 exec kwin_wayland
+
 # install "qt6"
 # install "qt5-base"
 # install "qt5-wayland"
 # install "qt5-declarative"
 
-libstatgrab libsysstat lm_sensors network-manager-applet oxygen-icons
+libstatgrab libsysstat lm_sensors oxygen-icons networkmanager-qt
 
 # Instala kwin_wayland, que es el compositor de KDE para Wayland ya no necesario
 # install "xwayland-run-kwin"
