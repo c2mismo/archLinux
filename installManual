@@ -422,10 +422,18 @@ conectamos a internet
 $ ping -c 3 archlinux.com
 
 
-sincronizamos relog
-timedatectl set-ntp true
+sincronizamos relog &
+Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la eficiencia
 
-timedatectl show-timesync
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/redConfig.sh
+
+# chmod +x redConfig.sh
+# ./redConfig.sh
+
+
+
+
+
 
 
 
@@ -525,35 +533,6 @@ Instalamos el servidor de AUDIO pipewire
 # /usr/local/bin/soundServer.sh
 
 
-
-Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la eficiencia
-
-
-pacman -S iwd
-systemctl enable iwd
-
-
-install "networkmanager"
-
-nano /etc/NetworkManager/NetworkManager.conf
-[device]
-wifi.backend=iwd
-
-
-# Verificar si NetworkManager está habilitado antes de habilitar el servicio
-if systemctl is-enabled NetworkManager &> /dev/null; then
-    echo "El servicio NetworkManager ya está habilitado."
-else
-    sudo systemctl enable NetworkManager
-    echo "NetworkManager ha sido habilitado para iniciar en el arranque."
-fi
-
-
-permite cambiar incluso el modo de la targeta de red
-wireless_tools
-
-wpa_supplicant configuraciones mas completas y compatibiladad con targetas antiguas
-para usar con NetworkManager configurar como backend prefiero iwd.
 
 
 
