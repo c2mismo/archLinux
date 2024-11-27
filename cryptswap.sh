@@ -65,4 +65,5 @@ else
 echo "ERROR: Al añadirlo al "$FSTAB_FILE" para montar la swap volatil."
 fi
 
-rm cryptswap.sh
+# Limpiar los archivos temporales
+sudo rm -f "$0"
