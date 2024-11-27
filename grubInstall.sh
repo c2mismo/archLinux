@@ -32,3 +32,5 @@ fi
 
 echo "GRUB ha sido instalado y la configuración ha sido generada correctamente."
 
+# Limpiar los archivos temporales
+sudo rm -f "$0"
