@@ -60,7 +60,7 @@ systemctl --user edit plasma-powerdevil.service
 
 [Service]
 ExecStart=
-ExecStart=/usr/lib/qt6/plugins/powerdevil --no-suspend --no-hibernate
+ExecStart=/usr/lib/org_kde_powerdevil --no-suspend --no-hibernate
 
 ### Edits below this comment will be discarded
 
@@ -83,7 +83,7 @@ systemctl --user edit plasma-powerdevil.service
 
 [Service]
 ExecStart=
-ExecStart=/usr/bin/powerdevil --no-suspend --no-hibernate
+ExecStart=/usr/lib/org_kde_powerdevil --no-suspend --no-hibernate
 
 systemctl --user daemon-reload
 
