@@ -70,4 +70,5 @@ else
 fi
 
 
-rm createuser.sh
+# Limpiar los archivos temporales
+sudo rm -f "$0"
