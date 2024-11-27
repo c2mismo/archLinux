@@ -513,7 +513,7 @@ configuramos pacman y añadimos los repositorios
 
 
 
-
+VERIFICAR que el repositorio de paru es limpiado del disco
 instalamos paru que nos permite instalar
 paqueteria del repositorio de la comunidad
 AUR y a la vez gestiona los repositorios
