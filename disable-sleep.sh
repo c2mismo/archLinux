@@ -21,4 +21,5 @@ cat /etc/systemd/sleep.conf.d
 echo ""
 echo "Desabilitada la hibernación"
 
-rm disable-sleep.sh
+# Limpiar los archivos temporales
+sudo rm -f "$0"
