@@ -12,4 +12,5 @@ mount /dev/nvme0n1p1 /mnt/boot/efi && echo "efi montado"
 mkdir /mnt/srv && mkdir /mnt/srv/samba && echo "Directorio /srv/samba creado"
 mount /dev/nvme0n1p6 /mnt/srv/samba && echo "samba montado"
 
-rm initmount.sh
+# Limpiar los archivos temporales
+sudo rm -f "$0"
