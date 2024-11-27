@@ -39,5 +39,13 @@ EOF
 
 echo "Configuracion NetworkManager con el backend de iwd, finalizado."
 
+# Verificar si NetworkManager está habilitado antes de habilitar el servicio
+if systemctl is-enabled NetworkManager &> /dev/null; then
+    echo "El servicio NetworkManager ya está habilitado."
+else
+    sudo systemctl enable NetworkManager
+    echo "NetworkManager ha sido habilitado para iniciar en el arranque."
+fi
+
 # Limpiar los archivos temporales
 sudo rm -f "$0"
