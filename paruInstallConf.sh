@@ -114,11 +114,11 @@ if [ $flag_error -eq 0 ]; then
     { flag_error=1; error="Repositorios oficiales y AUR no actualizados con paru."; }
 fi
 
-# Limpiar los archivos temporales
-sudo rm -f "$checked_user"
-sudo rm -f "$0"
-
 if [ "$flag_error" -ne 0 ]; then
     echo "ERROR: $error."
     exit $flag_error 
 fi
+
+# Limpiar los archivos temporales
+sudo rm -f "$checked_user"
+sudo rm -f "$0"
