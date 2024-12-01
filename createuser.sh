@@ -35,7 +35,7 @@ else
   useradd -m "$usuario"
   echo "Estableciendo la contraseña para '$usuario'..."
   passwd "$usuario"
-  usermod -aG wheel,video,audio,storage "$usuario"
+  usermod -aG wheel,video,audio,storage,uucp "$usuario"
   echo "Usuario '$usuario' creado y configurado con permisos de superusuario."
 fi
 
