@@ -748,7 +748,7 @@ Interfaz gráfica para realizar operaciones de Git (commit, push, pull, branch, 
 
 Para conectar via usb telefonos android
 
-sudo pacman -S gvfs mtpfs android-file-transfer
+sudo pacman -S gvfs gvfs-mtp mtpfs android-file-transfer
 
 
 
