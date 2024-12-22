@@ -591,7 +591,7 @@ fi
 
 
 
-
+GESTORES DE VENTANAS
 
 
 kde mínimo para mayor integridad y minimo un terminal y un explorador de archivos
@@ -683,6 +683,21 @@ Los archivos de configuración de KDE Plasma se encuentran principalmente en el 
 
 
 Desistimos de LXQT estan migrando a wayland y qt6 y es un problema quizas mas adelante
+
+
+
+
+
+
+
+
+
+GESTORES DE VENTANA EN MOSAICOS
+
+i3, para wayland Sway desarrollo activo.
+
+
+Xmonad, para wayland Waymonad el desarrollo vá muy lento.
 
 
 
