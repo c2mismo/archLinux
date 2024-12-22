@@ -765,7 +765,7 @@ paru -S spotify visual-studio-code-bin
 steam git-cola meld
 jdownloader draw.io
 
-
+paru -S paru -S libreoffice-fresh-es
 
 Creamos identificación y clonamos repositorios de nustro git
 
