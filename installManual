@@ -303,6 +303,8 @@ Desabilitamos la hibernación necesario si queremos tener instalados mas de un S
 
 
 
+
+verifica primero groups a ver si podemos añadir plugdev
 creamos y configuramos usuarios
 le otorgamos el passwd al root
 creará un usuario sin privilegios "visitante"
@@ -608,7 +610,7 @@ GESTORES DE VENTANAS
 
 
 kde mínimo para mayor integridad y minimo un terminal y un explorador de archivos
-# paru -S plasma-desktop plasma-workspace kwayland egl-wayland plasma-wayland-protocols plasma-nm
+# paru -S plasma-desktop plasma-workspace kwayland egl-wayland plasma-wayland-protocols plasma-nm dolphin
 
 
 
@@ -734,6 +736,21 @@ install() {
     fi
 }
 
+
+Para conectar via usb telefonos android
+
+sudo pacman -S libmtp
+
+adbusers
+
+para Gnome
+sudo pacman -S gvfs-mtp gvfs-gphoto2
+
+para KDE
+sudo pacman -S libmtp kio kio-extras
+
+
+
 instalamos kitty
 
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/kittyInstall.sh
@@ -778,9 +795,6 @@ Interfaz gráfica para realizar operaciones de Git (commit, push, pull, branch, 
 
 
 
-Para conectar via usb telefonos android
-
-sudo pacman -S gvfs gvfs-mtp mtpfs android-file-transfer
 
 
 
@@ -835,8 +849,10 @@ sudo paccache -ruk1
 
 
 
-
-
+dotfiles
+nano .config/kitty/kitty.conf 
+nano .config/kitty/colors.conf
+.config/paru/paru.conf
 
 
 
