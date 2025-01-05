@@ -24,6 +24,10 @@ install() {
   fi
 }
 
+install "samba"
+
+install "cifs-utils"
+
 install "networkmanager"
 
 install "iwd"
