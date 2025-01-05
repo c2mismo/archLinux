@@ -1,5 +1,7 @@
 
-Para montar un disco formateado en NTFS en Arch Linux con KDE y evitar el error de permisos que mencionas, puedes utilizar Polkit para gestionar los permisos de usuario. Aquí te explico cómo hacerlo y si necesitas instalar herramientas adicionales.
+Para montar un disco formateado en NTFS en Arch Linux con KDE y evitar el error de permisos que mencionas,
+puedes utilizar Polkit para gestionar los permisos de usuario.
+Aquí te explico cómo hacerlo y si necesitas instalar herramientas adicionales.
 Pasos para Configurar Polkit
 
     Instalación de Paquetes Necesarios: Asegúrate de tener instalados los siguientes paquetes:
@@ -18,11 +20,14 @@ Configuración de Polkit: Para permitir que los usuarios no privilegiados monten
 
     bash
 
-    sudo pacman -S polkit-qt
+    sudo pacman -S polkit-qt6 polkit-kde-agent
 
-Reiniciar el Sistema: No es estrictamente necesario reiniciar el sistema después de instalar estos paquetes, pero es recomendable reiniciar la sesión de usuario o el entorno de escritorio para asegurarte de que todos los cambios surtan efecto.
+Reiniciar el Sistema: No es estrictamente necesario reiniciar el sistema después de instalar estos paquetes,
+pero es recomendable reiniciar la sesión de usuario o el entorno de escritorio para asegurarte
+de que todos los cambios surtan efecto.
 
-Montar el Disco: Una vez que hayas configurado Polkit, deberías poder montar el disco NTFS sin necesidad de permisos de root. Puedes hacerlo desde el gestor de archivos de KDE (Dolphin) o usando el comando udisksctl en la terminal:
+Montar el Disco: Una vez que hayas configurado Polkit, deberías poder montar el disco NTFS sin necesidad de permisos de root.
+Puedes hacerlo desde el gestor de archivos de KDE (Dolphin) o usando el comando udisksctl en la terminal:
 
 bash
 
@@ -32,7 +37,8 @@ bash
 
 Consideraciones Adicionales
 
-    Permisos de NTFS-3G: Si sigues teniendo problemas, asegúrate de que el binario de ntfs-3g tenga los permisos correctos. Puedes verificarlo con:
+    Permisos de NTFS-3G: Si sigues teniendo problemas, asegúrate de que el binario de ntfs-3g tenga los permisos correctos.
+Puedes verificarlo con:
 
     bash
 
@@ -42,6 +48,14 @@ ls -l $(which ntfs-3g)
 
 
 
+No funciona:
+sudo nano /etc/polkit-1/rules.d/50-mount.rules
+
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.udisk2.filesystem-mount" && subject.isInGroup("users")) {
+        return polkit.Result.YES;
+    }
+});
 
 
 
@@ -49,6 +63,23 @@ ls -l $(which ntfs-3g)
 
 
 
+
+No funciona:
+sudo nano /etc/polkit-1/rules.d/50-mount.rules
+
+polkit.addRule(function(action, subject) {
+    if (action.id == "org.freedesktop.udisk2.filesystem-mount" && 
+        action.get("filesystem_type") == "ntfs" && 
+        subject.isInGroup("users")) {
+        return polkit.Result.YES;
+    }
+});
+
+
+
+
+Omite los siguiente
+-------------------------------------------------------------------
 
 El error que estás experimentando al intentar montar un disco formateado en NTFS en Arch Linux con KDE 6.2.3 se debe a restricciones de permisos relacionadas con el uso de la biblioteca FUSE. Aquí te explico cómo resolverlo y algunos pasos adicionales que puedes seguir.
 Problema
@@ -111,3 +142,10 @@ bash
 sudo usermod -aG fuse $USER
 
 Luego, cierra sesión y vuelve a iniciar sesión para que los cambios surtan efecto.
+
+--------------------------------------------------------------------------------------------
+
+
+
+
+
