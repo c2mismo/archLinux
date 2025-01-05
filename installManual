@@ -745,7 +745,7 @@ sudo systemctl start smartd
 
 paru -S firefox vlc mpv archlinux-wallpaper
 gestores de paquetes AUR
-pamac-qt octopi discover (esta última permita Flatpak y Snap)
+pamac-qt octopi discover (esta última permite Flatpak y Snap)
 # htop btop
 
 
@@ -778,7 +778,8 @@ navegadores QT Qutebrowser y Falkon
 
 htop glances fastfetch
 paru -S spotify visual-studio-code-bin
-steam git-cola meld
+
+git-cola meld
 jdownloader draw.io
 
 paru -S paru -S libreoffice-fresh-es
@@ -788,7 +789,8 @@ Creamos identificación y clonamos repositorios de nustro git
 https://github.com/c2mismo/documentos/blob/master/Informatica/machines/Instalaci%C3%B3n%20Ubuntu%2022.04
 
 
-
+Instalar juegos:
+https://github.com/c2mismo/documentos/blob/master/Informatica/machines/ArchLinux%20i9/ArchLinux%20Games
 
 
 
