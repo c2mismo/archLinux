@@ -728,7 +728,10 @@ instalamos kitty
 # /usr/local/bin/kittyInstall.sh
 
 
-
+Instalamos Zellij
+Zellij es una opción excelente para aquellos que buscan un multiplexor de terminal moderno y eficiente,
+una alternativa a tmux.
+paru -S zellij zellij-selector
 
 
 
@@ -774,7 +777,16 @@ zsh
 
 si todo va correcto
 
-navegadores QT Qutebrowser y Falkon
+navegadores QT:
+sudo pacman -S qutebrowser
+Qutebrowser es un navegador web de código abierto,
+diseñado para ser controlado principalmente mediante el teclado,
+con un estilo de interfaz minimalista que se inspira en editores de texto como Vim.
+Utiliza QtWebEngine, que se basa en Chromium.
+No soporta extensiones de Firefox o Chrome.
+
+
+y Falkon
 
 htop glances fastfetch
 paru -S spotify visual-studio-code-bin
