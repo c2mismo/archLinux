@@ -17,6 +17,24 @@ install() {
   fi
 }
 
+# CPU
+
+#Auto-CPUFreq y cpupower
+# son dos herramientas utilizadas en sistemas Linux para gestionar y optimizar el rendimiento de la CPU, pero tienen enfoques y características diferentes.
+# sin embargo Auto-CPUFreq en un ordenador de sobremesa es una excelente manera de mejorar la eficiencia energética, térmica y reducir el consumo de energía.
+
+install "auto-cpufreq"
+
+# mirar si se habilita al reiniciar
+# sudo systemctl enable auto-cpufreq.service
+# sudo systemctl start auto-cpufreq.service
+# para ver estadísticas y realizar ajustes temporales
+# auto-cpufreq --live
+
+# install "cpupower"
+
+# GPU
+
 install "intel-media-driver"
 
 install "mesa"
@@ -25,17 +43,14 @@ install "lib-intel-drive"
 
 install "vulkan-intel"
 
-# install "xorg-server"
-
-# install "xorg-xinit"
-
 #para monitorear el rendimiento de tu GPU Intel en Wayland
 install "intel-gpu-tools"
 
-install "cpupower"
-
-# Herramientas para la gráfica
+# Daemon para monitorear y controlar la temperatura del sistema.
 install "thermald"
+
+# "¿Qué herramientas de KDE Plasma puedo usar para ajustar
+# el rendimiento y la gestión de energía en Wayland?"
 
 # Verificar y habilitar thermald.service
 if systemctl --user is-active --quiet thermald.service > /dev/null 2>&1; then
@@ -47,8 +62,11 @@ else
 fi
 
 # Configuración solo para Xorg, para Wayland no realizar:
-# "¿Qué herramientas de KDE Plasma puedo usar para ajustar
-# el rendimiento y la gestión de energía en Wayland?"
+
+# install "xorg-server"
+
+# install "xorg-xinit"
+
 
 # Creamos una configuración incluye opciones para el método de aceleración gráfico,
 # la eliminación de desgarros en la pantalla, el uso de un búfer triple para
