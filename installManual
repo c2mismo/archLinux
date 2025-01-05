@@ -239,9 +239,7 @@ mkfs.exfat -n WinLinux /dev/nvme0n1p6
 pacman -S wget
 
 
-montamos todas las particiones necesaria y todas aquellas
-que queremos añadir desde primera hora en el fstab directamente en /mnt
-para preinstalar el sistema
+montamos todas las particiones necesarias para preinstalar el sistema
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initmount.sh
 
@@ -250,7 +248,11 @@ para preinstalar el sistema
 
 La de windows por evitar problemas de integridad
 no la vamos a montar para ello hemos creado la
-samba para intercambiar archivos entre los dos SOs
+WinLinux para intercambiar archivos entre los dos SOs
+
+
+El FSTAB lo hemos dejado para crear cuando hayamos creado el usuario,
+para montar el WinLinux en su directorio correcto.
 
 
 
