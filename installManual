@@ -191,7 +191,8 @@ en una sola y beneficiarme de una mayor flexibilidad.
 
 
 he asignado una pequeña partición para intercambio de datos y archivos
-entre linux y windows através de SAMBA, siempre lo hecho de menos
+entre linux y windows, siempre lo hecho de menos,
+probar si podemos tener acceso a btrfs en windows
 
 /dev/nvme0n1p6 -    40 GiB Microsoft basic data          exFAT
 
@@ -229,7 +230,7 @@ mkfs.btrfs -L ArchBoot /dev/nvme0n1p4
 
 pacman -S exfat-utils
 
-mkfs.exfat -n samba /dev/nvme0n1p6
+mkfs.exfat -n WinLinux /dev/nvme0n1p6
 
 
 
@@ -265,15 +266,6 @@ instalamos el sistema base en /mnt
 
 mas adelante podemos instalar linux linux-headers, así tenemos dos núcleos y evitamos problemas
 pero en un principio va aligerar la instalación
-
-
-
-creamos el fstab
-
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initfstab.sh
-
-# chmod +x initfstab.sh
-# ./initfstab.sh
 
 
 
@@ -333,6 +325,25 @@ sudo pacman -Sy
 este si es superadmin nos lo debe de permitir
 
 exit
+
+
+
+Añadimos correctamente la partición WinLinux en la carpeta de montage del usuario
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/mountWinLinux.sh
+
+# chmod +x mountWinLinux.sh
+# ./mountWinLinux.sh
+
+
+
+
+creamos el fstab despues de crear el usuario para añadir correctamente la partición WinLinux
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initfstab.sh
+
+# chmod +x initfstab.sh
+# ./initfstab.sh
 
 
 
