@@ -584,6 +584,7 @@ if [ ! -f "$SDDM_CONF" ]; then
 
 [General]
 NumLock=on
+cambialo por off a ver si funciona
 
 [Theme]
 Current=archlinux
@@ -737,6 +738,16 @@ install() {
 }
 
 
+paru -S man-pages man-db
+
+actualizamos la base de datos
+man-db
+
+paru -S zsh
+
+paru -S riseup-vpn
+
+
 Para conectar via usb telefonos android
 
 sudo pacman -S libmtp
@@ -799,7 +810,7 @@ Interfaz gráfica para realizar operaciones de Git (commit, push, pull, branch, 
 
 
 
-zsh
+
 
 
 si todo va correcto
