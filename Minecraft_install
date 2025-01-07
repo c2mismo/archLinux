@@ -2,8 +2,11 @@
 
 Instalamos el launcher para MINECRAFT
 
-Para poder añadir un usuario sin cuenta premium:
-https://github.com/antunnitraj/Prism-Launcher-PolyMC-Offline-Bypass
+en arch linux
+paru -S prismlauncher
+
+en ubuntu seguramente
+apt install prismlauncher
 
 al ejecutar saldra una ventanita de configuracion, cuando configure la ram
 añadirle la mayor memoria posible sin dejar el sistema sin memoria
@@ -15,11 +18,16 @@ el mod loader Fabric
 
 pulsamos launch para que se descarge y se instale
 lo cerramos
-y pulsamos editar -> mods -> instalar mods
+y pulsamos editar -> mods -> instalar mods (para añadir mods tan solo clicar dos veces sobre el nombre, se subrraya)
 
 Fabric API
 Sodium
 
+
+
+
+Ni de coña los shares:
+--------------------------------------------------------------
 y si se quiere shaders
 Iris shaders
 
@@ -30,8 +38,9 @@ Complementary Shaders Reimagined
 pulsamos editar -> mods -> resources packs -> abrir
 
 descargamos igual le podemos decir que lo descarge
-https://github.com/Poudingue/Vanilla-Normals-Renewed/releases/download/1.0.7/VNR-1.0.7.zip
-y selecionamos este archivo descargado
+https://github.com/Poudingue/Vanilla-Normals-Renewed/releases/
+descargamos el archivo VNR-N.NN.N.zip
+y selecionamos este archivo descargado en la apli
 
 opciones --> resurdes pack
 añadimos el VNR aunque nos diga incompatible
@@ -60,5 +69,5 @@ POM_QUALITY=16
 
 en la aplicacion Shade pack setting
 importar y seleccionamos el archivo
-
+----------------------------------------------------------
 
