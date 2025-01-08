@@ -33,6 +33,10 @@ Xaero's World Map
 
 
 Para el servidor mc.librecraft.com
+https://librecraft.com/jugar#
+https://librecraft.com/normas
+https://librecraft.com/foro/tema/mods-permitidos.25083/
+
 
 Fabric API
 Sodium
@@ -43,6 +47,7 @@ Xaero's Minimap
 ¡¡OJO!! ¡La configuración de este mod que permite ver a jugadores cercanos no es permitida!
 Xaero's World Map
 Styled Sidebars
+Simple Voice Chat
 
 
 Configuraciones
@@ -148,4 +153,101 @@ POM_QUALITY=16
 en la aplicacion Shade pack setting
 importar y seleccionamos el archivo
 ----------------------------------------------------------
+
+
+
+
+
+librecraft.com
+mc.librecraft.com
+librecraft.juegos
+
+
+Conectar
+
+Nombre del servidor
+librecraft
+
+IP del servidor
+mc.librecraft.com
+
+/register [contraseña] [repitecontraseña]
+
+
+para entrar
+/login [contraseña]
+
+
+COMANDOS
+
+/list: Muestra una lista de todos los jugadores en el servidor.
+
+    Ejemplo: Simplemente escribe /list.
+
+/help [comando]: Proporciona información sobre un comando específico.
+
+    Ejemplo: /help say para obtener más información sobre el comando /say.
+
+
+
+Comandos Básicos de Chat
+
+/say [mensaje]: Envía un mensaje a todos los jugadores en el servidor.
+    Ejemplo: /say ¡Bienvenidos a Librecraft!
+
+/me [acción]: Muestra un mensaje en el chat que describe una acción que estás realizando.
+    Ejemplo: /me está construyendo una casa.
+
+/tell [jugador] [mensaje]: Envía un mensaje privado a otro jugador.
+    Ejemplo: /tell Juan Hola, ¿cómo estás?
+
+/msg [jugador] [mensaje]: Similar a /tell, envía un mensaje privado a un jugador específico.
+
+/whisper [jugador] [mensaje]: También envía un mensaje privado, pero puede tener diferentes configuraciones según el servidor.
+
+
+
+/ignore [jugador]: Ignora los mensajes de un jugador específico.
+
+    Ejemplo: /ignore Juan para no recibir mensajes de Juan.
+
+/unignore [jugador]: Deja de ignorar a un jugador.
+
+    Ejemplo: /unignore Juan
+
+
+
+/chat [canal]: Cambia el canal de chat activo. Esto es útil en servidores que tienen múltiples canales de chat.
+
+    Ejemplo: /chat global para cambiar al canal global.
+
+/qm [canal] [mensaje]: Envía un mensaje rápido a un canal sin cambiar el canal activo.
+
+    Ejemplo: /qm local ¡Hola a todos!
+
+
+
+
+
+/report [jugador] [razón]: Reporta a un jugador por comportamiento inapropiado.
+
+    Ejemplo: /report Juan spamming para reportar a Juan por spam.
+
+
+
+
+Comandos generales de usuario
+
+
+/sethome: Establece tu hogar en el servidor, permitiéndote teletransportarte allí más tarde.
+
+    Ejemplo: /sethome para establecer tu ubicación actual como hogar.
+
+/home: Teletransporta al jugador a su hogar previamente establecido.
+
+    Ejemplo: /home para regresar a tu hogar.
+
+/spawn: Teletransporta al jugador al punto de aparición del servidor.
+
+    Ejemplo: /spawn para volver al punto de inicio.
 
