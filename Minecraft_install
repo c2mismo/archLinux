@@ -47,6 +47,10 @@ Styled Sidebars
 
 Configuraciones
 
+Campo de vision (FOV) 90
+
+Dificultad normal
+
 Teclas
 
 Inventario
@@ -66,8 +70,29 @@ Aumentar minimapa r
 
 
 
+Configuracion del minimapa (,)
+
+View setting
+Shape Cicle
+
+Entity radar setting
+Display radar No
+
+Abrimos Mapa (m)
+En el lado derecho un icono raro: Minimap entity radar is NOT displayed
 
 
+Graficos
+
+General
+Renderizado 16 chunks (si el ordenador es lento 12 chunks)
+Tamaño interfaca x4
+VSynq no
+Max FPS 40
+Balanceo no
+
+Quality
+Gráficos Rápidos
 
 
 
