@@ -156,7 +156,7 @@ importar y seleccionamos el archivo
 
 
 
-
+/skin
 
 librecraft.com
 mc.librecraft.com
@@ -177,6 +177,22 @@ mc.librecraft.com
 para entrar
 /login [contraseña]
 
+coge la brujula con la mano y clickea
+elije survival
+
+/warp comida
+/warp parcela
+/warp suarvival
+/tp ramdom: para conseguir recursos
+
+/p h: para ir a tu parcela
+/ps home 1: para ir a tu home
+
+para conseguir dinero
+/jobs browser
+los que mejor pagan
+/jobs join minero
+/jobs join talador
 
 COMANDOS
 
