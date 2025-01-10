@@ -1,3 +1,18 @@
+para solucionar lo de los mods
+
+editar -> Version
+Instalar loader -> Fabric
+
+editar -> Mods -> Descargar mods ->
+
+Fabric API
+
+despues sigue la guia de abajo (> 1.20)
+
+
+
+
+
 
 
 Instalamos el launcher para MINECRAFT
@@ -13,12 +28,20 @@ añadirle la mayor memoria posible sin dejar el sistema sin memoria
 lo aconsejable son unos 6 GB
 
 ya en la aplicacion
-añadir instancia seleccionamos la version del minecraft y
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+> 1.20
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+instalar antes java v.21
+paru -S jdk21-openjdk
+
+añadir instancia para 
+seleccionamos la version del minecraft y
 el mod loader Fabric
 
-pulsamos launch para que se descarge y se instale
-lo cerramos
-y pulsamos editar -> mods -> instalar mods (para añadir mods tan solo clicar dos veces sobre el nombre, se subrraya)
+y pulsamos editar -> mods -> descargar mods (para añadir mods tan solo clicar dos veces sobre el nombre, se subrraya)
 
 Fabric API
 Sodium
@@ -40,7 +63,6 @@ https://librecraft.com/foro/tema/mods-permitidos.25083/
 
 Fabric API
 Sodium
-Xaero's Minimap
 Health Indicators
 Custom CrossHair Mod
 Xaero's Minimap
@@ -87,6 +109,87 @@ Abrimos Mapa (m)
 En el lado derecho un icono raro: Minimap entity radar is NOT displayed
 
 
+
+Configuracion Chat de voz
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+FIN > 1.20
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+1.8
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+instalar antes java v.8
+paru -S jdk8-openjdk
+
+añadir instancia para 1.8.9
+seleccionamos la version del minecraft y
+el mod loader Forge (la 1.8 no tiene Fabric)
+
+pulsamos editar -> mods -> descargar mods (para añadir mods tan solo clicar dos veces sobre el nombre, se subrraya)
+
+
+??? Sodium ¿algo similar?
+Health Bar
+Custom CrossHair Mod
+Xaero's Minimap
+Xaero's World Map
+VanillaHUD
+Gliby's Voice Chat Reloaded
+
+
+Configuraciones
+
+Campo de vision (FOV) 90
+
+Dificultad normal
+
+Teclas
+
+Inventario
+Ranura 5 <
+Ranura 6 z
+Ranura 7 x
+Ranura 8 c
+Ranura 9 v
+
+Modo creativo
+Cargar barra de objetos g
+Guardar barra de objetos h
+
+Xaero's Minimap
+Minimap abrir config ,
+Aumentar minimapa r
+
+
+
+Configuracion del minimapa (,)
+
+View setting
+Shape Cicle
+
+Entity radar setting
+Display radar No
+
+Abrimos Mapa (m)
+En el lado derecho un icono raro: Minimap entity radar is NOT displayed
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+FIN > 1.8
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
 Graficos
 
 General
@@ -116,12 +219,15 @@ Ni de coña los shares precisa mas maquina
 
 /skin
 
-librecraft.com
-mc.librecraft.com
-librecraft.juegos
+
 
 
 Conectar
+
+
+librecraft.com
+mc.librecraft.com
+librecraft.juegos
 
 Nombre del servidor
 librecraft
