@@ -43,23 +43,6 @@ el mod loader Fabric
 
 y pulsamos editar -> mods -> descargar mods (para añadir mods tan solo clicar dos veces sobre el nombre, se subrraya)
 
-Fabric API
-Sodium
-Xaero's Minimap
-Health Indicators
-Custom CrossHair Mod
-Xaero's Minimap
-Xaero's World Map
-
-
-
-
-
-Para el servidor mc.librecraft.com
-https://librecraft.com/jugar#
-https://librecraft.com/normas
-https://librecraft.com/foro/tema/mods-permitidos.25083/
-
 
 Fabric API
 Sodium
@@ -70,6 +53,7 @@ Xaero's Minimap
 Xaero's World Map
 Styled Sidebars
 Simple Voice Chat
+Just Enough Items
 
 
 Configuraciones
@@ -228,6 +212,12 @@ Conectar
 librecraft.com
 mc.librecraft.com
 librecraft.juegos
+
+
+Para el servidor mc.librecraft.com
+https://librecraft.com/jugar#
+https://librecraft.com/normas
+https://librecraft.com/foro/tema/mods-permitidos.25083/
 
 Nombre del servidor
 librecraft
