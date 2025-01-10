@@ -31,7 +31,7 @@ ya en la aplicacion
 
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-> 1.20
+> 1.20.6
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 instalar antes java v.21
@@ -58,25 +58,49 @@ Just Enough Items
 
 Configuraciones
 
-Campo de vision (FOV) 90
-
 Dificultad normal
 
-Teclas
+Campo de vision (FOV) 90
+
+Graficos
+
+General
+Renderizado 16 chunks (si el ordenador es lento 12 chunks)
+Tamaño interfaca x4
+VSynq no
+Max FPS 40
+Balanceo no
+
+Quality
+Gráficos Rápidos
+
+
+
+Controles
+Raton -> Sensivilidad del raton 50
+
+Teclado
 
 Inventario
-Ranura 5 <
 Ranura 6 z
 Ranura 7 x
 Ranura 8 c
 Ranura 9 v
 
 Modo creativo
-Cargar barra de objetos g
-Guardar barra de objetos h
+Cargar barra de objetos ñ
+Guardar barra de objetos ´
+
+Configuracion Chat de voz
+Apagar N
+GUI Y
+Grupo de chat G
+Ocultar Vacio
+Hablar H
+Silenciar J
 
 Xaero's Minimap
-Minimap abrir config ,
+Ajuste de mini map ,
 Aumentar minimapa r
 
 
@@ -94,7 +118,7 @@ En el lado derecho un icono raro: Minimap entity radar is NOT displayed
 
 
 
-Configuracion Chat de voz
+
 
 
 
@@ -174,17 +198,6 @@ FIN > 1.8
 
 
 
-Graficos
-
-General
-Renderizado 16 chunks (si el ordenador es lento 12 chunks)
-Tamaño interfaca x4
-VSynq no
-Max FPS 40
-Balanceo no
-
-Quality
-Gráficos Rápidos
 
 
 
