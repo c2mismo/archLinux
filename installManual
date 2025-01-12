@@ -747,6 +747,8 @@ paru -S zsh
 
 paru -S riseup-vpn
 
+paru -S jitsi-meet-desktop jitsi-videobridge
+
 
 Para conectar via usb telefonos android
 
