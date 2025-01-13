@@ -831,7 +831,9 @@ y Falkon
 htop glances fastfetch
 paru -S spotify visual-studio-code-bin
 
-git-cola meld
+
+paru -S git-credential-manager-core git-cola
+meld
 jdownloader draw.io
 
 paru -S paru -S libreoffice-fresh-es
