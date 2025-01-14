@@ -835,7 +835,14 @@ htop glances fastfetch
 paru -S spotify visual-studio-code-bin
 
 
-paru -S git-credential-manager-core git-cola
+paru -S git-credential-manager-core
+
+git-cola me dio problemas al instalarlo tanto git-cola como git-cola-git
+instalado el flatpak con Discover
+con el se pued tambien instalar Git Cola Dolphin Service Menu (no instalado)
+
+el flatpak me da problema con las credenciales se deberia de usar SSH
+
 meld
 jdownloader draw.io
 
