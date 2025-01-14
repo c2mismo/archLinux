@@ -792,6 +792,9 @@ sudo systemctl start smartd
 paru -S firefox vlc mpv archlinux-wallpaper
 gestores de paquetes AUR
 pamac-qt octopi discover (esta última permite Flatpak y Snap)
+paru -S discover flatpak fwupd
+
+
 # htop btop
 
 
