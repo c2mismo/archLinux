@@ -27,8 +27,11 @@ install "pipewire-alsa"   # Proporciona compatibilidad con ALSA.
 install "pipewire-pulse"  # Permite que las aplicaciones que utilizan PulseAudio funcionen con PipeWire.
 install "pipewire-jack"   # Permite que las aplicaciones que utilizan JACK funcionen con PipeWire.
 install "pavucontrol-qt"  # Control de volumen
+install "wireplumber"     # Reemplaza a pipewire-media-session y proporciona una gestión más flexible de las sesiones de audio y video.
 install "easyeffects"     # Herramienta avanzada para manipulación de audio que incluye un ecualizador, limitador, compresor y más.
 install "qpwgraph"        # Interfaz gráfica más completa para controlar el servidor de sonido.
+install "libcamera"       # Soporte para cámaras.
+install "pipewire-libcamera"
 
 # pagina para configurar easyeffects y normalizar audio
 # https://www.thushanfernando.com/notes/popos-pipewire-loudness/
@@ -36,7 +39,7 @@ install "qpwgraph"        # Interfaz gráfica más completa para controlar el se
 # Reiniciando script como usuario
 if [ ! -f "$checked_user" ]; then
     read -p "Para configurar pipewire introduce nombre de usuario: " usuario
-    echo "Cambiando a usuario '$usuario'..." 
+    echo "Cambiando a usuario '$usuario'..."
     home_dir=$(getent passwd "$usuario" | cut -d: -f6)
     if [ -d "$home_dir" ]; then
         cd "$home_dir" # Cambiar al directorio home del usuario especificado
@@ -94,22 +97,18 @@ else
 fi
 
 
-# Verificar y habilitar pipewire.service
-if systemctl --user is-active --quiet pipewire.service > /dev/null 2>&1; then
-    echo "pipewire.service ya está activo."
-else
-    echo -e "pipewire.service no está activo.\nProcediendo a habilitar e iniciar..."
-    systemctl --user enable pipewire.service > /dev/null 2>&1
-    echo "pipewire.service ha sido habilitado."
-fi
+# No es necesario verificar y habilitar pipewire.service pipewire-pulse.service.
+# Generalmente, el servicio de PipeWire se inicia automáticamente cuando se habilita WirePlumber.
 
-# Verificar y habilitar pipewire-pulse.service
-if systemctl --user is-active --quiet pipewire-pulse.service > /dev/null 2>&1; then
-    echo "pipewire-pulse.service ya está activo."
+
+# Verificar y habilitar wireplumber.service
+if systemctl --user is-active --quiet wireplumber.service > /dev/null 2>&1; then
+    echo "wireplumber.service ya está activo."
 else
-    echo "pipewire-pulse.service no está activo.\nProcediendo a habilitar e iniciar..."
-    systemctl --user enable pipewire-pulse.service > /dev/null 2>&1
-    echo "pipewire-pulse.service ha sido habilitado."
+    echo -e "wireplumber.service no está activo.
+Procediendo a habilitar e iniciar..."
+    systemctl --user enable wireplumber.service > /dev/null 2>&1
+    echo "wireplumber.service ha sido habilitado."
 fi
 
 echo "Para que surja efecto se debe de reiniciar con el usuario para el que haya sido configurado".
