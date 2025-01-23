@@ -804,9 +804,16 @@ paru -S discover flatpak fwupd
 
 Si buscas editores de texto optimizados para Qt con integración de GIT:
 Kate es una excelente opcion, tiene soporte para Git a través de plugins
+No me siento cómodo y aveces se me cuelga
+
+
 QOwnNotes es ideal si necesitas un editor de notas con características adicionales, mientras que
+
+
 Qt Creator es perfecto si trabajas en proyectos de desarrollo (IDE) en Qt.
 Interfaz gráfica para realizar operaciones de Git (commit, push, pull, branch, etc.).
+
+Sino al gedit como siempre
 
 
 
@@ -875,7 +882,7 @@ sudo paccache -ruk1
 
 
 dotfiles
-nano .config/kitty/kitty.conf 
+nano .config/kitty/kitty.conf
 nano .config/kitty/colors.conf
 .config/paru/paru.conf
 
