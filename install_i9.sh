@@ -1,6 +1,16 @@
 #!/bin/bash
 # Instalamos y preparamos sistema para el procesador i9
 
+# Primero ejecuta este script y despues,
+# verifica si esta cargado el modulo snd_hda_intel
+# $ lsmod | grep snd_hda_intel
+# Si no aparece en la lista de la izquierda
+# snd_hda_intel          69632  1
+# Instalar el modulo
+# sudo modprobe snd_hda_intel
+
+
+
 # Asegúrate de que el script se ejecute como root
 if [ "$EUID" -ne 0 ]; then
   echo "Por favor, ejecuta este script como root."
@@ -82,7 +92,7 @@ fi
 #Section "Device"
 #    Identifier  "Intel Graphics"
 #    Driver      "intel"
-    
+
     # Método de aceleración gráfico
 #    Option      "AccelMethod"  "sna"  # SNA es el método de aceleración recomendado para gráficos Intel
 
