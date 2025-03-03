@@ -1,0 +1,457 @@
+
+$ pactl list short sinks
+Connection failure: Timeout
+
+$ sudo pactl list
+Connection failure: Connection refused
+pa_context_connect() failed: Connection refused
+
+
+
+$ pacman -S lshw
+
+$ sudo lshw -C sound
+  *-multimedia
+       descripción: Audio device
+       producto: Cannon Lake PCH cAVS
+       vendedor: Intel Corporation
+       id físico: 1f.3
+       información de bus: pci@0000:00:1f.3
+       nombre lógico: card0
+       nombre lógico: /dev/snd/controlC0
+       nombre lógico: /dev/snd/hwC0D0
+       nombre lógico: /dev/snd/hwC0D2
+       nombre lógico: /dev/snd/pcmC0D0c
+       nombre lógico: /dev/snd/pcmC0D0p
+       nombre lógico: /dev/snd/pcmC0D3p
+       nombre lógico: /dev/snd/pcmC0D7p
+       nombre lógico: /dev/snd/pcmC0D8p
+       versión: 10
+       anchura: 64 bits
+       reloj: 33MHz
+       capabilidades: pm msi bus_master cap_list
+       configuración: driver=snd_hda_intel latency=32
+       recursos: irq:173 memoria:b1430000-b1433fff memoria:b1000000-b10fffff
+
+
+$ lspci | grep -i audio
+00:1f.3 Audio device: Intel Corporation Cannon Lake PCH cAVS (rev 10)
+
+$ cat /proc/asound/cards
+ 0 [PCH            ]: HDA-Intel - HDA Intel PCH
+                      HDA Intel PCH at 0xb1430000 irq 173
+
+
+
+
+
+        *-multimedia
+             descripción: Audio device
+             producto: Cannon Lake PCH cAVS
+             vendedor: Intel Corporation
+             id físico: 1f.3
+             información de bus: pci@0000:00:1f.3
+             nombre lógico: card0
+             nombre lógico: /dev/snd/controlC0
+             nombre lógico: /dev/snd/hwC0D0
+             nombre lógico: /dev/snd/hwC0D2
+             nombre lógico: /dev/snd/pcmC0D0c
+             nombre lógico: /dev/snd/pcmC0D0p
+             nombre lógico: /dev/snd/pcmC0D3p
+             nombre lógico: /dev/snd/pcmC0D7p
+             nombre lógico: /dev/snd/pcmC0D8p
+             versión: 10
+             anchura: 64 bits
+             reloj: 33MHz
+             capabilidades: pm msi bus_master cap_list
+             configuración: driver=snd_hda_intel latency=32
+             recursos: irq:173 memoria:b1430000-b1433fff memoria:b1000000-b10fffff
+           *-input:0
+                producto: HDA Intel PCH Headphone
+                id físico: 0
+                nombre lógico: input23
+                nombre lógico: /dev/input/event12
+           *-input:1
+                producto: HDA Intel PCH HDMI/DP,pcm=3
+                id físico: 1
+                nombre lógico: input24
+                nombre lógico: /dev/input/event13
+           *-input:2
+                producto: HDA Intel PCH HDMI/DP,pcm=7
+                id físico: 2
+                nombre lógico: input25
+                nombre lógico: /dev/input/event14
+           *-input:3
+                producto: HDA Intel PCH HDMI/DP,pcm=8
+                id físico: 3
+                nombre lógico: input26
+                nombre lógico: /dev/input/event15
+        *-serial:0
+             descripción: SMBus
+             producto: Cannon Lake PCH SMBus Controller
+             vendedor: Intel Corporation
+             id físico: 1f.4
+             información de bus: pci@0000:00:1f.4
+             versión: 10
+             anchura: 64 bits
+             reloj: 33MHz
+             configuración: driver=i801_smbus latency=0
+             recursos: irq:16 memoria:b1438000-b14380ff ioport:efa0(tamaño=32)
+        *-serial:1
+             descripción: Serial bus controller
+             producto: Cannon Lake PCH SPI Controller
+             vendedor: Intel Corporation
+             id físico: 1f.5
+             información de bus: pci@0000:00:1f.5
+             versión: 10
+             anchura: 32 bits
+             reloj: 33MHz
+             configuración: driver=intel-spi latency=0
+             recursos: irq:0 memoria:fe010000-fe010fff
+
+
+
+
+
+$ pactl list cards
+Card #73
+	Name: alsa_card.pci-0000_00_1f.3
+	Driver: alsa
+	Owner Module: n/a
+	Properties:
+		api.acp.auto-port = "false"
+		api.acp.auto-profile = "false"
+		api.alsa.card = "0"
+		api.alsa.card.longname = "HDA Intel PCH at 0xb1430000 irq 173"
+		api.alsa.card.name = "HDA Intel PCH"
+		api.alsa.path = "hw:0"
+		api.alsa.use-acp = "true"
+		api.dbus.ReserveDevice1 = "Audio0"
+		api.dbus.ReserveDevice1.Priority = "-20"
+		device.api = "alsa"
+		device.bus = "pci"
+		device.bus_path = "pci-0000:00:1f.3"
+		device.description = "Audio Interno"
+		device.enum.api = "udev"
+		device.form_factor = "internal"
+		device.icon_name = "audio-card-analog-pci"
+		device.name = "alsa_card.pci-0000_00_1f.3"
+		device.nick = "HDA Intel PCH"
+		device.plugged.usec = "41622218"
+		device.product.id = "0xa348"
+		device.product.name = "Cannon Lake PCH cAVS"
+		device.subsystem = "sound"
+		sysfs.path = "/devices/pci0000:00/0000:00:1f.3/sound/card0"
+		device.vendor.id = "0x8086"
+		device.vendor.name = "Intel Corporation"
+		media.class = "Audio/Device"
+		factory.id = "15"
+		client.id = "56"
+		object.id = "51"
+		object.serial = "73"
+		object.path = "alsa:acp:PCH"
+		alsa.card = "0"
+		alsa.card_name = "HDA Intel PCH"
+		alsa.long_card_name = "HDA Intel PCH at 0xb1430000 irq 173"
+		alsa.driver_name = "snd_hda_intel"
+		alsa.mixer_name = "Realtek ALC282"
+		alsa.components = "HDA:10ec0282,00000000,00100003 HDA:8086280b,80860101,00100000"
+		alsa.id = "PCH"
+		device.string = "0"
+	Profiles:
+		off: Apagado (sinks: 0, sources: 0, priority: 0, available: yes)
+		output:analog-stereo+input:analog-stereo: Estéreo analógico dúplex (sinks: 1, sources: 1, priority: 6565, available: yes)
+		output:analog-stereo: Salida Estéreo analógico (sinks: 1, sources: 0, priority: 6500, available: yes)
+		output:hdmi-stereo+input:analog-stereo: Salida Estéreo digital (HDMI) + Entrada Estéreo analógico (sinks: 1, sources: 1, priority: 5965, available: yes)
+		output:hdmi-stereo: Salida Estéreo digital (HDMI) (sinks: 1, sources: 0, priority: 5900, available: yes)
+		output:hdmi-stereo-extra1+input:analog-stereo: Salida Digital Stereo (HDMI 2) + Entrada Estéreo analógico (sinks: 1, sources: 1, priority: 5765, available: no)
+		output:hdmi-stereo-extra2+input:analog-stereo: Salida Digital Stereo (HDMI 3) + Entrada Estéreo analógico (sinks: 1, sources: 1, priority: 5765, available: no)
+		output:hdmi-stereo-extra1: Salida Digital Stereo (HDMI 2) (sinks: 1, sources: 0, priority: 5700, available: no)
+		output:hdmi-stereo-extra2: Salida Digital Stereo (HDMI 3) (sinks: 1, sources: 0, priority: 5700, available: no)
+		output:hdmi-surround-extra1+input:analog-stereo: Salida Digital Surround 5.1 (HDMI 2) + Entrada Estéreo analógico (sinks: 1, sources: 1, priority: 665, available: no)
+		output:hdmi-surround71-extra1+input:analog-stereo: Salida Digital Surround 7.1 (HDMI 2) + Entrada Estéreo analógico (sinks: 1, sources: 1, priority: 665, available: no)
+		output:hdmi-surround-extra2+input:analog-stereo: Salida Digital Surround 5.1 (HDMI 3) + Entrada Estéreo analógico (sinks: 1, sources: 1, priority: 665, available: no)
+		output:hdmi-surround71-extra2+input:analog-stereo: Salida Digital Surround 7.1 (HDMI 3) + Entrada Estéreo analógico (sinks: 1, sources: 1, priority: 665, available: no)
+		output:hdmi-surround-extra1: Salida Digital Surround 5.1 (HDMI 2) (sinks: 1, sources: 0, priority: 600, available: no)
+		output:hdmi-surround71-extra1: Salida Digital Surround 7.1 (HDMI 2) (sinks: 1, sources: 0, priority: 600, available: no)
+		output:hdmi-surround-extra2: Salida Digital Surround 5.1 (HDMI 3) (sinks: 1, sources: 0, priority: 600, available: no)
+		output:hdmi-surround71-extra2: Salida Digital Surround 7.1 (HDMI 3) (sinks: 1, sources: 0, priority: 600, available: no)
+		input:analog-stereo: Entrada Estéreo analógico (sinks: 0, sources: 1, priority: 65, available: yes)
+		pro-audio: Pro Audio (sinks: 4, sources: 1, priority: 1, available: yes)
+	Active Profile: output:analog-stereo+input:analog-stereo
+	Ports:
+		analog-input-mic: Micrófono (type: Mic, priority: 8700, latency offset: 0 usec, availability group: Legacy 1, availability unknown)
+			Properties:
+				port.type = "mic"
+				port.availability-group = "Legacy 1"
+				device.icon_name = "audio-input-microphone"
+				card.profile.port = "0"
+			Part of profile(s): input:analog-stereo, output:analog-stereo+input:analog-stereo, output:hdmi-stereo+input:analog-stereo, output:hdmi-stereo-extra1+input:analog-stereo, output:hdmi-surround-extra1+input:analog-stereo, output:hdmi-surround71-extra1+input:analog-stereo, output:hdmi-stereo-extra2+input:analog-stereo, output:hdmi-surround-extra2+input:analog-stereo, output:hdmi-surround71-extra2+input:analog-stereo
+		analog-output-speaker: Altavoces (type: Speaker, priority: 10000, latency offset: 0 usec, availability group: Legacy 2, availability unknown)
+			Properties:
+				port.type = "speaker"
+				port.availability-group = "Legacy 2"
+				device.icon_name = "audio-speakers"
+				card.profile.port = "1"
+			Part of profile(s): output:analog-stereo, output:analog-stereo+input:analog-stereo
+		analog-output-headphones: Auriculares (type: Headphones, priority: 9900, latency offset: 0 usec, availability group: Legacy 3, not available)
+			Properties:
+				port.type = "headphones"
+				port.availability-group = "Legacy 3"
+				device.icon_name = "audio-headphones"
+				card.profile.port = "2"
+			Part of profile(s): output:analog-stereo, output:analog-stereo+input:analog-stereo
+		hdmi-output-0: HDMI / DisplayPort (type: HDMI, priority: 5900, latency offset: 0 usec, availability group: Legacy 4, available)
+			Properties:
+				port.type = "hdmi"
+				port.availability-group = "Legacy 4"
+				device.icon_name = "video-display"
+				card.profile.port = "3"
+				device.product.name = "LG ULTRAGEAR"
+			Part of profile(s): output:hdmi-stereo, output:hdmi-stereo+input:analog-stereo
+		hdmi-output-1: HDMI / DisplayPort 2 (type: HDMI, priority: 5800, latency offset: 0 usec, availability group: Legacy 5, not available)
+			Properties:
+				port.type = "hdmi"
+				port.availability-group = "Legacy 5"
+				device.icon_name = "video-display"
+				card.profile.port = "4"
+			Part of profile(s): output:hdmi-stereo-extra1, output:hdmi-stereo-extra1+input:analog-stereo, output:hdmi-surround-extra1, output:hdmi-surround-extra1+input:analog-stereo, output:hdmi-surround71-extra1, output:hdmi-surround71-extra1+input:analog-stereo
+		hdmi-output-2: HDMI / DisplayPort 3 (type: HDMI, priority: 5700, latency offset: 0 usec, availability group: Legacy 6, not available)
+			Properties:
+				port.type = "hdmi"
+				port.availability-group = "Legacy 6"
+				device.icon_name = "video-display"
+				card.profile.port = "5"
+			Part of profile(s): output:hdmi-stereo-extra2, output:hdmi-stereo-extra2+input:analog-stereo, output:hdmi-surround-extra2, output:hdmi-surround-extra2+input:analog-stereo, output:hdmi-surround71-extra2, output:hdmi-surround71-extra2+input:analog-stereo
+
+
+
+
+
+
+lsmod | grep snd_hda_intel
+snd_hda_intel          69632  1
+snd_intel_dspcfg       45056  5 snd_soc_avs,snd_hda_intel,snd_sof,snd_sof_intel_hda_common,snd_sof_intel_hda_generic
+snd_hda_codec         229376  8 snd_hda_codec_generic,snd_soc_avs,snd_hda_codec_hdmi,snd_soc_hda_codec,snd_hda_intel,snd_hda_codec_realtek,snd_soc_hdac_hda,snd_sof_intel_hda
+snd_hda_core          151552  11 snd_hda_codec_generic,snd_soc_avs,snd_hda_codec_hdmi,snd_soc_hda_codec,snd_hda_intel,snd_hda_ext_core,snd_hda_codec,snd_hda_codec_realtek,snd_sof_intel_hda_common,snd_soc_hdac_hda,snd_sof_intel_hda
+snd_pcm               221184  12 snd_soc_avs,snd_hda_codec_hdmi,snd_hda_intel,snd_hda_codec,soundwire_intel,snd_sof,snd_sof_intel_hda_common,snd_compress,snd_soc_core,snd_sof_utils,snd_hda_core,snd_pcm_dmaengine
+snd                   163840  17 snd_hda_codec_generic,snd_seq,snd_seq_device,snd_hda_codec_hdmi,snd_hwdep,snd_hda_intel,snd_hda_codec,snd_hda_codec_realtek,snd_sof,snd_timer,snd_compress,snd_soc_core,snd_pcm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+al actualizar el grub me paparece unos Warnings verifica xhci_hcd
+
+
+        *-usb
+             descripción: USB controller
+             producto: Cannon Lake PCH USB 3.1 xHCI Host Controller
+             vendedor: Intel Corporation
+             id físico: 14
+             información de bus: pci@0000:00:14.0
+             versión: 10
+             anchura: 64 bits
+             reloj: 33MHz
+             capabilidades: pm msi xhci bus_master cap_list
+             configuración: driver=xhci_hcd latency=0
+             recursos: irq:124 memoria:b1420000-b142ffff
+           *-usbhost:0
+                producto: xHCI Host Controller
+                vendedor: Linux 6.12.10-zen1-1-zen xhci-hcd
+                id físico: 0
+                información de bus: usb@1
+                nombre lógico: usb1
+                versión: 6.12
+                capabilidades: usb-2.00
+                configuración: driver=hub slots=16 speed=480Mbit/s
+
+              *-usb:2
+                   descripción: Interfaz inalámbrica de Bluetooth
+                   producto: AX200 Bluetooth
+                   vendedor: Intel Corp.
+                   id físico: 7
+                   información de bus: usb@1:7
+                   versión: 0.01
+                   capabilidades: bluetooth usb-2.01
+                   configuración: driver=btusb maxpower=100mA speed=12Mbit/s
+
+           *-usbhost:1
+                producto: xHCI Host Controller
+                vendedor: Linux 6.12.10-zen1-1-zen xhci-hcd
+                id físico: 1
+                información de bus: usb@2
+                nombre lógico: usb2
+                versión: 6.12
+                capabilidades: usb-3.10
+                configuración: driver=hub slots=8 speed=10000Mbit/s
+
+
+
+
+
+
+La salida del comando lshw explica:
+
+        *-isa
+             descripción: ISA bridge
+             producto: HM470 Chipset LPC/eSPI Controller
+             vendedor: Intel Corporation
+             id físico: 1f
+             información de bus: pci@0000:00:1f.0
+             versión: 10
+             anchura: 32 bits
+             reloj: 33MHz
+             capabilidades: isa bus_master
+             configuración: latency=0
+           *-pnp00:00
+                producto: Motherboard registers
+                id físico: 0
+                capabilidades: pnp
+                configuración: driver=system
+           *-pnp00:01
+                producto: Motherboard registers
+                id físico: 1
+                capabilidades: pnp
+                configuración: driver=system
+           *-pnp00:02
+                producto: Motherboard registers
+                id físico: 2
+                capabilidades: pnp
+                configuración: driver=system
+           *-pnp00:03
+                producto: PnP device INT3f0d
+                vendedor: Interphase Corporation
+                id físico: 3
+                capabilidades: pnp
+                configuración: driver=system
+           *-pnp00:04
+                producto: Motherboard registers
+                id físico: 4
+                capabilidades: pnp
+                configuración: driver=system
+           *-pnp00:05
+                producto: Motherboard registers
+                id físico: 5
+                capabilidades: pnp
+                configuración: driver=system
+           *-pnp00:06
+                producto: Motherboard registers
+                id físico: 6
+                capabilidades: pnp
+                configuración: driver=system
+           *-pnp00:07
+                producto: Motherboard registers
+                id físico: 7
+                capabilidades: pnp
+                configuración: driver=system
+
+
+
+
+
+
+
+
+
+
+
+En el PC tengo dos conectores RJ45, en la salida del comando lshw:
+
+
+  *-core
+       descripción: Placa madre
+       producto: S210H Series
+       vendedor: SYWZ
+       id físico: 0
+       versión: To Be Filled By O.E.M.
+       serial: To Be Filled By O.E.M.
+       muesca: To Be Filled By O.E.M.
+     *-pci
+          descripción: Host bridge
+          producto: Intel Corporation
+          vendedor: Intel Corporation
+          id físico: 100
+          información de bus: pci@0000:00:00.0
+          versión: 0d
+          anchura: 32 bits
+          reloj: 33MHz
+        *-pci:1
+             descripción: PCI bridge
+             producto: Cannon Lake PCH PCI Express Root Port #21
+             vendedor: Intel Corporation
+             id físico: 1b
+             información de bus: pci@0000:00:1b.0
+             versión: f0
+             anchura: 32 bits
+             reloj: 33MHz
+             capabilidades: pci pciexpress msi pm normal_decode bus_master cap_list
+             configuración: driver=pcieport
+             recursos: irq:121 ioport:3000(tamaño=4096) memoria:b1200000-b12fffff
+           *-network
+                descripción: Ethernet interface
+                producto: I211 Gigabit Network Connection
+                vendedor: Intel Corporation
+                id físico: 0
+                información de bus: pci@0000:02:00.0
+                nombre lógico: enp2s0
+                versión: 03
+                serial: 30:bf:00:82:60:34
+                capacidad: 1Gbit/s
+                anchura: 32 bits
+                reloj: 33MHz
+                capabilidades: pm msi msix pciexpress bus_master cap_list ethernet physical tp 10bt 10bt-fd 100bt 100bt-fd 1000bt-fd autonegotiation
+                configuración: autonegotiation=on broadcast=yes driver=igb driverversion=6.12.10-zen1-1-zen firmware=0. 6-1 latency=0 link=no multicast=yes port=twisted pair
+                recursos: irq:16 memoria:b1200000-b121ffff ioport:3000(tamaño=32) memoria:b1220000-b1223fff
+        *-network
+             descripción: Ethernet interface
+             producto: Ethernet Connection (7) I219-V
+             vendedor: Intel Corporation
+             id físico: 1f.6
+             información de bus: pci@0000:00:1f.6
+             nombre lógico: eno1
+             versión: 10
+             serial: 30:bf:00:82:60:33
+             capacidad: 1Gbit/s
+             anchura: 32 bits
+             reloj: 33MHz
+             capabilidades: pm msi bus_master cap_list ethernet physical tp 10bt 10bt-fd 100bt 100bt-fd 1000bt-fd autonegotiation
+             configuración: autonegotiation=on broadcast=yes driver=e1000e driverversion=6.12.10-zen1-1-zen firmware=0.5-4 latency=0 link=no multicast=yes port=twisted pair
+             recursos: irq:150 memoria:b1400000-b141ffff
+
