@@ -186,6 +186,8 @@ entre home y root es demasiado variopinto, y me he acostumbrado
 a guardar todo lo que no quiero perder en otras unidades y en la red,
 esta vez he optado por unificar estas clasicas particiones
 en una sola y beneficiarme de una mayor flexibilidad.
+Además tener en cuenta que el btrfs lo tengo en modo copia de seguridad (dup),
+no ocupan los datos el doble pero si acopa bastante más.
 
 /dev/nvme0n1p5 -   400 GiB Linux root(x86-64)            btrfs /
 
@@ -216,9 +218,9 @@ la desencriptamos
 
 cryptsetup open /dev/nvme0n1p5 cryptroot
 
-la formateamos
+la formateamos con copia de seguridad
 
-mkfs.btrfs -L ArchRoot /dev/mapper/cryptroot
+mkfs.btrfs -L ArchRoot --data dup --metadata dup /dev/mapper/cryptroot
 
 
 preparar aqui la swap encriptar crypttab luego como root
@@ -226,7 +228,7 @@ preparar aqui la swap encriptar crypttab luego como root
 
 y el resto
 
-mkfs.btrfs -L ArchBoot /dev/nvme0n1p4
+mkfs.btrfs -L ArchBoot --data dup --metadata dup /dev/nvme0n1p4
 
 pacman -S exfat-utils
 
@@ -605,7 +607,7 @@ Instalamos el servidor de AUDIO pipewire
 
 
 
-
+Si instalamos plasma ya viene con SDDM
 $ sudo paru -S sddm
 
 $ sudo systemctl enable sddm.service
@@ -661,8 +663,72 @@ fi
 GESTORES DE VENTANAS
 
 
-kde mínimo para mayor integridad y minimo un terminal y un explorador de archivos
-# paru -S plasma-desktop plasma-workspace kwayland kwayland-integration egl-wayland plasma-wayland-protocols plasma-nm dolphin
+kde mínimo pero plasma completo para mayor integridad y minimo un terminal y un explorador de archivos
+paru -S plasma plasma-desktop kde-system kde-accessibility kwalletmanager kdialog khelpcenter partitionmanager dolphin dolphin-plugins ark kate kcharselect lximage-qt okular kgpg kdeconnect kdenetwork-filesharing
+
+kmix filelight kalgebra kompare kolourpaint kget ktorrent isoimagewriter
+
+Para ver IPTV
+hypnotix-wayland
+
+
+Estos paquetes aparentemente no me han dado problemas
+paru -S kwayland-integration egl-wayland plasma-wayland-protocols
+
+
+Diferentes paquetes de aplicaciones de KDE
+kde-applications kde-network kde-utilities kde-multimedia kde-graphics kde-education kde-games kde-pim kde-sdk
+kde-applications-meta kde-network-meta kde-utilities-meta
+
+
+
+
+
+
+
+
+
+
+
+
+Preguntar
+
+extra/libblockdev-smart 3.3.0-1
+    A library for manipulating block devices - S.M.A.R.T. support
+extra/libblockdev-btrfs 3.3.0-1
+    A library for manipulating block devices - BTRFS support
+extra/okteta 1:0.26.20-1
+    KDE hex editor for viewing and editing the raw data of files
+extra/okteta 1:0.26.20-1
+    KDE hex editor for viewing and editing the raw data of files
+extra/kde-inotify-survey 24.12.3-1 (kde-applications kde-system)
+    Tooling for monitoring inotify limits and informing the user when they have been or about to be reached
+extra/gwenview 24.12.3-1 (kde-applications kde-graphics)
+    A fast and easy to use image viewer
+extra/isoimagewriter 24.12.3-1 (kde-applications kde-utilities)
+    Program to write hybrid ISO files onto USB disks
+extra/kapptemplate 24.12.3-1 (kde-applications kde-sdk)
+    KDE Template Generator
+extra/kmouth 24.12.3-1 (kde-applications kde-accessibility)
+    Speech Synthesizer Frontend
+
+
+extra/kde-dev-scripts 24.12.3-1 (kde-applications kde-sdk)
+    Scripts and setting files useful during development of KDE software
+extra/kde-dev-utils 24.12.3-1 (kde-applications kde-sdk)
+    Small utilities for developers using KDE/Qt libs/frameworks
+
+
+
+
+¿que es el protocolo KIO?
+extra/kio-admin 24.12.3-1 (kde-applications kde-system)
+    Manage files as administrator using the admin:// KIO protocol
+extra/kio-extras 24.12.3-1 (kde-applications kde-network) [instalado]
+    Additional components to increase the functionality of KIO
+
+
+
 
 
 
@@ -904,9 +970,21 @@ con el se pued tambien instalar Git Cola Dolphin Service Menu (no instalado)
 el flatpak me da problema con las credenciales se deberia de usar SSH
 
 meld
-jdownloader draw.io
 
-paru -S paru -S libreoffice-fresh-es
+Diagarmas generales:
+paru -S dia
+
+
+UML modeller for dev from KDE
+paru -S umbrello
+no lo tengo claro pero dreo que digno de estudiar
+
+Diagarmas técnicos:
+paru -S drawio-desktop
+
+paru -S libreoffice-fresh-es
+
+jdownloader
 
 Creamos identificación y clonamos repositorios de nustro git
 
