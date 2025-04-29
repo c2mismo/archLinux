@@ -8,6 +8,8 @@ formateado en btrfs.
 Para facilitar la instalación con arranque dual y hacer una instalación,
 libiana, la imagen de windows fué grabada y customizada gracias a Rufus, de la siguiente manera:
 
+
+
 Remove requirement for 4GB+ RAM, SecureBoot and TPM 2.0
 Remove requirement for an online Microsoft account
 Disable data collection (Skip privace questions)
@@ -76,6 +78,7 @@ particiones en disco 1TB
 
 /dev/nvme0n1p3 - 199.7 GiB Microsoft reserve partition   ntfs /mnt/windows msftdata
 
+Me ha hecho windows otra partición de 700 MiB en este punto
 
 /dev/nvme0n1p4 -     4 GiB Extended boot loader          btrfs /boot
 
@@ -113,6 +116,7 @@ reboot
 
 instalamos windows
 
+Nueva partición 204800 MiB
 
 
 
@@ -160,7 +164,7 @@ Si necesitamos una fuente mas grande "no es necesario"
 # pacman -S terminus-font
 
 # setfont ter-v32n
-
+No es mas grande, habria que buscar mas fuentes
 
 
 Si quieres usara el instalador de arch
@@ -178,7 +182,7 @@ partición para boot este debe de excluirse de la encriptación,
 complica mucho la instalación y la recuperación del sistema.
 
 /dev/nvme0n1p4 -     4 GiB Extended boot loader          btrfs /boot
-
+4096 MiB
 
 partición para el sistema en general, a causa de los dichosos
 flatpak y otras instalaciones y cachés el tamaño que preciso
@@ -187,17 +191,18 @@ a guardar todo lo que no quiero perder en otras unidades y en la red,
 esta vez he optado por unificar estas clasicas particiones
 en una sola y beneficiarme de una mayor flexibilidad.
 Además tener en cuenta que el btrfs lo tengo en modo copia de seguridad (dup),
-no ocupan los datos el doble pero si acopa bastante más.
+no ocupan los datos el doble pero si ocupa bastante más.
 
 /dev/nvme0n1p5 -   400 GiB Linux root(x86-64)            btrfs /
-
+409600 MiB
 
 he asignado una pequeña partición para intercambio de datos y archivos
 entre linux y windows, siempre lo hecho de menos,
 probar si podemos tener acceso a btrfs en windows
 
-/dev/nvme0n1p6 -    40 GiB Microsoft basic data          exFAT
 
+/dev/nvme0n1p6 -    40 GiB Microsoft basic data          exFAT
+40960 MiB
 
 ¿32 GiB para SWAP? No no me he vuelto loco a pesar de tener 32 GiB de RAM,
 la he dejado al final del disco para modificarla con facilidad,
@@ -212,7 +217,7 @@ y una 8b no ha ido demasiado mal :P
 encriptamos raiz
 
 cryptsetup luksFormat /dev/nvme0n1p5 --cipher aes-xts-plain64 --key-size 256 --hash sha512
-para una clave de 32 caracteres ASCII
+para una clave de 32 caracteres ASCII máximo
 
 la desencriptamos
 
@@ -230,6 +235,8 @@ y el resto
 
 mkfs.btrfs -L ArchBoot --data dup --metadata dup /dev/nvme0n1p4
 
+
+no hacer esto el windows me secruestra la partición
 pacman -S exfat-utils
 
 mkfs.exfat -n WinLinux /dev/nvme0n1p6
@@ -306,7 +313,7 @@ Desabilitamos la hibernación necesario si queremos tener instalados mas de un S
 
 
 
-verifica primero groups a ver si podemos añadir plugdev
+el grupo plugdev aún no existe
 creamos y configuramos usuarios
 le otorgamos el passwd al root
 creará un usuario sin privilegios "visitante"
@@ -320,27 +327,25 @@ creará un usuario con el nombre que indiquemos con privilegios superuser
 
 
 
-cd visitante
-sudo pacman -Sy
-tiene que dar error este usuario no es superadmin
-
-exit
-
-cd nombreUsuario
+reboot
+su $USER
 sudo pacman -Sy
 este si es superadmin nos lo debe de permitir
 
-exit
 
 
+Al dar problemas la partición en windows crearemos una carpeta
+para compartir con linux.
+Nos debemos de acordar de añadir en fstab la partición de windows
+en /mnt/Win11 y después en el dolphin añadiremos en favorito
+la carpeta para compartir con linux
 
-Añadimos correctamente la partición WinLinux en la carpeta de montage del usuario
+eliminar:
+https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/mountWinLinux.sh
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/mountWinLinux.sh
 
-# chmod +x mountWinLinux.sh
-# ./mountWinLinux.sh
-
+mkdir /mnt/Win11
+mount /dev/nvme0n1p3 /mnt/Win11
 
 
 
@@ -381,6 +386,23 @@ a traves del initramfs, en los proximos inicios
 La swap vamos a encriptarla en cada inicio con una clave aleatoria diferente
 de forma que actuará como una ram volatil ya que no será accesible en cada reinicio
 
+
+La opción -s para reservar el encabezado lo han eliminado,
+estudiar esta otra opción
+
+mkfs.ext4 -L $SWAP_LABEL -m 0 -O ^has_journal $SWAP_PART -s 1 M
+La opción -s se añadió con esta finalidad:
+# Creamos un sistema de archivos pequeño (por ejemplo, de 1 MiB) en la partición de swap y
+# especificamos un offset que determina dónde comienza este sistema de archivos.
+# Al establecer un offset, el sistema de archivos pequeño se coloca en la parte superior de la partición,
+# dejando el resto de la partición (donde se encuentra el swap encriptado) intacto.
+# Esto significa que el UUID y el LABEL de la partición de swap no se sobrescriben,
+# ya que no se modifican los primeros sectores de la partición donde se almacenan estos identificadores.
+
+¿Que4 otra solución me propones?
+
+
+Eliminar:
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptswap.sh
 
 # chmod +x cryptswap.sh
@@ -607,7 +629,7 @@ Instalamos el servidor de AUDIO pipewire
 
 
 
-Si instalamos plasma ya viene con SDDM
+Si instalamos plasma ve directamente a instalarlo
 $ sudo paru -S sddm
 
 $ sudo systemctl enable sddm.service
@@ -908,7 +930,7 @@ sudo smartctl -t long /dev/sda
 sudo systemctl enable smartd
 sudo systemctl start smartd
 
-paru -S firefox vlc mpv archlinux-wallpaper
+paru -S firef lpaper
 gestores de paquetes AUR
 pamac-qt octopi discover (esta última permite Flatpak y Snap)
 paru -S discover flatpak fwupd
