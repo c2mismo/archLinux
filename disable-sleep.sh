@@ -3,13 +3,20 @@
 # obligatorio si queremos tener una
 # swap volatil
 
-# Este comando es efectivo para deshabilitar la suspensión, la hibernación y el sueño híbrido a nivel de systemd. Al "enmascarar" estos objetivos, impides que el sistema pueda entrar en cualquiera de estos estados, lo que es una solución rápida y directa.
+# Este comando es efectivo para deshabilitar la suspensión, la hibernación y
+# el sueño híbrido a nivel de systemd. Al "enmascarar" estos objetivos,
+# impides que el sistema pueda entrar en cualquiera de estos estados,
+# lo que es una solución rápida y directa.
 systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 
-# Esto proporciona una configuración adicional que refuerza la política de suspensión. Aunque el comando mask debería ser suficiente, agregar estas configuraciones puede ser útil si deseas tener un control más granular sobre el comportamiento de suspensión.
-/etc/systemd/sleep.conf.d
+# Esto proporciona una configuración adicional que refuerza la política de suspensión.
+Aunque el comando mask debería ser suficiente, agregar estas configuraciones
+puede ser útil si deseas tener un control más granular sobre el comportamiento
+de suspensión.
+
+mkdir /etc/systemd/sleep.conf.d
 o
-/etc/systemd/sleep.conf.d/99-nopower.conf
+nano /etc/systemd/sleep.conf.d/99-nopower.conf
 con:
 [Sleep]
 AllowSuspend=no
@@ -17,8 +24,11 @@ AllowHibernation=no
 AllowHybridSleep=no
 AllowSuspendThenHibernate=no
 
-# Esto es útil si deseas asegurarte de que las teclas de energía no activen la suspensión o la hibernación. Cambiar estas configuraciones es una buena práctica si utilizas un entorno donde podrías presionar accidentalmente estas teclas.
-/etc/systemd/logind.conf
+# Esto es útil si deseas asegurarte de que las teclas de energía no activen
+# la suspensión o la hibernación. Cambiar estas configuraciones es una buena
+# práctica si utilizas un entorno donde podrías presionar accidentalmente estas teclas.
+
+nano /etc/systemd/logind.conf
 
 #HandlePowerKey=ignore
 HandlePowerKey=ignore
@@ -40,7 +50,9 @@ HibernateKeyIgnoreInhibited=no
 
 sudo systemctl restart systemd-logind
 
-cat /etc/systemd/logind.conf | grep -E 'HandlePowerKey|HandleHibernateKey|HandleSuspendKey'
+
+
+
 
 Configuración de Energía en Plasma:
 
