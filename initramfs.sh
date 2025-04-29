@@ -11,7 +11,7 @@ MKINITCPIO_CONF="/etc/mkinitcpio.conf"
 VCONSOLE_CONF="/etc/vconsole.conf"
 BACKUP_CONF="/etc/mkinitcpio.conf.backup"
 
-# Añadimos módulo i915 para Intel
+# Añadimos módulo i915 para Intel preguntar a IA por más
 MODULES_ORI="MODULES=()"
 MODULES_MOD="MODULES=(i915)"
 
