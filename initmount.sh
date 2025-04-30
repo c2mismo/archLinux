@@ -13,8 +13,8 @@ mount /dev/nvme0n1p1 /mnt/boot/efi && echo "efi montado"
 # mount /dev/nvme0n1p6 /mnt/srv/samba && echo "samba montado"
 
 
-mkdir /mnt/Win11 && echo "Directorio /mnt/Win11 creado"
-mount /dev/nvme0n1p3 /mnt/Win11 && echo "Win11 montado"
+mkdir /mnt/mnt/Win11 && echo "Directorio /mnt/Win11 creado"
+mount /dev/nvme0n1p3 /mnt/mnt/Win11 && echo "Win11 montado"
 
 # Limpiar los archivos temporales
 sudo rm -f "$0"
