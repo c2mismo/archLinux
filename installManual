@@ -202,8 +202,6 @@ probar si podemos tener acceso a btrfs en windows
 
 
 /dev/nvme0n1p6 -    40 GiB Microsoft basic data exFAT
-Microsoft Storage Space - No
-Microsoft basic data
 40960 MiB
 
 ¿32 GiB para SWAP? No no me he vuelto loco a pesar de tener 32 GiB de RAM,
