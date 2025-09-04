@@ -201,7 +201,9 @@ entre linux y windows, siempre lo hecho de menos,
 probar si podemos tener acceso a btrfs en windows
 
 
-/dev/nvme0n1p6 -    40 GiB Microsoft basic data          exFAT
+/dev/nvme0n1p6 -    40 GiB Microsoft basic data exFAT
+Microsoft Storage Space - No
+Microsoft basic data
 40960 MiB
 
 ¿32 GiB para SWAP? No no me he vuelto loco a pesar de tener 32 GiB de RAM,
@@ -237,9 +239,9 @@ mkfs.btrfs -L ArchBoot --data dup --metadata dup /dev/nvme0n1p4
 
 
 no hacer esto el windows me secruestra la partición
-pacman -S exfat-utils
+pacman -S exfatprogs
 
-mkfs.exfat -n WinLinux /dev/nvme0n1p6
+mkfs.exfat -n "WINLINUX" -c 64K /dev/nvme0n1p6
 
 
 
@@ -257,7 +259,7 @@ montamos todas las particiones necesarias para preinstalar el sistema
 
 La de windows por evitar problemas de integridad
 no la vamos a montar para ello hemos creado la
-WinLinux para intercambiar archivos entre los dos SOs
+WINLINUX para intercambiar archivos entre los dos SOs
 
 
 El FSTAB lo hemos dejado para crear cuando hayamos creado el usuario,
