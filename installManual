@@ -236,12 +236,10 @@ y el resto
 mkfs.btrfs -L ArchBoot --data dup --metadata dup /dev/nvme0n1p4
 
 
-no hacer esto el windows me secruestra la partición
+Para tener una partición de intercambio con cualquier SO's
 pacman -S exfatprogs
 
 mkfs.exfat -n "WINLINUX" -c 64K /dev/nvme0n1p6
-
-
 
 
 
@@ -258,10 +256,6 @@ montamos todas las particiones necesarias para preinstalar el sistema
 La de windows por evitar problemas de integridad
 no la vamos a montar para ello hemos creado la
 WINLINUX para intercambiar archivos entre los dos SOs
-
-
-El FSTAB lo hemos dejado para crear cuando hayamos creado el usuario,
-para montar el WinLinux en su directorio correcto.
 
 
 
@@ -335,17 +329,13 @@ este si es superadmin nos lo debe de permitir
 
 
 Al dar problemas la partición en windows crearemos una carpeta
-para compartir con linux.
+para compartir con linux WINLINUX.
 Nos debemos de acordar de añadir en fstab la partición de windows
 en /mnt/Win11 y después en el dolphin añadiremos en favorito
 la carpeta para compartir con linux
 
-eliminar:
+No usar mountWinLinux.sh, es menos compatible:
 https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/mountWinLinux.sh
-
-
-mkdir /mnt/Win11
-mount /dev/nvme0n1p3 /mnt/Win11
 
 
 
@@ -399,7 +389,7 @@ La opción -s se añadió con esta finalidad:
 # Esto significa que el UUID y el LABEL de la partición de swap no se sobrescriben,
 # ya que no se modifican los primeros sectores de la partición donde se almacenan estos identificadores.
 
-¿Que4 otra solución me propones?
+¿Que otra solución me propones?
 
 
 Eliminar:
@@ -441,6 +431,15 @@ Tenemos que configurar el grub
 añadimos tambien: snd_hda_intel.dmic_detect=0 para que el sistema nos detecte correctamente
 la targeta de sonido HDA Intel PCH
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet snd_hda_intel.dmic_detect=0"
+
+O podemos hacer un script:
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/grubConfig.sh
+
+# chmod +x grubConfig.sh
+# ./grubConfig.sh
+
+
 
 
 
