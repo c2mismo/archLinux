@@ -556,6 +556,8 @@ Pregunta pendiente ¿puede tener algo q ver Open ACPI failed (/var/run/acpid.soc
 por ahora la solución que mas se aconseja es instalar los módulos externos al kernel:
 xf86-video-intel
 
+verificar si no hace falta xf86-video-intel y con install_i9.sh está solucionado
+
 y configurar:
 
 
