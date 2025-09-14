@@ -130,4 +130,4 @@ echo ""
 echo "Recuerda actualizar los repositorio "pacman -Sy" y"
 echo "deberás reiniciar cualquier terminal abierta para que los cambios surtan efecto."
 
-rm pacmanConf.sh
+sudo rm -f "$0"
