@@ -96,4 +96,4 @@ if [ $flag -eq 1 ]; then
   fi
 fi
 
-rm initramfs.sh
+sudo rm -f "$0"
