@@ -294,15 +294,20 @@ usuarios en español
 # ./langConfig.sh
 
 
+# paru -S man-pages man-db
+
+actualizamos la base de datos
+# man-db
 
 
+..............................................................
 Desabilitamos la hibernación necesario si queremos tener instalados mas de un SOs
 
+NO EJECUTAR hay que actualizarlo
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.sh
-
 # chmod +x disable-sleep.sh
 # ./disable-sleep.sh
-
+..............................................................
 
 
 
@@ -570,76 +575,67 @@ Instalamos el servidor de AUDIO pipewire
 
 
 
-Si instalamos plasma ve directamente a instalarlo
-$ sudo paru -S sddm
-
-$ sudo systemctl enable sddm.service
-$ sudo reboot
 
 
 
 
 
-# Instalamos el gestor de sesión SDDM para iniciar LXQt con KWin en Wayland
-install "sddm"
-
-como usuario:
-install "sddm-archlinux-theme-git"
 
 
 
-omito esto
---------------------------------
-SDDM_CONF="/etc/sddm.conf"
-
-if [ ! -f "$SDDM_CONF" ]; then
-    sudo bash -c "cat > \"$SDDM_CONF\" << EOF
-[Autologin]
-# User=c2mismo
-# Session=lxqt-wayland.desktop
-
-[General]
-NumLock=on
-cambialo por off a ver si funciona
-
-[Theme]
-Current=archlinux
-EOF"
-else
-    echo "El archivo de sesión $SDDM_CONF no ha sido creado:"
-    echo "El archivo de sesión ya existe."
-fi
---------------------------------------------
-
-# Verificar si SDDM está habilitado antes de habilitar el servicio
-if systemctl is-enabled sddm.service &> /dev/null; then
-    echo "El servicio SDDM ya está habilitado."
-else
-    sudo systemctl enable sddm.service
-    echo "SDDM ha sido habilitado para iniciar en el arranque."
-fi
-
-
-
-
-
-GESTORES DE VENTANAS
+GESTORES DE VENTANAS KDE
 
 
 kde mínimo pero plasma completo para mayor integridad y minimo un terminal y un explorador de archivos
-paru -S plasma plasma-desktop kde-system kde-accessibility kwalletmanager kdialog khelpcenter partitionmanager dolphin dolphin-plugins ark kate kcharselect lximage-qt okular kgpg kdeconnect kdenetwork-filesharing
+# paru -S plasma plasma-desktop kde-system kde-accessibility kwalletmanager kdialog khelpcenter partitionmanager dolphin dolphin-plugins ark kate kcharselect lximage-qt okular kgpg kdeconnect kdenetwork-filesharing
 
-kmix filelight kalgebra kompare kolourpaint kget ktorrent isoimagewriter
+
+
+
+/usr/lib/sddm/sddm.conf.d/default.conf
+[General]
+NumLock=on
+[Theme]
+Current=archlinux
+
+
+
+
+# sudo systemctl enable sddm.service
+
+
+instalamos kitty
+
+# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/kittyInstall.sh
+# chmod +x /usr/local/bin/kittyInstall.sh
+# sh /usr/local/bin/kittyInstall.sh
+
+
+# paru -S firefox kmix filelight kalgebra kompare kolourpaint kget ktorrent isoimagewriter
+
+kpipewire
+
 
 Para ver IPTV
 hypnotix-wayland
 
 
-Estos paquetes aparentemente no me han dado problemas
-paru -S kwayland-integration egl-wayland plasma-wayland-protocols
 
 
-Diferentes paquetes de aplicaciones de KDE
+
+
+kwayland es una biblioteca que proporciona la integración de KDE con el protocolo Wayland.
+Wayland es un protocolo moderno que reemplaza a X11 como el sistema de ventanas en Linux,
+ofreciendo una arquitectura más eficiente y segura para la gestión de gráficos y entradas.
+# paru -S kwayland plasma-wayland-protocols
+# paru -S kwayland-integration egl-wayland plasma-wayland-protocols
+
+
+
+
+
+
+Diferentes paquetes de aplicaciones de KDE yo no las instalo completas, pero digno de verificar:
 kde-applications kde-network kde-utilities kde-multimedia kde-graphics kde-education kde-games kde-pim kde-sdk
 kde-applications-meta kde-network-meta kde-utilities-meta
 
@@ -735,25 +731,9 @@ sudo systemctl restart systemd-logind
 
 
 
-no instalado plasma5-integration
 
-Administrador de red para KDE plasma-nm
-kpipewire
 
-kwayland es una biblioteca que proporciona la integración de KDE con el protocolo Wayland.
-Wayland es un protocolo moderno que reemplaza a X11 como el sistema de ventanas en Linux,
-ofreciendo una arquitectura más eficiente y segura para la gestión de gráficos y entradas.
-# paru -S kwayland plasma-wayland-protocols
 
-Si estás utilizando un entorno de escritorio basado en Xorg y deseas ejecutar aplicaciones que requieren Wayland
-# paru -S xorg_kwayland
-
-No es necesario: Si ya has instalado packagekit-qt6, no necesitas instalar packagekit-qt5
-a menos que tengas aplicaciones específicas que requieran Qt5. En general,
-las aplicaciones más nuevas están migrando a Qt6, por lo que es probable que
-no necesites packagekit-qt5 a menos que estés utilizando software más antiguo
-o específico que aún dependa de Qt5.
-# paru -S packagekit-qt5
 
 
 themes y tal para kde
@@ -818,10 +798,7 @@ install() {
 }
 
 
-paru -S man-pages man-db
 
-actualizamos la base de datos
-man-db
 
 paru -S p7zip unrar
 
@@ -845,12 +822,6 @@ para KDE
 sudo pacman -S libmtp kio kio-extras
 
 
-
-instalamos kitty
-
-# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/kittyInstall.sh
-# chmod +x /usr/local/bin/kittyInstall.sh
-# sh /usr/local/bin/kittyInstall.sh
 
 
 Instalamos Zellij
