@@ -526,7 +526,10 @@ Instalando los servicios de bluetooth
 # chmod +x btInstall.sh
 # ./btInstall.sh
 
+verificar:
+# systemctl status bluetooth.service
 
+En la última instalación no se "enable" correctamente.
 
 
 
