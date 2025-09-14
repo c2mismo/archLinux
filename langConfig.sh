@@ -72,4 +72,4 @@ echo "[ -f ~/.config/vconsole.conf ] && . ~/.config/vconsole.conf" >> /etc/skel/
 
 echo "Idioma para los usuarios configurado en español completado."
 
-rm langConfig.sh
+sudo rm -f "$0"
