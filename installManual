@@ -197,8 +197,7 @@ no ocupan los datos el doble pero si ocupa bastante más.
 409600 MiB
 
 he asignado una pequeña partición para intercambio de datos y archivos
-entre linux y windows, siempre lo hecho de menos,
-probar si podemos tener acceso a btrfs en windows
+entre linux y windows.
 
 
 /dev/nvme0n1p6 -    40 GiB Microsoft basic data exFAT
@@ -228,9 +227,6 @@ la formateamos con copia de seguridad
 mkfs.btrfs -L ArchRoot --data dup --metadata dup /dev/mapper/cryptroot
 
 
-preparar aqui la swap encriptar crypttab luego como root
-
-
 y el resto
 
 mkfs.btrfs -L ArchBoot --data dup --metadata dup /dev/nvme0n1p4
@@ -240,6 +236,9 @@ Para tener una partición de intercambio con cualquier SO's
 pacman -S exfatprogs
 
 mkfs.exfat -n "WINLINUX" -c 64K /dev/nvme0n1p6
+
+
+La SWAP la configuramos mas adelante, la queremos encriptada.
 
 
 
@@ -253,7 +252,7 @@ montamos todas las particiones necesarias para preinstalar el sistema
 # chmod +x initmount.sh
 # ./initmount.sh
 
-La de windows por evitar problemas de integridad
+La partición de windows por evitar problemas de integridad
 no la vamos a montar para ello hemos creado la
 WINLINUX para intercambiar archivos entre los dos SOs
 
@@ -321,21 +320,11 @@ creará un usuario con el nombre que indiquemos con privilegios superuser
 
 
 
-reboot
+Podemos comprobar si se han creado bién los usuarios
 su $USER
 sudo pacman -Sy
 este si es superadmin nos lo debe de permitir
 
-
-
-Al dar problemas la partición en windows crearemos una carpeta
-para compartir con linux WINLINUX.
-Nos debemos de acordar de añadir en fstab la partición de windows
-en /mnt/Win11 y después en el dolphin añadiremos en favorito
-la carpeta para compartir con linux
-
-No usar mountWinLinux.sh, es menos compatible:
-https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/mountWinLinux.sh
 
 
 
@@ -442,6 +431,15 @@ O podemos hacer un script:
 
 
 
+sincronizamos relog &
+Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la eficiencia
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/redConfig.sh
+
+# chmod +x redConfig.sh
+# ./redConfig.sh
+
+
 
 
 
@@ -465,15 +463,6 @@ conectamos a internet
 $ ping -c 3 archlinux.com
 
 
-sincronizamos relog &
-Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la eficiencia
-
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/redConfig.sh
-
-# chmod +x redConfig.sh
-# ./redConfig.sh
-
-
 
 
 
@@ -483,10 +472,10 @@ Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la efi
 
 verificando
 
-$ lspci -k
+$ lspci -k | less
 
 # dmesg | grep usbcore
-# dmesg | grep i915 | less
+# dmesg | grep i915
 
 swapon --show
 
@@ -503,62 +492,12 @@ $ journalctl -b | grep cryptsetup
 
 
 
--------------------------------------
-no ejecutado
-paru -S ranger
-paru -S mkinitcpio-firmware
-
-Tenemos que verificar si del "mkinitcpio -P" eliminamos los
-==> WARNING: Possibly missing firmware for module: 'module_name'
-aic94xx, ast, bfa, bnx2x, liquidio, mlxsw_spectrum, nfp, qed, qla1280, qla2xxx, wd719x, xhci_pci
-
-tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar el zen el proceso habria sido mas rapido
-
-==> WARNING: Possibly missing firmware for module: 'qat_420xx'
-indica que el firmware para el módulo qat_420xx, relacionado con la tecnología Intel QuickAssist, no está presente en tu sistema.
--------------------------------------
 
 
 
 
 
-Instalamos y preparamos sistema para el procesador i9
-Tenemos un problema con los controladores de intel
 
-A pesar de tener cargados los módulos del kernel de intel
-
-$ lsmod | grep i915
-i915                 4894720  61
-i2c_algo_bit           24576  2 igb,i915
-drm_buddy              24576  1 i915
-video                  81920  1 i915
-ttm                   114688  1 i915
-intel_gtt              28672  1 i915
-drm_display_helper    290816  1 i915
-cec                   106496  2 drm_display_helper,i915
-
-
-[c2mismo@archi9 ~]$ cat /var/log/Xorg.0.log | grep -i "WW"
-	(WW) warning, (EE) error, (NI) not implemented, (??) unknown.
-[  1287.265] (WW) `fonts.dir' not found (or not valid) in "/usr/share/fonts/misc".
-[  1287.265] (WW) `fonts.dir' not found (or not valid) in "/usr/share/fonts/TTF".
-[  1287.265] (WW) The directory "/usr/share/fonts/OTF" does not exist.
-[  1287.265] (WW) The directory "/usr/share/fonts/Type1" does not exist.
-[  1287.265] (WW) The directory "/usr/share/fonts/100dpi" does not exist.
-[  1287.265] (WW) The directory "/usr/share/fonts/75dpi" does not exist.
-[  1287.271] (WW) Open ACPI failed (/var/run/acpid.socket) (No such file or directory)
-[  1287.271] (WW) Warning, couldn't open module intel
-[  1287.272] (WW) Warning, couldn't open module fbdev
-[  1287.272] (WW) Warning, couldn't open module vesa
-
-Pregunta pendiente ¿puede tener algo q ver Open ACPI failed (/var/run/acpid.socket) (No such file or directory)?
-
-por ahora la solución que mas se aconseja es instalar los módulos externos al kernel:
-xf86-video-intel
-
-verificar si no hace falta xf86-video-intel y con install_i9.sh está solucionado
-
-y configurar:
 
 
 
@@ -610,9 +549,10 @@ paqueteria del repositorio de la comunidad
 AUR y a la vez gestiona los repositorios
 oficiales
 
+Cuidado descargar y ejecutar en /usr/local/bin:
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/paruInstallConf.sh
 # chmod +x /usr/local/bin/paruInstallConf.sh
-# /usr/local/bin/paruInstallConf.sh
+# sh /usr/local/bin/paruInstallConf.sh
 
 
 
@@ -621,7 +561,7 @@ VERIFICAR las configuraciones de usuario
 Instalamos el servidor de AUDIO pipewire
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/soundServer.sh
 # chmod +x /usr/local/bin/soundServer.sh
-# /usr/local/bin/soundServer.sh
+# sh /usr/local/bin/soundServer.sh
 
 
 
@@ -910,7 +850,7 @@ instalamos kitty
 
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/kittyInstall.sh
 # chmod +x /usr/local/bin/kittyInstall.sh
-# /usr/local/bin/kittyInstall.sh
+# sh /usr/local/bin/kittyInstall.sh
 
 
 Instalamos Zellij
@@ -1042,3 +982,16 @@ nano .config/kitty/colors.conf
 
 
 
+-------------------------------------
+no ejecutado
+paru -S mkinitcpio-firmware
+
+Tenemos que verificar si del "mkinitcpio -P" eliminamos los
+==> WARNING: Possibly missing firmware for module: 'module_name'
+aic94xx, ast, bfa, bnx2x, liquidio, mlxsw_spectrum, nfp, qed, qla1280, qla2xxx, wd719x, xhci_pci
+
+tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar el zen el proceso habria sido mas rapido
+
+==> WARNING: Possibly missing firmware for module: 'qat_420xx'
+indica que el firmware para el módulo qat_420xx, relacionado con la tecnología Intel QuickAssist, no está presente en tu sistema.
+-------------------------------------
