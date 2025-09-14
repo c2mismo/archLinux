@@ -57,4 +57,4 @@ else
     echo "No se pudo encontrar un UUID después de $max_attempts intentos."
 fi
 
-rm addwindows.sh
+sudo rm -f "$0"
