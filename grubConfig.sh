@@ -30,4 +30,4 @@ fi
 echo "GRUB ha sido instalado y configurado correctamente con soporte para HDA Intel PCH."
 
 # Limpiar el script temporal
-rm -f "$0"
+sudo rm -f "$0"
