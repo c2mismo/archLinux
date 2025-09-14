@@ -25,4 +25,4 @@ sudo reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist
 # Sincronizar la base de datos de pacman
 sudo pacman -Syy
 
-rm pacmanRepo.sh
+sudo rm -f "$0"
