@@ -56,7 +56,7 @@ cat >> "$FSTAB_FILE" << EOF
 /dev/mapper/$SWAP_CRYPT    none    swap    sw    0 0
 EOF
 
-echo -e "\n✅ Configuración de swap encriptada completada."
+echo -e "\n✅ Configuración de swap encriptada completado."
 
 # Limpiar los archivos temporales
 sudo rm -f "$0"
