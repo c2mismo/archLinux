@@ -1,0 +1,162 @@
+
+
+APLICACIONES
+
+
+
+Instalador gráfico de aplicaciones, es el mas oficial y usa flatpak,
+seguramente instalado prefiero evitar los flatpak, ocupan demasiado:
+paru -S discover
+
+Instalador gráfico de aplicaciones, parecido a Synaptic de ubuntu
+paru -S octopi
+
+
+
+
+paru -S jdk-openjdk
+
+paru -S vlc-git vlc-plugin-ffmpeg vlc-plugins-all
+
+
+
+
+paru -S p7zip unrar
+
+paru -S htop btop fastfetch
+
+
+Ver primero mis dotfiles
+paru -S zsh
+
+
+
+
+paru -S riseup-vpn
+
+paru -S jitsi-meet-desktop jitsi-videobridge
+
+
+
+
+
+paru -S visual-studio-code-bin
+
+
+paru -S libreoffice-fresh-es
+
+Comparador de archivos:
+meld
+
+Diagarmas generales:
+paru -S dia
+
+
+UML modeller for dev from KDE
+paru -S umbrello
+no lo tengo claro pero dreo que digno de estudiar
+
+Diagarmas técnicos:
+paru -S drawio-desktop
+
+
+
+
+
+
+
+
+
+
+
+
+Para conectar via usb telefonos android
+
+sudo pacman -S libmtp
+
+adbusers
+
+para Gnome
+sudo pacman -S gvfs-mtp gvfs-gphoto2
+
+para KDE
+sudo pacman -S libmtp kio kio-extras
+
+
+
+
+
+
+
+
+
+Si buscas editores de texto optimizados para Qt con integración de GIT:
+Kate es una excelente opcion, tiene soporte para Git a través de plugins
+No me siento cómodo y aveces se me cuelga
+
+
+QOwnNotes es ideal si necesitas un editor de notas con características adicionales, mientras que
+
+
+Qt Creator es perfecto si trabajas en proyectos de desarrollo (IDE) en Qt.
+Interfaz gráfica para realizar operaciones de Git (commit, push, pull, branch, etc.).
+
+Sino al gedit como siempre
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+paru -S git-credential-manager-core
+
+git-cola me dio problemas al instalarlo tanto git-cola como git-cola-git
+instalado el flatpak con Discover
+con el se pued tambien instalar Git Cola Dolphin Service Menu (no instalado)
+
+el flatpak me da problema con las credenciales se deberia de usar SSH
+
+
+
+
+
+jdownloader
+
+Creamos identificación y clonamos repositorios de nustro git
+
+https://github.com/c2mismo/documentos/blob/master/Informatica/machines/Instalaci%C3%B3n%20Ubuntu%2022.04
+
+
+Instalar juegos:
+https://github.com/c2mismo/documentos/blob/master/Informatica/machines/ArchLinux%20i9/ArchLinux%20Games
+
+
+
+
+futuro escript de instalación e instalacion
+
+sudo pacman -Syu
+
+
+busca y elimina dependencias innecesarias, paquetes huerfanos, sus archivos de configuración
+sudo pacman -Rns $(pacman -Qtdq)
+para que solo quede de cache una sola version tanto de instalados como desinstalados
+sudo paccache -rk1
+sudo paccache -ruk1
+
+
+
+
+
+dotfiles
+nano .config/kitty/kitty.conf
+nano .config/kitty/colors.conf
+.config/paru/paru.conf
