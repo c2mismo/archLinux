@@ -4,24 +4,12 @@ APLICACIONES
 
 
 
-Instalador gráfico de aplicaciones, es el mas oficial y usa flatpak,
-seguramente instalado prefiero evitar los flatpak, ocupan demasiado:
-paru -S discover
-
-Instalador gráfico de aplicaciones, parecido a Synaptic de ubuntu
-paru -S octopi
 
 
 
 
-paru -S jdk-openjdk
-
-paru -S vlc-git vlc-plugin-ffmpeg vlc-plugins-all
 
 
-
-
-paru -S p7zip unrar
 
 paru -S htop btop fastfetch
 
@@ -45,12 +33,8 @@ paru -S visual-studio-code-bin
 
 paru -S libreoffice-fresh-es
 
-Comparador de archivos:
-meld
-
 Diagarmas generales:
 paru -S dia
-
 
 UML modeller for dev from KDE
 paru -S umbrello
@@ -59,6 +43,8 @@ no lo tengo claro pero dreo que digno de estudiar
 Diagarmas técnicos:
 paru -S drawio-desktop
 
+KDE hex editor for viewing and editing the raw data of files:
+paru -S okteta
 
 
 
@@ -70,17 +56,8 @@ paru -S drawio-desktop
 
 
 
-Para conectar via usb telefonos android
 
-sudo pacman -S libmtp
 
-adbusers
-
-para Gnome
-sudo pacman -S gvfs-mtp gvfs-gphoto2
-
-para KDE
-sudo pacman -S libmtp kio kio-extras
 
 
 
@@ -154,9 +131,16 @@ sudo paccache -ruk1
 
 
 
+Instalamos Zellij
+Zellij es una opción excelente para aquellos que buscan un multiplexor de terminal moderno y eficiente,
+una alternativa a tmux.
+paru -S zellij zellij-selector
 
 
-dotfiles
-nano .config/kitty/kitty.conf
-nano .config/kitty/colors.conf
-.config/paru/paru.conf
+
+
+
+Para ver IPTV
+hypnotix-wayland
+
+
