@@ -6,64 +6,58 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-[ ! -e /etc/sysctl.d/99-sysctl.conf ] && touch /etc/sysctl.d/99-sysctl.conf
-echo "vm.swappiness=10" | tee -a /etc/sysctl.d/99-sysctl.conf > /dev/null
-echo "Configurado el sistema para que haga el menor uso de swap posible."
-
 # Partición swap
 SWAP_PART="/dev/nvme0n1p8"
-# LABEL de la swap
-SWAP_LABEL="swap"
-# NAME desencriptada
+# Nombre del dispositivo desencriptado
 SWAP_CRYPT="volatileswap"
-# Ruta de los archivos a modificar
-CRYPTTAB_FILE="/etc/crypttab.initramfs"
+# Ruta de los archivos en el sistema
+CRYPTTAB_FILE="/etc/crypttab"
 FSTAB_FILE="/etc/fstab"
 
-# Creamos un sistema de archivos pequeño (por ejemplo, de 1 MiB) en la partición de swap y
-# especificamos un offset que determina dónde comienza este sistema de archivos.
-# Al establecer un offset, el sistema de archivos pequeño se coloca en la parte superior de la partición,
-# dejando el resto de la partición (donde se encuentra el swap encriptado) intacto.
-# Esto significa que el UUID y el LABEL de la partición de swap no se sobrescriben,
-# ya que no se modifican los primeros sectores de la partición donde se almacenan estos identificadores.
-
-mkfs.ext4 -L $SWAP_LABEL -m 0 -O ^has_journal $SWAP_PART -s 1M && \
-echo "Creado pequeña particion para el offset de proteccion del UUID y el LABEL." || \
-echo "ERROR: Creando pequeña particion para el offset de proteccion del UUID y el LABEL."
-
-# -m 0: No reserva espacio para el superusuario, maximizando el espacio disponible para swap.
-# -O ^has_journal: Desactiva el journaling, lo que es innecesario para una partición de swap y mejora el rendimiento.
-# -s 1M limita el tamaño del sistema de archivos a 1 MiB, dejando espacio para el swap encriptado detrás de él.
-
-
-# Verificamos que existe crypttab.initramfs y si no lo creamos y le añadimos las lineas necesarias
-# para que reencripte la partición a cada inicio
-[ ! -e $CRYPTTAB_FILE ] && cp /etc/crypttab $CRYPTTAB_FILE
-cat >> "$CRYPTTAB_FILE" << EOF
-
-# Mount swap re-encrypting it with a fresh key each reboot
-# Especificamos un offset=2048 para que el UUID y el LABEL de la partición de swap no se sobrescriban.
-$SWAP_CRYPT    LABEL=$SWAP_LABEL    /dev/urandom    swap,offset=2048,cipher=aes-xts-plain64,size=256,sector-size=4096
-EOF
-if grep -q "$SWAP_CRYPT" "$CRYPTTAB_FILE"; then
-echo "Añadido al "$CRYPTTAB_FILE" para generar una swap volatil."
-else
-echo "ERROR: Al añadirlo al "$CRYPTTAB_FILE" para generar una swap volatil."
+# Obtener el UUID de la partición swap
+SWAP_UUID=$(blkid -s UUID -o value "$SWAP_PART")
+if [ -z "$SWAP_UUID" ]; then
+  echo "ERROR: No se pudo obtener el UUID de la partición $SWAP_PART"
+  exit 1
 fi
 
+# Verificar el UUID hasta 3 veces
 
+# Contador de intentos
+attempts=0
+max_attempts=3
+SWAP_UUID=""
 
-# Configuramos el fstab para que se monte correctamente
+while [ $attempts -lt $max_attempts ]; do
+    SWAP_UUID=$(blkid -s UUID -o value $SWAP_PART)
+    
+    if [ -n "$SWAP_UUID" ]; then
+        echo "UUID encontrado: $SWAP_UUID"
+        echo "Numero de intentos: $((attempts + 1))"  
+        break
+    else
+        echo "Intento $((attempts + 1)): No se encontró UUID. Reintentando..."
+        attempts=$((attempts + 1))
+        sleep 1  # Esperar 1 segundo antes de volver a intentar
+    fi
+done
+
+# Añadir al crypttab (USANDO UUID Y /dev/urandom)
+echo "Añadiendo a $CRYPTTAB_FILE..."
+cat >> "$CRYPTTAB_FILE" << EOF
+# Swap encriptada con clave aleatoria en cada arranque
+$SWAP_CRYPT    UUID=$SWAP_UUID    /dev/urandom    swap,cipher=aes-xts-plain64,keysize=256
+EOF
+
+# Añadir al fstab
+echo "Añadiendo a $FSTAB_FILE..."
 cat >> "$FSTAB_FILE" << EOF
-# /dev/mapper/$SWAP_CRYPT LABEL=$SWAP_LABEL
+# Swap encriptada
 /dev/mapper/$SWAP_CRYPT    none    swap    sw    0 0
 EOF
 
-if grep -q "$SWAP_CRYPT" "$FSTAB_FILE"; then
-echo "Añadido al "$FSTAB_FILE" para montar la swap volatil."
-else
-echo "ERROR: Al añadirlo al "$FSTAB_FILE" para montar la swap volatil."
-fi
+echo -e "\n✅ Configuración de swap encriptada completada."
 
 # Limpiar los archivos temporales
 sudo rm -f "$0"
+exit 0
