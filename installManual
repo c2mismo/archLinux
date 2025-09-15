@@ -371,8 +371,7 @@ La swap vamos a encriptarla en cada inicio con una clave aleatoria diferente
 de forma que actuará como una ram volatil ya que no será accesible en cada reinicio
 
 
-La opción -s para reservar el encabezado lo han eliminado,
-estudiar esta otra opción
+La opción -s para reservar el encabezado lo han eliminado:
 
 mkfs.ext4 -L $SWAP_LABEL -m 0 -O ^has_journal $SWAP_PART -s 1 M
 La opción -s se añadió con esta finalidad:
@@ -393,7 +392,28 @@ Eliminar:
 # ./cryptswap.sh
 
 
+NUEVO METODO:
 
+sudo swapoff -a
+sudo mkswap /dev/nvme0n1p8
+
+sudo nano /etc/crypttab
+Solo añadimos al final:
+swap /dev/nvme0n1p8 /dev/urandom swap,cipher=aes-xts-plain64,keysize=256
+UUID=39d04c4c-7f68-40c3-973d-1a440f3fbd28
+
+sudo nano /etc/fstab
+# /dev/nvme0n1p6 swap
+/dev/mapper/swap none swap defaults 0 0
+
+sudo systemctl daemon-reload
+sudo systemctl restart systemd-cryptsetup@swap.service
+
+systemctl status systemd-cryptsetup@swap.service
+
+sudo swapon -a
+verifica
+swapon -s
 
 VERIFICA
 Incluimos los modules del kernel necesarios para que initramfs pueda desencriptar
@@ -432,6 +452,20 @@ O podemos hacer un script:
 
 # chmod +x grubConfig.sh
 # ./grubConfig.sh
+
+
+
+-------------------------------------
+lspci -nnk
+Tenemos que verificar si del "mkinitcpio -P" eliminamos los
+==> WARNING: Possibly missing firmware for module: 'module_name'
+aic94xx, ast, bfa, qed, qla1280, qla2xxx, wd719x, xhci_pci_renesas
+Por qué: los módulos que mencionas, son controladores para hardware específico
+(controladoras SCSI/HBA de ciertos proveedores, interfaces USB/renesas, GPUs AST en servidores,
+adaptadores QLogic/QED, etc.). En tu lspci aparecen sólo dispositivos Intel, Micron NVMe y chipsets comunes
+(i915, nvme, iwlwifi, e1000e, igb, etc.), y los controladores que esos dispositivos usan están ya cargados
+(i915, nvme, iwlwifi, e1000e, igb, ahci, etc.).
+-------------------------------------
 
 
 
@@ -506,7 +540,7 @@ $ journalctl -b | grep cryptsetup
 
 
 
-kscreen-doctor
+
 
 
 
@@ -557,6 +591,8 @@ paqueteria del repositorio de la comunidad
 AUR y a la vez gestiona los repositorios
 oficiales
 
+
+
 Cuidado descargar y ejecutar en /usr/local/bin:
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/paruInstallConf.sh
 # chmod +x /usr/local/bin/paruInstallConf.sh
@@ -593,13 +629,19 @@ kde mínimo pero plasma completo para mayor integridad y minimo un terminal y un
 # paru -S plasma plasma-desktop kde-system kde-accessibility kwalletmanager kdialog khelpcenter partitionmanager dolphin dolphin-plugins ark kate kcharselect lximage-qt okular kgpg kdeconnect kdenetwork-filesharing
 
 
+Tema SDDM:
+https://store.kde.org/s/KDE%20Store/p/2142845
+
+Descomprimir
+
+# mkdir /usr/share/sddm/themes/Noir-SDDM-6
 
 
-/usr/lib/sddm/sddm.conf.d/default.conf
+# nano /usr/lib/sddm/sddm.conf.d/default.conf
 [General]
 NumLock=on
 [Theme]
-Current=archlinux
+Current=Noir-SDDM-6
 
 
 
@@ -781,16 +823,3 @@ sudo systemctl start smartd
 
 
 
--------------------------------------
-no ejecutado
-paru -S mkinitcpio-firmware
-
-Tenemos que verificar si del "mkinitcpio -P" eliminamos los
-==> WARNING: Possibly missing firmware for module: 'module_name'
-aic94xx, ast, bfa, bnx2x, liquidio, mlxsw_spectrum, nfp, qed, qla1280, qla2xxx, wd719x, xhci_pci
-
-tarda un ratito deberiamos haber instalado solo un kernel y al acabar instalar el zen el proceso habria sido mas rapido
-
-==> WARNING: Possibly missing firmware for module: 'qat_420xx'
-indica que el firmware para el módulo qat_420xx, relacionado con la tecnología Intel QuickAssist, no está presente en tu sistema.
--------------------------------------
