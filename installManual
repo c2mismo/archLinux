@@ -614,24 +614,28 @@ instalamos kitty
 # sh /usr/local/bin/kittyInstall.sh
 
 
-# paru -S firefox kmix filelight kalgebra kompare kolourpaint kget ktorrent isoimagewriter
+Aplicaciones básicas:
+# paru -S firefox kmix filelight kalgebra kompare kolourpaint kget ktorrent isoimagewriter p7zip unrar
 
-kpipewire
+Para compatibilidad con Dolphin, para MTP con teléfonos móviles
+# paru -S libmtp kio-admin kio-extras
+
+Instalador gráfico de aplicaciones, es el mas oficial y usa flatpak,
+seguramente instalado prefiero evitar los flatpak, ocupan demasiado:
+paru -S discover
+
+Instalador gráfico de aplicaciones, parecido a Synaptic de ubuntu
+paru -S octopi
+
+paru -S jdk-openjdk
+
+paru -S vlc-git vlc-plugin-ffmpeg vlc-plugins-all
 
 
-Para ver IPTV
-hypnotix-wayland
 
 
 
 
-
-
-kwayland es una biblioteca que proporciona la integración de KDE con el protocolo Wayland.
-Wayland es un protocolo moderno que reemplaza a X11 como el sistema de ventanas en Linux,
-ofreciendo una arquitectura más eficiente y segura para la gestión de gráficos y entradas.
-# paru -S kwayland plasma-wayland-protocols
-# paru -S kwayland-integration egl-wayland plasma-wayland-protocols
 
 
 
@@ -646,48 +650,6 @@ kde-applications-meta kde-network-meta kde-utilities-meta
 
 
 
-
-
-
-
-
-
-
-Preguntar
-
-extra/libblockdev-smart 3.3.0-1
-    A library for manipulating block devices - S.M.A.R.T. support
-extra/libblockdev-btrfs 3.3.0-1
-    A library for manipulating block devices - BTRFS support
-extra/okteta 1:0.26.20-1
-    KDE hex editor for viewing and editing the raw data of files
-extra/okteta 1:0.26.20-1
-    KDE hex editor for viewing and editing the raw data of files
-extra/kde-inotify-survey 24.12.3-1 (kde-applications kde-system)
-    Tooling for monitoring inotify limits and informing the user when they have been or about to be reached
-extra/gwenview 24.12.3-1 (kde-applications kde-graphics)
-    A fast and easy to use image viewer
-extra/isoimagewriter 24.12.3-1 (kde-applications kde-utilities)
-    Program to write hybrid ISO files onto USB disks
-extra/kapptemplate 24.12.3-1 (kde-applications kde-sdk)
-    KDE Template Generator
-extra/kmouth 24.12.3-1 (kde-applications kde-accessibility)
-    Speech Synthesizer Frontend
-
-
-extra/kde-dev-scripts 24.12.3-1 (kde-applications kde-sdk)
-    Scripts and setting files useful during development of KDE software
-extra/kde-dev-utils 24.12.3-1 (kde-applications kde-sdk)
-    Small utilities for developers using KDE/Qt libs/frameworks
-
-
-
-
-¿que es el protocolo KIO?
-extra/kio-admin 24.12.3-1 (kde-applications kde-system)
-    Manage files as administrator using the admin:// KIO protocol
-extra/kio-extras 24.12.3-1 (kde-applications kde-network) [instalado]
-    Additional components to increase the functionality of KIO
 
 
 
@@ -759,16 +721,9 @@ Los archivos de configuración de KDE Plasma se encuentran principalmente en el 
 
 
 
-
+OTROS GESTORES DE VENTANA
 
 Desistimos de LXQT estan migrando a wayland y qt6 y es un problema quizas mas adelante
-
-
-
-
-
-
-
 
 
 GESTORES DE VENTANA EN MOSAICOS
@@ -803,34 +758,10 @@ install() {
 
 
 
-paru -S p7zip unrar
-
-paru -S zsh
-
-paru -S riseup-vpn
-
-paru -S jitsi-meet-desktop jitsi-videobridge
-
-
-Para conectar via usb telefonos android
-
-sudo pacman -S libmtp
-
-adbusers
-
-para Gnome
-sudo pacman -S gvfs-mtp gvfs-gphoto2
-
-para KDE
-sudo pacman -S libmtp kio kio-extras
 
 
 
 
-Instalamos Zellij
-Zellij es una opción excelente para aquellos que buscan un multiplexor de terminal moderno y eficiente,
-una alternativa a tmux.
-paru -S zellij zellij-selector
 
 
 
@@ -845,114 +776,8 @@ sudo smartctl -t long /dev/sda
 sudo systemctl enable smartd
 sudo systemctl start smartd
 
-paru -S firef lpaper
-gestores de paquetes AUR
-pamac-qt octopi discover (esta última permite Flatpak y Snap)
-paru -S discover flatpak fwupd
 
 
-# htop btop
-
-
-
-
-
-
-Si buscas editores de texto optimizados para Qt con integración de GIT:
-Kate es una excelente opcion, tiene soporte para Git a través de plugins
-No me siento cómodo y aveces se me cuelga
-
-
-QOwnNotes es ideal si necesitas un editor de notas con características adicionales, mientras que
-
-
-Qt Creator es perfecto si trabajas en proyectos de desarrollo (IDE) en Qt.
-Interfaz gráfica para realizar operaciones de Git (commit, push, pull, branch, etc.).
-
-Sino al gedit como siempre
-
-
-
-
-
-
-
-
-
-
-
-si todo va correcto
-
-navegadores QT:
-sudo pacman -S qutebrowser
-Qutebrowser es un navegador web de código abierto,
-diseñado para ser controlado principalmente mediante el teclado,
-con un estilo de interfaz minimalista que se inspira en editores de texto como Vim.
-Utiliza QtWebEngine, que se basa en Chromium.
-No soporta extensiones de Firefox o Chrome.
-
-
-y Falkon
-
-htop glances fastfetch
-paru -S spotify visual-studio-code-bin
-
-
-paru -S git-credential-manager-core
-
-git-cola me dio problemas al instalarlo tanto git-cola como git-cola-git
-instalado el flatpak con Discover
-con el se pued tambien instalar Git Cola Dolphin Service Menu (no instalado)
-
-el flatpak me da problema con las credenciales se deberia de usar SSH
-
-meld
-
-Diagarmas generales:
-paru -S dia
-
-
-UML modeller for dev from KDE
-paru -S umbrello
-no lo tengo claro pero dreo que digno de estudiar
-
-Diagarmas técnicos:
-paru -S drawio-desktop
-
-paru -S libreoffice-fresh-es
-
-jdownloader
-
-Creamos identificación y clonamos repositorios de nustro git
-
-https://github.com/c2mismo/documentos/blob/master/Informatica/machines/Instalaci%C3%B3n%20Ubuntu%2022.04
-
-
-Instalar juegos:
-https://github.com/c2mismo/documentos/blob/master/Informatica/machines/ArchLinux%20i9/ArchLinux%20Games
-
-
-
-
-futuro escript de instalación e instalacion
-
-sudo pacman -Syu
-
-
-busca y elimina dependencias innecesarias, paquetes huerfanos, sus archivos de configuración
-sudo pacman -Rns $(pacman -Qtdq)
-para que solo quede de cache una sola version tanto de instalados como desinstalados
-sudo paccache -rk1
-sudo paccache -ruk1
-
-
-
-
-
-dotfiles
-nano .config/kitty/kitty.conf
-nano .config/kitty/colors.conf
-.config/paru/paru.conf
 
 
 
