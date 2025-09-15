@@ -238,7 +238,11 @@ pacman -S exfatprogs
 mkfs.exfat -n "WINLINUX" -c 64K /dev/nvme0n1p6
 
 
-La SWAP la configuramos mas adelante, la queremos encriptada.
+La SWAP es una partición sin sistema de archivos (solo tipo Linux swap)
+Esto solo prepara la partición para swap, sin cifrado;
+luego se aplicará el cifrado con dm-crypt
+
+mkswap /dev/nvme0n1p8
 
 
 
@@ -364,67 +368,16 @@ a traves del initramfs, en los proximos inicios
 # ./cryptroot.sh
 
 
-
-
-
-La swap vamos a encriptarla en cada inicio con una clave aleatoria diferente
-de forma que actuará como una ram volatil ya que no será accesible en cada reinicio
-
-
-La opción -s para reservar el encabezado lo han eliminado:
-
-mkfs.ext4 -L $SWAP_LABEL -m 0 -O ^has_journal $SWAP_PART -s 1 M
-La opción -s se añadió con esta finalidad:
-# Creamos un sistema de archivos pequeño (por ejemplo, de 1 MiB) en la partición de swap y
-# especificamos un offset que determina dónde comienza este sistema de archivos.
-# Al establecer un offset, el sistema de archivos pequeño se coloca en la parte superior de la partición,
-# dejando el resto de la partición (donde se encuentra el swap encriptado) intacto.
-# Esto significa que el UUID y el LABEL de la partición de swap no se sobrescriben,
-# ya que no se modifican los primeros sectores de la partición donde se almacenan estos identificadores.
-
-¿Que otra solución me propones?
-
-
-Eliminar:
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptswap.sh
 
 # chmod +x cryptswap.sh
 # ./cryptswap.sh
 
 
-NUEVO METODO:
-
-sudo swapoff -a
-sudo mkswap /dev/nvme0n1p8
-
-sudo nano /etc/crypttab
-Solo añadimos al final:
-swap /dev/nvme0n1p8 /dev/urandom swap,cipher=aes-xts-plain64,keysize=256
-UUID=39d04c4c-7f68-40c3-973d-1a440f3fbd28
-
-sudo nano /etc/fstab
-# /dev/nvme0n1p6 swap
-/dev/mapper/swap none swap defaults 0 0
-
-sudo systemctl daemon-reload
-sudo systemctl restart systemd-cryptsetup@swap.service
-
-systemctl status systemd-cryptsetup@swap.service
-
-sudo swapon -a
-verifica
-swapon -s
 
 VERIFICA
 Incluimos los modules del kernel necesarios para que initramfs pueda desencriptar
 usando systemd y sd-vconsole y añadimos el modulo para Intel
-
-limpiamos este
-==> WARNING: consolefont: no font found in configuration
-definimos una fuente de consola "FONT=ter-v32n"
-ya añadido con createuser.sh verificar
-cat /etc/vconsole.conf
-Entonces añadimos el HOOK consolefont al usar systemd sería sd-vconsole
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initramsf.sh
 
