@@ -8,3 +8,4 @@ pacstrap -i /mnt base base-devel fuse linux-zen linux-zen-headers linux-firmware
 
 # Limpiar los archivos temporales
 sudo rm -f "$0"
+exit 0
