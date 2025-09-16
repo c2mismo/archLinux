@@ -95,4 +95,6 @@ paru -Syy && \
 echo "Repositorios oficiales y AUR actualizados con paru." || \
 echo "ERROR: Repositorios oficiales y AUR no actualizados con paru."
 
+# Limpiar los archivos temporales
 sudo rm -f "$0"
+exit 0
