@@ -39,7 +39,7 @@ update_option "Color"
 update_option "ParallelDownloads = 5"
 
 # Función para descomentar una opción con dos líneas
-update_multilib() {
+update_repo() {
     local section="$1"
     local include_line="$2"
     local pacman_conf="$PACMAN_CONF"
@@ -73,7 +73,7 @@ update_multilib() {
 }
 
 # Habilitar repositorio multilib
-update_multilib "#\[multilib\]" "#Include = /etc/pacman.d/mirrorlist"
+update_repo "#\[multilib\]" "#Include = /etc/pacman.d/mirrorlist"
 
 # Instalar pacman-contrib si no está instalado
 if ! pacman -Qi pacman-contrib > /dev/null 2>&1; then
@@ -125,7 +125,7 @@ echo "  - Usar salida con color"
 echo "  - Usar 5 descargas paralelas"
 echo "  - Mantener solo paquetes instalados en la caché"
 echo "  - Guardar solo una versión antigua de cada paquete (incluyendo los desinstalados)"
-echo "  - Usar el repositorio multilib"
+echo "  - Usar los repositorios multilib"
 echo ""
 echo "Recuerda actualizar los repositorio "pacman -Sy" y"
 echo "deberás reiniciar cualquier terminal abierta para que los cambios surtan efecto."

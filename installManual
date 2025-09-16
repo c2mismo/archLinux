@@ -302,9 +302,6 @@ Verificar:
 
 # paru -S man-pages man-db
 
-actualizamos la base de datos
-# man-db
-
 
 Desabilitamos la hibernación necesario si queremos tener instalados mas de un SOs
 
