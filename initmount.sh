@@ -17,3 +17,4 @@ mount /dev/nvme0n1p6 /mnt/mnt/WINLINUX && echo "Directorio intercambio con Windo
 
 # Limpiar los archivos temporales
 sudo rm -f "$0"
+exit 0
