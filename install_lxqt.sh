@@ -92,3 +92,4 @@ echo "Instalación completada. Puedes iniciar sesión en LXQt (Wayland) desde el
 # Limpiar los archivos temporales
 sudo rm -f "$checked_user"
 sudo rm -f "$0"
+exit 0
