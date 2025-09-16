@@ -72,3 +72,4 @@ fi
 
 # Limpiar los archivos temporales
 sudo rm -f "$0"
+exit 0
