@@ -29,6 +29,10 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 Después de editar .zshrc, recarga los cambios:
 source ~/.zshrc
 
+Cambia tu shell por defecto
+chsh -s /usr/bin/zsh
+Después de ejecutar este comando, debes cerrar sesión en Plasma 6
+
 
 Clonando repositorios del github:
 
