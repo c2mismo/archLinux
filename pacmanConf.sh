@@ -75,9 +75,6 @@ update_repo() {
 # Habilitar repositorio multilib
 update_repo "#\[multilib\]" "#Include = /etc/pacman.d/mirrorlist"
 
-# Habilitar repositorio community
-update_repo "#\[community\]" "#Include = /etc/pacman.d/mirrorlist"
-
 # Instalar pacman-contrib si no está instalado
 if ! pacman -Qi pacman-contrib > /dev/null 2>&1; then
     echo "Instalando pacman-contrib..."
@@ -128,7 +125,7 @@ echo "  - Usar salida con color"
 echo "  - Usar 5 descargas paralelas"
 echo "  - Mantener solo paquetes instalados en la caché"
 echo "  - Guardar solo una versión antigua de cada paquete (incluyendo los desinstalados)"
-echo "  - Usar los repositorios multilib y community"
+echo "  - Usar los repositorios multilib"
 echo ""
 echo "Recuerda actualizar los repositorio "pacman -Sy" y"
 echo "deberás reiniciar cualquier terminal abierta para que los cambios surtan efecto."
