@@ -69,6 +69,11 @@ else
   echo "Nombre de la máquina configurado."
 fi
 
+# Verificar si los man-pages están instalados
+if ! pacman -Qi reflector > /dev/null 2>&1; then
+    sudo pacman -S --noconfirm man-pages man-db
+fi
+
 
 # Limpiar los archivos temporales
 sudo rm -f "$0"
