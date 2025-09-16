@@ -198,3 +198,4 @@ echo "Kitty instalado y configurado."
 # Limpiar los archivos temporales
 sudo rm -f "$checked_user"
 sudo rm -f "$0"
+exit 0
