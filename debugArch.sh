@@ -67,3 +67,4 @@ fi
 
 
 echo -e "\nFin del diagnóstico del sistema"
+exit 0
