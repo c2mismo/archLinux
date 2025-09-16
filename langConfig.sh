@@ -73,3 +73,4 @@ echo "[ -f ~/.config/vconsole.conf ] && . ~/.config/vconsole.conf" >> /etc/skel/
 echo "Idioma para los usuarios configurado en español completado."
 
 sudo rm -f "$0"
+exit 0
