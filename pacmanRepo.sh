@@ -25,4 +25,6 @@ sudo reflector --latest 20 --sort rate --save /etc/pacman.d/mirrorlist
 # Sincronizar la base de datos de pacman
 sudo pacman -Syy
 
+# Limpiar los archivos temporales
 sudo rm -f "$0"
+exit 0
