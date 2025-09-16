@@ -251,7 +251,7 @@ pacman -S wget
 
 montamos todas las particiones necesarias para preinstalar el sistema
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initmount.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/initmount.sh
 Verificar:
 # nano initmount.sh
 # chmod +x initmount.sh
@@ -268,7 +268,7 @@ WINLINUX para intercambiar archivos entre los dos SOs
 
 instalamos el sistema base en /mnt
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initinstall.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/initinstall.sh
 
 # chmod +x initinstall.sh
 # ./initinstall.sh
@@ -293,7 +293,7 @@ configuraciones básicas
 Configueramos teclados en español, sistema en ingles y
 usuarios en español
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/langConfig.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/langConfig.sh
 Verificar:
 # nano langConfig.sh
 # chmod +x langConfig.sh
@@ -305,7 +305,7 @@ Verificar:
 
 Desabilitamos la hibernación necesario si queremos tener instalados mas de un SOs
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/disable-sleep.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/disable-sleep.sh
 Verificar:
 # nano disable-sleep.sh
 # chmod +x disable-sleep.sh
@@ -319,7 +319,7 @@ le otorgamos el passwd al root
 creará un usuario sin privilegios "visitante"
 creará un usuario con el nombre que indiquemos con privilegios superuser
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/createuser.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/createuser.sh
 Verificar:
 # nano createuser.sh
 # chmod +x createuser.sh
@@ -338,7 +338,7 @@ este si es superadmin nos lo debe de permitir
 
 creamos el fstab despues de crear el usuario para añadir correctamente la partición WinLinux
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initfstab.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/initfstab.sh
 Verificar:
 # nano initfstab.sh
 # chmod +x initfstab.sh
@@ -349,7 +349,7 @@ Verificar:
 
 añadimos windows al grub
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/addwindows.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/addwindows.sh
 Verificar:
 # nano addwindows.sh
 # chmod +x addwindows.sh
@@ -363,14 +363,14 @@ Configuramos para desencriptar el sistema de archivos raíz, ROOT (/),
 a traves del initramfs, en los proximos inicios
 
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptroot.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/cryptroot.sh
 Verificar:
 # nano cryptroot.sh
 # chmod +x cryptroot.sh
 # ./cryptroot.sh
 
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/cryptswap.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/cryptswap.sh
 Verificar:
 # nano cryptswap.sh
 # chmod +x cryptswap.sh
@@ -382,7 +382,7 @@ VERIFICA
 Incluimos los modules del kernel necesarios para que initramfs pueda desencriptar
 usando systemd y sd-vconsole y añadimos el modulo para Intel
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/initramsf.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/initramsf.sh
 Verificar:
 # nano initramsf.sh
 # chmod +x initramsf.sh
@@ -393,7 +393,7 @@ Verificar:
 
 Instalamos y configuramos grub para el arranque
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/grubInstall.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/grubInstall.sh
 Verificar:
 # nano grubInstall.sh
 # chmod +x grubInstall.sh
@@ -406,7 +406,7 @@ GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet snd_hda_intel.dmic_detect=0"
 
 O podemos hacer un script:
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/grubConfig.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/grubConfig.sh
 Verificar:
 # nano grubConfig.sh
 # chmod +x grubConfig.sh
@@ -432,7 +432,7 @@ adaptadores QLogic/QED, etc.). En tu lspci aparecen sólo dispositivos Intel, Mi
 sincronizamos relog &
 Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la eficiencia
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/redConfig.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/redConfig.sh
 Verificar:
 # nano redConfig.sh
 # chmod +x redConfig.sh
@@ -443,7 +443,7 @@ Verificar:
 Preparamos para que el sistema no tenga problemas a la hora de montar
 particiones NTFS:
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/ntfs-3g.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/ntfs-3g.sh
 Verificar:
 # nano ntfs-3g.sh
 # chmod +x ntfs-3g.sh
@@ -519,7 +519,7 @@ $ journalctl -b | grep cryptsetup
 
 
 
-$ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/install_i9.sh
+$ wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/install_i9.sh
 Verificar:
 # nano install_i9.sh
 chmod +x install_i9.sh
@@ -527,7 +527,7 @@ chmod +x install_i9.sh
 
 
 Instalando los servicios de bluetooth
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/btInstall.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/btInstall.sh
 Verificar:
 # nano btInstall.sh
 # chmod +x btInstall.sh
@@ -546,13 +546,13 @@ En la última instalación no se "enable" correctamente.
 
 
 configuramos pacman y añadimos los repositorios
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanConf.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/pacmanConf.sh
 Verificar:
 # nano pacmanConf.sh
 # chmod +x pacmanConf.sh
 # ./pacmanConf.sh
 
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/pacmanRepo.sh
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/pacmanRepo.sh
 Verificar:
 # nano pacmanRepo.sh
 # chmod +x pacmanRepo.sh
@@ -571,7 +571,7 @@ oficiales
 
 
 Cuidado descargar y ejecutar en /usr/local/bin:
-# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/paruInstallConf.sh
+# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/paruInstallConf.sh
 Verificar:
 # nano /usr/local/bin/paruInstallConf.sh
 # chmod +x /usr/local/bin/paruInstallConf.sh
@@ -582,7 +582,7 @@ Verificar:
 
 VERIFICAR las configuraciones de usuario
 Instalamos el servidor de AUDIO pipewire
-# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/soundServer.sh
+# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/soundServer.sh
 Verificar:
 # nano /usr/local/bin/soundServer.sh
 # chmod +x /usr/local/bin/soundServer.sh
@@ -632,7 +632,7 @@ Current=Noir-SDDM-6
 
 instalamos kitty
 
-# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/kittyInstall.sh
+# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/kittyInstall.sh
 Verificar:
 # nano /usr/local/bin/kittyInstall.sh
 # chmod +x /usr/local/bin/kittyInstall.sh
