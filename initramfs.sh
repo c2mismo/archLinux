@@ -97,3 +97,4 @@ if [ $flag -eq 1 ]; then
 fi
 
 sudo rm -f "$0"
+exit 0
