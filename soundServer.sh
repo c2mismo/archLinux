@@ -124,3 +124,4 @@ echo "Para que surja efecto se debe de reiniciar con el usuario para el que haya
 # Limpiar los archivos temporales
 sudo rm -f "$checked_user"
 sudo rm -f "$0"
+exit 0
