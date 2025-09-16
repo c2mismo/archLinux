@@ -1,7 +1,0 @@
-menuentry "Windows 11" {
-    insmod part_gpt
-    insmod search_fs_uuid
-    insmod chain
-    search --fs-uuid --set=root XXX
-    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-}
