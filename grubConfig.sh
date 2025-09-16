@@ -31,3 +31,4 @@ echo "GRUB ha sido instalado y configurado correctamente con soporte para HDA In
 
 # Limpiar el script temporal
 sudo rm -f "$0"
+exit 0
