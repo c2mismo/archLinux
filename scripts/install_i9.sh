@@ -49,9 +49,15 @@ install "intel-media-driver"
 
 install "mesa"
 
-install "lib-intel-drive"
+install "lib32-mesa"
 
 install "vulkan-intel"
+
+install "lib32-vulkan-intel"
+
+install "vulkan-icd-loader"
+
+install "lib32-vulkan-icd-loader"
 
 #para monitorear el rendimiento de tu GPU Intel en Wayland
 install "intel-gpu-tools"
@@ -70,6 +76,10 @@ else
     systemctl --user enable thermald.service > /dev/null 2>&1
     echo "thermald.service ha sido habilitado."
 fi
+
+# OBSOLETO
+
+# install "libva-intel-drive"
 
 # Configuración solo para Xorg, para Wayland no realizar:
 
