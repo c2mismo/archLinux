@@ -1,0 +1,18 @@
+
+Instalamos
+sudo pacman -S docker docker-compose
+
+
+Añadimos el usuario a docker groups
+sudo usermod --append --groups docker new_user
+
+
+sudo systemctl start docker.service
+
+sudo systemctl stop docker.service
+
+systemctl status docker
+
+Instalamos kitematic un gestor de contenedores
+Obsoleto
+paru -S kitematic
