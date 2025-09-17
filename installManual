@@ -630,6 +630,17 @@ Current=Noir-SDDM-6
 # sudo systemctl enable sddm.service
 
 
+fuentes:
+
+paru -S awesome-terminal-fonts-git
+paru -S powerline-fonts-git
+paru -S nerd-fonts-source-code-pro
+paru -S nerd-fonts-fira-code
+
+Regeneramos "si no lo hace" el caché de las fuentes
+fc-cache --force
+
+
 instalamos kitty
 
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/kittyInstall.sh
@@ -640,21 +651,24 @@ Verificar:
 
 
 Aplicaciones básicas:
-# paru -S firefox kmix filelight kalgebra kompare kolourpaint kget ktorrent isoimagewriter p7zip unrar
+# paru -S firefox kmix filelight kalgebra kompare kolourpaint kget ktorrent isoimagewriter p7zip unrar lzip zip unzip
 
 Para compatibilidad con Dolphin, para MTP con teléfonos móviles
 # paru -S libmtp kio-admin kio-extras
 
 Instalador gráfico de aplicaciones, es el mas oficial y usa flatpak,
 seguramente instalado prefiero evitar los flatpak, ocupan demasiado:
-paru -S discover
+paru -S discover packagekit packagekit-qt5 appstream appstream-qt
 
 Instalador gráfico de aplicaciones, parecido a Synaptic de ubuntu
 paru -S octopi
 
 paru -S jdk-openjdk
 
-paru -S vlc-git vlc-plugin-ffmpeg vlc-plugins-all
+paru -S python python-pip
+
+gestion de video
+paru -S ffmpeg libde265 libheif vlc libdvdcss gst-plugins-ugly gst-plugins-bad
 
 
 
