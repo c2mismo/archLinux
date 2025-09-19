@@ -1,116 +1,83 @@
 #!/bin/bash
 
-# Verificamos si se produce un error:
-flag_error=0
-# Mensaje del error:
-error=""
+# --- Configuración ---
+# Define el punto de montaje DENTRO del chroot
+WINLINUX_MOUNT_POINT="/mnt/WINLINUX"
+# --- Fin Configuración ---
 
-# Instalar dependencias necesarias
-echo "Instalando dependencias de paru"
-sudo pacman -S --needed --noconfirm base-devel git ranger && \
-{ flag_error=0; error="Instaladas las dependencias necesarias para instalar paru"; } || \
-{ flag_error=1; error="Error al instalar las dependencias."; }
+echo "Modificando fstab2 DENTRO del chroot para $WINLINUX_MOUNT_POINT..."
 
-read -p "Para configurar paru introduce nombre de usuario: " usuario
-echo "Cambiando a usuario '$usuario'..."
-# 2. Cambiar al directorio home del usuario especificado
-home_dir=$(getent passwd "$usuario" | cut -d: -f6)
-if [ -d "$home_dir" ]; then
-    cd "$home_dir" || exit 1  # Cambia al directorio home del usuario
-else
-    echo "El directorio home para el usuario '$usuario' no existe."
+# Verificar si fstab2 existe
+if [[ ! -f /etc/fstab2 ]]; then
+    echo "Error: /etc/fstab2 no encontrado dentro del chroot."
     exit 1
 fi
 
-# Ejecutar el script como el usuario especificado
-exec sudo -u "$usuario" "$0" "$@"
-exit 1
-
-echo "Configurando paru como: $usuario en $home_dir"
-
-# Verificar si paru no está instalado y si no hubo errores
-if ! pacman -Qi paru > /dev/null 2>&1 && [ $flag_error -eq 0 ]; then
-    echo "Instalando paru previamente no instalado..."
-    # Clonar el repositorio de paru
-    git clone https://aur.archlinux.org/paru.git || { flag_error=1; error="Error al clonar el repositorio de paru."; }
-    # Accedemos al directorio
-    cd paru || { flag_error=1; error="Error al acceder al directorio de paru."; }
-    # Compilar e instalar paru
-    makepkg -si --noconfirm || { flag_error=1; error="Error al compilar paru."; }
-    # Volver al directorio anterior y limpiar
-    cd .. || { flag_error=1; error="Error al volver al directorio anterior."; }
-    rmsudo rm -f "$0" -rf paru || { flag_error=1; error="Error al limpiar el repositorio de paru."; }
-
-    if [ $flag_error -eq 0 ]; then
-        echo "Paru ha sido instalado correctamente."
-        echo "Continuamos con la configuración de paru."
-    fi
+# Verificar si la línea para WINLINUX_MOUNT_POINT existe en fstab2
+if ! grep -q "$WINLINUX_MOUNT_POINT" /etc/fstab2; then
+    echo "Advertencia: No se encontró una entrada para $WINLINUX_MOUNT_POINT en /etc/fstab2."
+    echo "Asegúrate de que la partición esté montada y 'genfstab' se haya ejecutado correctamente antes."
+    # Opcionalmente, podrías salir o intentar añadir la línea manualmente aquí.
+    # exit 1
+    # Por ahora, solo advertimos.
 fi
 
-CONFIG_FILE="$HOME/.config/paru/paru.conf"
-keyword="ranger"
+# --- Modificamos la línea de WINLINUX ---
+# Usamos sed para buscar cualquier línea que contenga SOLAMENTE el punto de montaje
+# y reemplazar toda la línea con nuestra configuración deseada.
 
-# Función para crear el archivo de configuración
-crear_configuracion() {
-    cat > "$CONFIG_FILE" << EOF
-[options]
-BottomUp
-SudoLoop
-CleanAfter
-UpgradeMenu
-NewsOnUpgrade
-RemoveMake
-BatchInstall
-UseAsk
-CombinedUpgrade
-#SkipReview
+# Esta expresión busca líneas que contienen el punto de montaje específico
+# y la marca temporalmente para identificarla fácilmente.
+# [^[:space:]]* asegura que coincidimos con el campo completo del punto de montaje
+sed -i "s|.*$WINLINUX_MOUNT_POINT[^[:space:]]*.*|&\n# LINEA_MODIFICADA_POR_SCRIPT|" /etc/fstab2
 
-[bin]
-FileManager = ranger
-EOF
-}
+if grep -q "# LINEA_MODIFICADA_POR_SCRIPT" /etc/fstab2; then
+     # Extraer el UUID o dispositivo de la línea original (asumiendo formato estándar)
+     # Buscamos la línea antes del marcador temporal
+     ORIGINAL_LINE=$(grep -B 1 "# LINEA_MODIFICADA_POR_SCRIPT" /etc/fstab2 | head -n 1)
+     # Intentar extraer UUID primero
+     UUID=$(echo "$ORIGINAL_LINE" | grep -o 'UUID=[^[:space:]]*' | head -n1)
 
-# Verificar si no ha habido ningún error y
-# si el archivo de configuración no existe o no contiene la palabra clave
-if [ $flag_error -eq 0 ]; then
-    # Verificar si el directorio de configuración de paru existe
-    if [ ! -d "$HOME/.config/paru" ]; then
-        # Crear el directorio de configuración de paru si no existe
-        mkdir -p "$HOME/.config/paru"
-        echo "Directorio de configuración de paru creado."
-    else
-        echo "El directorio de configuración de paru existe."
-    fi
+     if [[ -n "$UUID" ]]; then
+         # Si se encontró UUID, usarlo
+         NEW_ENTRY="$UUID $WINLINUX_MOUNT_POINT exfat rw,relatime,umask=000,iocharset=utf8,errors=remount-ro 0 2"
+     else
+         # Si no hay UUID, intentar usar el dispositivo (primera columna)
+         DEVICE=$(echo "$ORIGINAL_LINE" | awk '{print $1}')
+         if [[ -n "$DEVICE" && "$DEVICE" != "#" ]]; then
+             NEW_ENTRY="$DEVICE $WINLINUX_MOUNT_POINT exfat rw,relatime,umask=000,iocharset=utf8,errors=remount-ro 0 2"
+         else
+             echo "Error: No se pudo determinar el dispositivo o UUID de la línea original."
+             sed -i "/# LINEA_MODIFICADA_POR_SCRIPT/d" /etc/fstab2 # Limpiar marca
+             exit 1
+         fi
+     fi
 
-    if [ -f "$CONFIG_FILE" ]; then
-        echo "El archivo $CONFIG_FILE existe."
+     # Reemplazar la línea original y el marcador con la nueva entrada
+     # Usamos un delimitador poco común (#) para evitar conflictos con /
+     # Asegurarse de escapar el $ en la variable NEW_ENTRY si se usa #
+     # Mejor usar otro delimitador o construir el comando con comillas dobles
+     # Construimos el patrón de búsqueda y reemplazo cuidadosamente
+     # Escapamos / en NEW_ENTRY si es necesario (aunque es poco probable aquí)
+     ESCAPED_NEW_ENTRY=$(printf '%s\n' "$NEW_ENTRY" | sed 's/[&/\]/\\&/g') # Escapar caracteres especiales para sed
+     sed -i "N; s|.*$WINLINUX_MOUNT_POINT[^[:space:]]*.*\n# LINEA_MODIFICADA_POR_SCRIPT|$ESCAPED_NEW_ENTRY|" /etc/fstab2
 
-        # Verificar si el archivo contiene la palabra "keyword"
-        if ! grep -q "$keyword" "$CONFIG_FILE"; then
-            echo "El archivo no contiene la palabra '$keyword'. Sobrescribiendo archivo."
-            crear_configuracion
-            echo "El archivo de configuración se ha sobrescrito. Configuración completada."
-        else
-            echo "El archivo contiene la palabra '$keyword'. No se realizarán cambios."
-        fi
-    else
-        echo "El archivo $CONFIG_FILE no existe. Creando el archivo."
-        crear_configuracion
-        echo "El archivo de configuración ha sido creado. Configuración completada."
-    fi
+     echo "Entrada de fstab2 para $WINLINUX_MOUNT_POINT modificada exitosamente."
+     echo "Nueva entrada: $NEW_ENTRY"
+
 else
-    error="El archivo de configuración no se ha creado: La compilación no se ha realizado con éxito"
+    echo "Error: No se pudo identificar la línea a modificar en fstab2 para $WINLINUX_MOUNT_POINT."
+    exit 1
 fi
 
-if [ $flag_error -eq 0 ]; then
-    paru -Syy && \
-    echo -e "Repositorios oficiales y AUR actualizados con paru." || \
-    error="Repositorios oficiales y AUR no actualizados con paru."
-fi
+# Verificamos el cambio final (opcional)
+echo "--- Contenido relevante del fstab2 después de la modificación ---"
+grep "$WINLINUX_MOUNT_POINT" /etc/fstab2
+echo "--- Fin del contenido ---"
 
-if [ "$flag_error" -ne 0 ]; then
-    echo "ERROR: $error."
-    exit $flag_error
-else
-    echo "Correcto."
-fi
+echo "Script de modificación de fstab2 completado."
+
+
+cat /etc/fstab2
+
+exit 0
