@@ -6,6 +6,8 @@ instalamos otron nucleo el base:
 paru -S linux linux-headers
 
 
+kbackup
+
 
 paru -S riseup-vpn
 
@@ -88,13 +90,7 @@ Sino al gedit como siempre
 
 jdownloader
 
-Creamos identificación y clonamos repositorios de nustro git
 
-https://github.com/c2mismo/documentos/blob/master/Informatica/machines/Instalaci%C3%B3n%20Ubuntu%2022.04
-
-
-Instalar juegos:
-https://github.com/c2mismo/documentos/blob/master/Informatica/machines/ArchLinux%20i9/ArchLinux%20Games
 
 
 

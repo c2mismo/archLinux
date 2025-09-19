@@ -607,7 +607,7 @@ GESTORES DE VENTANAS KDE
 
 
 kde mínimo pero plasma completo para mayor integridad y minimo un terminal y un explorador de archivos
-# paru -S plasma plasma-desktop kde-system kde-accessibility kwalletmanager kdialog khelpcenter partitionmanager dolphin dolphin-plugins ark kate kcharselect lximage-qt okular kgpg kdeconnect kdenetwork-filesharing
+# paru -S plasma plasma-desktop kde-system kde-accessibility kwalletmanager kdialog khelpcenter partitionmanager dolphin dolphin-plugins kcalutils ark kate kcharselect lximage-qt okular kgpg kdeconnect kdenetwork-filesharing
 
 
 Tema SDDM:
