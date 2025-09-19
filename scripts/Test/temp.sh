@@ -5,17 +5,17 @@
 WINLINUX_MOUNT_POINT="/mnt/WINLINUX"
 # --- Fin Configuración ---
 
-echo "Modificando fstab2 DENTRO del chroot para $WINLINUX_MOUNT_POINT..."
+echo "Modificando fstab DENTRO del chroot para $WINLINUX_MOUNT_POINT..."
 
-# Verificar si fstab2 existe
-if [[ ! -f /etc/fstab2 ]]; then
-    echo "Error: /etc/fstab2 no encontrado dentro del chroot."
+# Verificar si fstab existe
+if [[ ! -f /etc/fstab ]]; then
+    echo "Error: /etc/fstab no encontrado dentro del chroot."
     exit 1
 fi
 
-# Verificar si la línea para WINLINUX_MOUNT_POINT existe en fstab2
-if ! grep -q "$WINLINUX_MOUNT_POINT" /etc/fstab2; then
-    echo "Advertencia: No se encontró una entrada para $WINLINUX_MOUNT_POINT en /etc/fstab2."
+# Verificar si la línea para WINLINUX_MOUNT_POINT existe en fstab
+if ! grep -q "$WINLINUX_MOUNT_POINT" /etc/fstab; then
+    echo "Advertencia: No se encontró una entrada para $WINLINUX_MOUNT_POINT en /etc/fstab."
     echo "Asegúrate de que la partición esté montada y 'genfstab' se haya ejecutado correctamente antes."
     # Opcionalmente, podrías salir o intentar añadir la línea manualmente aquí.
     # exit 1
@@ -29,12 +29,12 @@ fi
 # Esta expresión busca líneas que contienen el punto de montaje específico
 # y la marca temporalmente para identificarla fácilmente.
 # [^[:space:]]* asegura que coincidimos con el campo completo del punto de montaje
-sed -i "s|.*$WINLINUX_MOUNT_POINT[^[:space:]]*.*|&\n# LINEA_MODIFICADA_POR_SCRIPT|" /etc/fstab2
+sed -i "s|.*$WINLINUX_MOUNT_POINT[^[:space:]]*.*|&\n# LINEA_MODIFICADA_POR_SCRIPT|" /etc/fstab
 
-if grep -q "# LINEA_MODIFICADA_POR_SCRIPT" /etc/fstab2; then
+if grep -q "# LINEA_MODIFICADA_POR_SCRIPT" /etc/fstab; then
      # Extraer el UUID o dispositivo de la línea original (asumiendo formato estándar)
      # Buscamos la línea antes del marcador temporal
-     ORIGINAL_LINE=$(grep -B 1 "# LINEA_MODIFICADA_POR_SCRIPT" /etc/fstab2 | head -n 1)
+     ORIGINAL_LINE=$(grep -B 1 "# LINEA_MODIFICADA_POR_SCRIPT" /etc/fstab | head -n 1)
      # Intentar extraer UUID primero
      UUID=$(echo "$ORIGINAL_LINE" | grep -o 'UUID=[^[:space:]]*' | head -n1)
 
@@ -48,7 +48,7 @@ if grep -q "# LINEA_MODIFICADA_POR_SCRIPT" /etc/fstab2; then
              NEW_ENTRY="$DEVICE $WINLINUX_MOUNT_POINT exfat rw,relatime,umask=000,iocharset=utf8,errors=remount-ro 0 2"
          else
              echo "Error: No se pudo determinar el dispositivo o UUID de la línea original."
-             sed -i "/# LINEA_MODIFICADA_POR_SCRIPT/d" /etc/fstab2 # Limpiar marca
+             sed -i "/# LINEA_MODIFICADA_POR_SCRIPT/d" /etc/fstab # Limpiar marca
              exit 1
          fi
      fi
@@ -60,24 +60,24 @@ if grep -q "# LINEA_MODIFICADA_POR_SCRIPT" /etc/fstab2; then
      # Construimos el patrón de búsqueda y reemplazo cuidadosamente
      # Escapamos / en NEW_ENTRY si es necesario (aunque es poco probable aquí)
      ESCAPED_NEW_ENTRY=$(printf '%s\n' "$NEW_ENTRY" | sed 's/[&/\]/\\&/g') # Escapar caracteres especiales para sed
-     sed -i "N; s|.*$WINLINUX_MOUNT_POINT[^[:space:]]*.*\n# LINEA_MODIFICADA_POR_SCRIPT|$ESCAPED_NEW_ENTRY|" /etc/fstab2
+     sed -i "N; s|.*$WINLINUX_MOUNT_POINT[^[:space:]]*.*\n# LINEA_MODIFICADA_POR_SCRIPT|$ESCAPED_NEW_ENTRY|" /etc/fstab
 
-     echo "Entrada de fstab2 para $WINLINUX_MOUNT_POINT modificada exitosamente."
+     echo "Entrada de fstab para $WINLINUX_MOUNT_POINT modificada exitosamente."
      echo "Nueva entrada: $NEW_ENTRY"
 
 else
-    echo "Error: No se pudo identificar la línea a modificar en fstab2 para $WINLINUX_MOUNT_POINT."
+    echo "Error: No se pudo identificar la línea a modificar en fstab para $WINLINUX_MOUNT_POINT."
     exit 1
 fi
 
 # Verificamos el cambio final (opcional)
-echo "--- Contenido relevante del fstab2 después de la modificación ---"
-grep "$WINLINUX_MOUNT_POINT" /etc/fstab2
+echo "--- Contenido relevante del fstab después de la modificación ---"
+grep "$WINLINUX_MOUNT_POINT" /etc/fstab
 echo "--- Fin del contenido ---"
 
-echo "Script de modificación de fstab2 completado."
+echo "Script de modificación de fstab completado."
 
 
-cat /etc/fstab2
+cat /etc/fstab
 
 exit 0
