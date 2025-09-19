@@ -1,0 +1,20 @@
+
+
+Fuentes para otros idiomas como chino arabe etc
+
+
+    Seguridad: ¿Quieres reforzar aún más la seguridad de tu instalación base? ¿Estás interesado en SELinux, AppArmor, firewalls avanzados, o en endurecer el kernel?
+    Rendimiento: ¿Quieres optimizar el sistema para tu hardware específico (CPU, governor, scheduler, etc.)? ¿O para tareas específicas como compilación, virtualización, etc.?
+    Mantenimiento y automatización: ¿Quieres mejorar tus scripts de instalación o creación de dotfiles? ¿Automatizar copias de seguridad?
+
+
+Enable TRIM scheduling for SSDs
+
+sudo systemctl enable fstrim.timer
+
+
+¿Hay algún aspecto específico de esta configuración sobre el que te gustaría profundizar? Por ejemplo, ¿configurar perfiles personalizados en auto-cpufreq, usar intel_gpu_top para monitorear la GPU, o verificar si thermald está aplicando correctamente sus políticas?
+
+
+
+
