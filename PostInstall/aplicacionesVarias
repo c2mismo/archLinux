@@ -2,6 +2,8 @@
 
 APLICACIONES
 
+instalamos otron nucleo el base:
+paru -S linux linux-headers
 
 
 
