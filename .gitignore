@@ -1,0 +1,67 @@
+
+# .gitignore
+#
+# more info https://github.com/github/gitignore
+#
+# Help
+#
+# *       Uno o varios caracteres
+# ?       Un caracter
+# [abc]   Uno de estos caracteres
+# [0-9]   Cualquier caracter entre ellos (del 0 al 9)
+# a/**/z  Directorios anidados ** cualquier directorio entre esos directorios.
+# !       Excepcion *.a  \  !lib.a
+# /archi  solo este directorio no recursivo                                                                         
+# doc/*.txt       idem
+# build/  ignorar todos los archivos que se llamen build
+# doc/**/*.pdf    todos los pdf en doc y recursivo
+
+.*
+!.git
+!.gitignore
+
+# OTHERS
+*.lnk
+Thumbs*
+*encryptable
+tmp
+
+# Fnt. https://github.com/github/gitignore/blob/master/Global/Linux.gitignore
+
+*~
+
+# temporary files which can be created if a process still has a handle open of a deleted file
+.fuse_hidden*
+
+# KDE directory preferences
+.directory
+
+# Linux trash folder which might appear on any partition or disk
+.Trash-*
+
+# .nfs files are created when an open file is removed but is still being accessed
+.nfs*
+
+
+# Fnt. https://github.com/github/gitignore/blob/master/Global/GPG.gitignore
+
+secring.*
+
+
+# Fnt. https://github.com/github/gitignore/blob/master/Global/Backup.gitignore
+
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
+
+
+# Fnt. https://github.com/github/gitignore/blob/master/Global/Diff.gitignore
+
+*.patch
+*.diff
+/Nextion/apuntes/communication/Nextion_TutorialV1/**/*
+/Nextion/apuntes/communication/Nextion_relay_contol/**/*
+/Informatica/GAME/Minecraft/temp/carpet-extra-1.18-1.4.56.jar
+/Informatica/GAME/Minecraft/temp/fabric-carpet-22w06a-1.4.61+v220210.jar
