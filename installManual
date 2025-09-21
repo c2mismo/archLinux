@@ -632,13 +632,25 @@ Current=Noir-SDDM-6
 
 fuentes:
 
-paru -S awesome-terminal-fonts-git
-paru -S powerline-fonts-git
-paru -S nerd-fonts-source-code-pro
-paru -S nerd-fonts-fira-code
+Para chino, Japonés, coreano, etc
+paru -S noto-fonts noto-fonts-cjk noto-fonts-extra
+
+paru -S ttf-dejavu ttf-liberation ttf-roboto ttf-ubuntu-font-family
+
+Los Nerd Fonts son una colección de fuentes tipográficas que combinan fuentes populares (como Droid Sans, Fira Code, Hack, etc.) con una gran cantidad de íconos y glifos adicionales. Estos glifos incluyen:
+
+Iconos de desarrolladores: Logos de lenguajes de programación (Python, JavaScript, Rust, etc.), herramientas (Git, Docker, npm, etc.).
+
+
+Símbolos de línea de comandos: Flechas, separadores, caracteres de bloque, etc.
+Símbolos de poder: Batería, Wi-Fi, volumen, etc. (aunque menos comunes en las terminales).
+Glifos de parche adicional: Conjuntos de caracteres adicionales que pueden no estar presentes en las fuentes originales.
+
+
+paru -S nerd-fonts
 
 Regeneramos "si no lo hace" el caché de las fuentes
-fc-cache --force
+fc-cache -fv
 
 
 instalamos kitty
@@ -648,6 +660,29 @@ Verificar:
 # nano /usr/local/bin/kittyInstall.sh
 # chmod +x /usr/local/bin/kittyInstall.sh
 # sh /usr/local/bin/kittyInstall.sh
+
+Configurar Nerd Fonts en tu terminal (kitty)
+fc-list | grep -i "nerd"
+
+~/.config/kitty/kitty.conf
+nano ~/.config/kitty/kitty.conf
+
+font_family      FiraCode Nerd Font
+# o
+font_family      Hack Nerd Font
+# o (si instalaste una variante específica como Mono)
+font_family      JetBrainsMono Nerd Font Mono
+
+# font_family monospace
+font_family JetBrainsMonoNL Nerd Font Mono
+# font_family Hack Nerd Font Mono
+# font_family FiraCode Nerd Font Mono:style=Bold
+
+Reinicia kitty
+Ctrl+Shift+F5
+
+
+
 
 
 Aplicaciones básicas:
