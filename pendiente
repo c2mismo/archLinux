@@ -1,6 +1,23 @@
 
 
+Hay que iniciar con windows para copiar MAC BT y
+verificar si tienes el software instalado del monitor LG 32GN600-B
+y verificar si el firmware está actualizado
+
+
+
+
+Para Luz nocturna
+sudo pacman -S redshift
+
+
+
+
+
+
+
 Fuentes para otros idiomas como chino arabe etc
+creo que tengo arabe
 
 
     Seguridad: ¿Quieres reforzar aún más la seguridad de tu instalación base? ¿Estás interesado en SELinux, AppArmor, firewalls avanzados, o en endurecer el kernel?
