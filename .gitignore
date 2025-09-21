@@ -16,19 +16,38 @@
 # build/  ignorar todos los archivos que se llamen build
 # doc/**/*.pdf    todos los pdf en doc y recursivo
 
-.*
+
 !.git
 !.gitignore
+
+# Todos los archivos que comienzan con "."
+.*
+# Cualquiera que termine en
+*~
 
 # OTHERS
 *.lnk
 Thumbs*
 *encryptable
 tmp
+TMP
+temp
+TEMP
+tmp*
+TMP*
+temp*
+TEMP*
+*tmp
+*TMP
+*temp
+*TEMP
 
-# Fnt. https://github.com/github/gitignore/blob/master/Global/Linux.gitignore
-
-*~
+# Backups
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
@@ -43,25 +62,12 @@ tmp
 .nfs*
 
 
-# Fnt. https://github.com/github/gitignore/blob/master/Global/GPG.gitignore
-
+# GPG o ssh
 secring.*
+ssh*
+*ssh
 
-
-# Fnt. https://github.com/github/gitignore/blob/master/Global/Backup.gitignore
-
-*.bak
-*.gho
-*.ori
-*.orig
-*.tmp
-
-
-# Fnt. https://github.com/github/gitignore/blob/master/Global/Diff.gitignore
-
+# Archivos Diff
 *.patch
 *.diff
-/Nextion/apuntes/communication/Nextion_TutorialV1/**/*
-/Nextion/apuntes/communication/Nextion_relay_contol/**/*
-/Informatica/GAME/Minecraft/temp/carpet-extra-1.18-1.4.56.jar
-/Informatica/GAME/Minecraft/temp/fabric-carpet-22w06a-1.4.61+v220210.jar
+
