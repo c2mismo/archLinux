@@ -15,7 +15,7 @@ paru -S jitsi-meet-desktop jitsi-videobridge
 
 
 
-
+pacman -S libreoffice-fresh-es
 
 visual-studio-code-bin
 Mirar apuntes en https://github.com/c2mismo/documentos/Informatica/IDE/

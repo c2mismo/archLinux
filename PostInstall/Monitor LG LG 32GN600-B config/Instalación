@@ -9,14 +9,18 @@ qdbus6 org.kde.kglobalaccel /component/kwin invokeShortcut "Toggle Night Color"
 
 
 mkdir ~/.local/share/NightLight
+en próxima instalación:
+mkdir ~/.local/share/confScreen
 
 cp alternar_dia_noche.sh ~/.local/share/NightLight/alternar_dia_noche.sh
 cp NightLight_OFF.sh ~/.local/share/NightLight/NightLight_OFF.sh
 cp NightLight_ON.sh ~/.local/share/NightLight/NightLight_ON.sh
+cp rotacion_pantalla_izquierda.sh ~/.local/share/NightLight/rotacion_pantalla_izquierda.sh
 
 chmod +x  ~/.local/share/NightLight/alternar_dia_noche.sh
 chmod +x  ~/.local/share/NightLight/NightLight_OFF.sh
-chmod +x  ~/.local/share/NightLight/NightLight_OFF.sh
+chmod +x  ~/.local/share/NightLight/NightLight_ON.sh
+chmod +x  ~/.local/share/NightLight/rotacion_pantalla_izquierda.sh
 
 En Atajos de teclado dentro de Preferencias del sistema
 + Añadir nuevo Orden o guion...
