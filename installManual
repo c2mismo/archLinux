@@ -160,6 +160,8 @@ ping Archlinux.org
 sincronizamos relog
 timedatectl set-ntp true
 
+timedatectl status
+
 
 Si necesitamos una fuente mas grande "no es necesario"
 # pacman -Sy
@@ -296,6 +298,17 @@ accedemos a el
 
 
 configuraciones básicas
+
+
+
+sincronizamos relog &
+Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la eficiencia
+
+# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/redConfig.sh
+Verificar:
+# nano redConfig.sh
+# chmod +x redConfig.sh
+# ./redConfig.sh
 
 
 
@@ -487,18 +500,6 @@ adaptadores QLogic/QED, etc.). En tu lspci aparecen sólo dispositivos Intel, Mi
 (i915, nvme, iwlwifi, e1000e, igb, etc.), y los controladores que esos dispositivos usan están ya cargados
 (i915, nvme, iwlwifi, e1000e, igb, ahci, etc.).
 -------------------------------------
-
-
-
-
-sincronizamos relog &
-Instalamos gestor de RED NetworkManager con iwd que mejora la seguridad y la eficiencia
-
-# wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/redConfig.sh
-Verificar:
-# nano redConfig.sh
-# chmod +x redConfig.sh
-# ./redConfig.sh
 
 
 
