@@ -692,11 +692,12 @@ https://store.kde.org/s/KDE%20Store/p/2142845
 
 Descomprimir
 
-# mkdir /usr/share/sddm/themes/Noir-SDDM-6
+sudo cp /usr/share/sddm/themes/Noir-SDDM-6
 
 
-# nano /usr/lib/sddm/sddm.conf.d/default.conf
+sudo nano /usr/lib/sddm/sddm.conf.d/default.conf
 [General]
+DisplayServer=wayland
 NumLock=on
 [Theme]
 Current=Noir-SDDM-6
