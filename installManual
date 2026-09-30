@@ -632,6 +632,20 @@ AUR y a la vez gestiona los repositorios
 oficiales
 
 
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+
+Cuidado descargar y ejecutar en /usr/local/bin:
+# wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/paruInstallConf.sh
+Verificar:
+# nano /usr/local/bin/paruInstall.sh
+# chmod +x /usr/local/bin/paruInstall.sh
+# sh /usr/local/bin/paruInstall.sh
+
+
+
+Se puede probar con este otro script que descarga, compila e instala el PARU:
 
 Cuidado descargar y ejecutar en /usr/local/bin:
 # wget -P /usr/local/bin https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/paruInstallConf.sh
