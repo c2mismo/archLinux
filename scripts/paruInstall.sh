@@ -12,7 +12,7 @@ echo "Instalando paru..."
 flag_error=0
 
 # Instalar dependencias necesarias
-pacman -S --needed --noconfirm base-devel git ranger paru && \
+pacman -S --needed --noconfirm base-devel git ranger && \
 { echo "paru: Instalado y sus dependencias necesarias."; flag_error=0; } || \
 { echo "Error al instalar paru y sus dependencias."; flag_error=1; }
 
