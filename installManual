@@ -774,6 +774,7 @@ seguramente instalado prefiero evitar los flatpak, ocupan demasiado:
 paru -S discover packagekit appstream appstream-qt
 
 Instalador gráfico de aplicaciones, parecido a Synaptic de ubuntu
+Tarda en compilar sobretodo las traducciones ver como configurar la compilación solo para español
 paru -S octopi
 
 paru -S jdk-openjdk
