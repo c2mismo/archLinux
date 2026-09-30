@@ -771,7 +771,7 @@ Para compatibilidad con Dolphin, para MTP con teléfonos móviles
 
 Instalador gráfico de aplicaciones, es el mas oficial y usa flatpak,
 seguramente instalado prefiero evitar los flatpak, ocupan demasiado:
-paru -S discover packagekit packagekit-qt5 appstream appstream-qt
+paru -S discover packagekit appstream appstream-qt
 
 Instalador gráfico de aplicaciones, parecido a Synaptic de ubuntu
 paru -S octopi
