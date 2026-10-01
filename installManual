@@ -465,8 +465,29 @@ Verificar:
 
 
 
-
 Instalamos y configuramos grub para el arranque
+
+Antes de instalarlo verifiquemos que la dichosa BIOS/UEFI no halla guardado
+en su NVRAM antiguas rutas de arranque de anteriores sistemas operativos instalados.
+
+# efibootmgr -v
+Ejemplo de salida:
+BootCurrent: 0001
+Timeout: 2 seconds
+BootOrder: 0001,0004,0000,0002,0003,0005
+Boot0000  Ubuntu	VenHw(9...
+Boot0001* GRUB	HD(1,GPT,7...
+Boot0002* UEFI:CD/DVD Drive	BBS(1...
+Boot0003* UEFI:Removable Device	BBS(1...
+Boot0004  Windows Boot Manager	VenHw(9...
+Boot0005* UEFI:Network Device	BBS(1...
+
+Elimina las entradas referentes a sistemas operativo únicamente, ejemplo:
+# efibootmgr -b 0000 -B
+# efibootmgr -b 0001 -B
+# efibootmgr -b 0002 -B
+# efibootmgr -b 0004 -B
+
 
 # wget https://raw.githubusercontent.com/c2mismo/archLinux/refs/heads/main/scripts/grubInstall.sh
 Verificar:
